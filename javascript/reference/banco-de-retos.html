@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Banco de retos · JavaScript</title>
+  <link rel="stylesheet" href="../assets/course.css">
+  <style>
+    .reto { border-bottom: 1px solid var(--regla); padding: 1.3rem 0; }
+    .reto:last-child { border-bottom: 0; }
+    .reto-cab { display: flex; align-items: baseline; gap: .6rem; flex-wrap: wrap; margin-bottom: .35rem; }
+    .reto-cab a { font-family: var(--sans); font-weight: 700; font-size: 1.05rem; }
+    .estado {
+      font-family: var(--sans); font-size: .68rem; text-transform: uppercase;
+      letter-spacing: .05em; font-weight: 700; padding: .15rem .5rem;
+      border-radius: 4px; white-space: nowrap;
+    }
+    .estado.abierto  { background: var(--verde-suave); color: var(--verde); }
+    .estado.cerrado  { background: var(--papel-hueso); color: var(--tinta-suave); }
+    .reto-meta {
+      font-family: var(--sans); font-size: .78rem; color: var(--tinta-suave);
+      margin: .1rem 0 .5rem;
+    }
+    .reto-meta b { color: var(--tinta); }
+    .reto p { font-size: .93rem; margin: 0 0 .5rem; }
+    .reto p:last-child { margin-bottom: 0; }
+    .bloque-titulo {
+      font-family: var(--sans); font-size: .78rem; text-transform: uppercase;
+      letter-spacing: .08em; font-weight: 700; color: var(--acento);
+      margin: 2.4rem 0 .2rem; border-bottom: 2px solid var(--acento); padding-bottom: .3rem;
+    }
+  </style>
+</head>
+<body>
+<a class="online-link" href="https://ernestomafl.github.io/aprendizaje/" title="Ir al índice de mis cursos en línea">🌐 Mis cursos</a>
+  <main class="lienzo">
+
+    <p class="leccion-kicker">Referencia · JavaScript del 80%</p>
+    <h1>Banco de retos</h1>
+    <p class="lede">
+      Todos los recursos externos de práctica del curso, en cola y con su llave puesta.
+      Cada uno dice <strong>qué exige</strong> y <strong>a partir de qué lección puedes
+      resolverlo sin encontrarte sintaxis que aún no hemos visto</strong>. Los cerrados no
+      son un premio: son una promesa de que cuando los abras, no te van a hacer perder el
+      tiempo adivinando.
+    </p>
+
+    <div class="nota">
+      <p class="nota-titulo">Cómo se usa esta página</p>
+      <p style="margin:0">
+        Cuando termines una lección, vuelve aquí: habré movido a <strong>abierto</strong> lo
+        que esa lección acaba de desbloquear. Si abres uno antes de tiempo y te topas con algo
+        no visto, no es culpa tuya — dímelo en el chat y lo recoloco.
+      </p>
+    </div>
+
+    <p class="bloque-titulo">Abiertos ahora</p>
+
+    <div class="reto">
+      <div class="reto-cab">
+        <a href="https://es.javascript.info/variables#tareas">javascript.info — Tareas de «Variables»</a>
+        <span class="estado abierto">abierto</span>
+      </div>
+      <p class="reto-meta">Exige: <b>const/let, nombrar variables</b> · Formato: 3 tareas cortas con solución · Español</p>
+      <p>
+        La tercera («¿const mayúsculas?») es de <strong>criterio</strong>, no de sintaxis:
+        decidir cuándo una constante merece ir en MAYÚSCULAS. Ese tipo de decisión separa a
+        quien entiende de quien copia. Detalle: usan <code>alert(…)</code> donde nosotros
+        usamos <code>console.log(…)</code> — es lo mismo, en una ventanita del navegador.
+      </p>
+    </div>
+
+    <div class="reto">
+      <div class="reto-cab">
+        <a href="https://developer.mozilla.org/es/docs/Learn_web_development/Core/Scripting/Test_your_skills/Variables">MDN — Pon a prueba tus habilidades: Variables</a>
+        <span class="estado abierto">abierto</span>
+      </div>
+      <p class="reto-meta">Exige: <b>const/let, reasignar</b> · Formato: 3 ejercicios con editor en vivo · Español</p>
+      <p>
+        El tercero es el bueno: te dan código <strong>con dos errores</strong> y tienes que
+        diagnosticarlos. Leer código roto es exactamente tu misión. Detalle: ahí verás que
+        <code>+</code> también junta textos — <code>"Hola " + nombre</code> → <code>"Hola Ana"</code>.
+      </p>
+    </div>
+
+    <div class="reto">
+      <div class="reto-cab">
+        <a href="reto-01-desenreda-la-flecha.html">Reto 01 — Desenreda la flecha</a>
+        <span class="estado abierto">abierto</span>
+      </div>
+      <p class="reto-meta">Exige: <b>flechas, return implícito, callbacks</b> · Formato: 10 fragmentos, autocorregidos · Hecho a medida</p>
+      <p>
+        Escrito para ti porque los ejercicios públicos de este tema se quedaban cortos. Diez
+        fragmentos que no se parecen a los ejemplos de la lección; <strong>cuatro están rotos,
+        cada uno de una forma distinta</strong>. Hay que predecir la salida razonando, no
+        reconociendo patrones. El fragmento 9 usa una forma que no salió en clase, deducible
+        de las reglas dadas — está avisado en la página.
+      </p>
+    </div>
+
+    <div class="reto">
+      <div class="reto-cab">
+        <a href="https://es.javascript.info/arrow-functions-basics#tareas">javascript.info — Tarea «Reescribe con funciones de flecha»</a>
+        <span class="estado abierto">abierto</span>
+      </div>
+      <p class="reto-meta">Exige: <b>flechas, callbacks</b> · Formato: 1 tarea con solución · Español</p>
+      <p>
+        Conviertes dos callbacks escritos a la antigua en flechas: bajar por la escalera de
+        contracción con código ajeno. Detalles que verás y no son tuyos: <code>confirm("…")</code>
+        abre una ventanita de Aceptar/Cancelar, y el <code>if/else</code> de dentro no hay que
+        tocarlo.
+      </p>
+    </div>
+
+    <p class="bloque-titulo">En cola</p>
+
+    <div class="reto">
+      <div class="reto-cab">
+        <a href="https://exercism.org/tracks/javascript">Exercism — JavaScript Track</a>
+        <span class="estado cerrado">tras la lección de módulos</span>
+      </div>
+      <p class="reto-meta">Exige: <b>funciones + <code>export</code></b> · Formato: 159 ejercicios con tests (Jest) + mentoría humana · Inglés</p>
+      <p>
+        <strong>El más valioso del banco a medio plazo</strong>, por una razón concreta: un
+        mentor voluntario lee tu solución y te dice si es <em>idiomática en JavaScript</em> o
+        si es «Python escrito en JS». Ese es tu riesgo número uno viniendo de Python, y no hay
+        test automático que lo detecte.
+      </p>
+      <p>
+        <em>Corregido el 2026-07-21:</em> lo tenía anotado para después de la Lección 02, pero
+        al abrir los ejercicios resulta que <strong>todos</strong> —incluido el primero— obligan
+        a usar <code>export</code>, que es materia de la lección de módulos. Se retrasa hasta
+        ahí. Cuando se abra, empieza por <em>Lasagna</em> o <em>Freelancer Rates</em>: solo
+        piden funciones y aritmética.
+      </p>
+    </div>
+
+    <div class="reto">
+      <div class="reto-cab">
+        <a href="https://github.com/lydiahallie/javascript-questions/blob/master/es-ES/README-ES.md">JavaScript Questions — Lydia Hallie</a>
+        <span class="estado cerrado">tras la Lección 05 (objetos y referencias)</span>
+      </div>
+      <p class="reto-meta">Exige: <b>tipos, coerción, funciones, objetos</b> · Formato: quiz «¿qué imprime y por qué?» con explicación · Español</p>
+      <p>
+        Análisis mental puro: predices la salida antes de leer la explicación. Es el mejor
+        detector de huecos conceptuales que existe — y el más humillante, lo cual es la
+        gracia. Está cerrado porque desde la pregunta 1 mezcla <code>var</code>, hoisting,
+        funciones y coerción de tipos a la vez.
+      </p>
+      <p>
+        Cuando se abra: <strong>5 preguntas al día</strong>, escribiendo tu predicción antes de
+        mirar. Más de 5 y deja de funcionar.
+      </p>
+    </div>
+
+    <div class="reto">
+      <div class="reto-cab">
+        <a href="https://retosdeprogramacion.com/">Retos de Programación — MoureDev</a>
+        <span class="estado cerrado">tras la Lección 04 (condicionales y bucles)</span>
+      </div>
+      <p class="reto-meta">Exige: <b>lógica básica completa</b> · Formato: 51 ejercicios + 101 retos + Discord · Español</p>
+      <p>
+        Alternativa hispanohablante a Codewars, con correcciones en directo. Útil si el inglés
+        de Exercism te frena al principio. Roadmap ordenado de menos a más.
+      </p>
+    </div>
+
+    <div class="reto">
+      <div class="reto-cab">
+        <a href="https://www.codewars.com/">Codewars</a>
+        <span class="estado cerrado">tras las lecciones de métodos de colección</span>
+      </div>
+      <p class="reto-meta">Exige: <b>arrays + map/filter/reduce</b> · Formato: katas rankeadas (8 kyu → 1 kyu) · Inglés</p>
+      <p>
+        Lo valioso no es resolver la kata: es que al resolverla se <strong>desbloquean las
+        soluciones de otros</strong>, ordenadas por votos. Ahí lees JavaScript idiomático
+        escrito por gente que lleva años. Máximo 1 kata al día, empezando en 7 kyu, y sin caer
+        en el golf algorítmico — no sirve a tu misión.
+      </p>
+    </div>
+
+    <div class="reto">
+      <div class="reto-cab">
+        <a href="https://javascript30.com/">JavaScript30 — Wes Bos</a>
+        <span class="estado cerrado">tras las lecciones de DOM y eventos</span>
+      </div>
+      <p class="reto-meta">Exige: <b>DOM, eventos</b> · Formato: 30 proyectos con vídeo y ficheros de inicio · Inglés</p>
+      <p>
+        <strong>El más alineado con tu misión de Astro:</strong> 30 piezas de interactividad
+        real (reproductor de vídeo, reloj, teclado de batería) <em>sin frameworks ni
+        librerías</em>. Regla de oro: lee el enunciado, <strong>constrúyelo tú primero</strong>,
+        y usa el vídeo solo como corrección. Si lo ves antes, es tutorial pasivo y no aprendes.
+      </p>
+    </div>
+
+    <div class="reto">
+      <div class="reto-cab">
+        <a href="https://www.adventofjs.com/">Advent of JS</a>
+        <span class="estado cerrado">tras las lecciones de DOM y eventos</span>
+      </div>
+      <p class="reto-meta">Exige: <b>DOM, eventos</b> · Formato: 24 retos de componentes de UI, HTML y CSS ya dados · Inglés</p>
+      <p>
+        Acordeones, carruseles, calculadoras: exactamente el tipo de isla interactiva que
+        pondrás en una web de cliente. Es estacional (diciembre) pero las ediciones 2021-2024
+        están archivadas y sirven todo el año.
+      </p>
+    </div>
+
+    <div class="reto">
+      <div class="reto-cab">
+        <a href="https://bigfrontend.dev/">BigFrontEnd.dev</a>
+        <span class="estado cerrado">al final del curso</span>
+      </div>
+      <p class="reto-meta">Exige: <b>promesas, prototipos, mecánica interna</b> · Formato: 170+ retos + 130+ quizzes · Inglés</p>
+      <p>
+        Reimplementar piezas del propio lenguaje (<code>Promise.all</code>, <code>debounce</code>,
+        <code>flat</code>). Es el puente final hacia leer código ajeno complejo sin pestañear.
+        Entra aquí cuando Codewars te resulte cómodo.
+      </p>
+    </div>
+
+    <div class="pie">
+      <div class="recordatorio-tutor">
+        💬 <strong>Soy tu tutor.</strong> ¿Quieres abrir uno antes de tiempo? Dímelo y te doy
+        en 5 minutos lo mínimo que te falta para que no sea una pérdida de tiempo. Y si
+        encuentras un recurso por tu cuenta, pásamelo: lo pruebo y lo coloco en su sitio.
+      </div>
+      <div class="nav-lecciones">
+        <a href="../lessons/0001-const-y-let.html">← Lección 01 · const y let</a>
+        <span></span>
+      </div>
+    </div>
+
+  </main>
+</body>
+</html>

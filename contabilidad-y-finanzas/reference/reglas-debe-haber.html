@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Referencia · Reglas del Debe y el Haber</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+  <style>
+    .rule-table { width:100%; border-collapse:collapse; font-family:var(--sans); margin:1.2rem 0; }
+    .rule-table th { border-bottom:2px solid var(--ink); padding:.5rem .7rem; text-align:left; }
+    .rule-table td { padding:.55rem .7rem; border-bottom:1px solid var(--rule); font-size:.95rem; }
+    .rule-table .up   { font-weight:700; }
+    .debe  { color:var(--blue); }
+    .haber { color:var(--accent); }
+    .big-mnem { font-family:var(--sans); text-align:center; background:var(--highlight); border-radius:10px; padding:1.4rem 1rem; margin:1.6rem 0; font-size:1.1rem; line-height:1.6; }
+    .big-mnem b { color:var(--accent); }
+    .cols2 { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin:1.2rem 0; }
+    .card { border:1px solid var(--rule); border-radius:8px; padding:1rem 1.1rem; font-family:var(--sans); font-size:.92rem; background:#fff; }
+    .card h3 { margin:.1rem 0 .5rem; font-size:1rem; }
+    @media (max-width:520px){ .cols2 { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+<a class="online-link" href="https://ernestomafl.github.io/aprendizaje/" title="Ir al índice de mis cursos en línea">🌐 Mis cursos</a>
+<div class="wrap">
+
+  <p class="eyebrow">Documento de referencia · Chuleta imprimible</p>
+  <h1>Reglas del Debe y el Haber</h1>
+  <p class="dek">Lo esencial de la partida doble en una página.</p>
+
+  <div class="big-mnem">
+    <b>Debe</b> = columna <b>izquierda</b> · <b>Haber</b> = columna <b>derecha</b><br>
+    En todo asiento: <b>Total Debe = Total Haber</b>
+  </div>
+
+  <h2>¿En qué columna AUMENTA cada familia?</h2>
+  <table class="rule-table">
+    <tr><th>Familia</th><th>Aumenta en</th><th>Disminuye en</th></tr>
+    <tr><td class="up">Activo</td><td class="debe">Debe (izq.)</td><td class="haber">Haber (der.)</td></tr>
+    <tr><td class="up">Gasto</td><td class="debe">Debe (izq.)</td><td class="haber">Haber (der.)</td></tr>
+    <tr><td class="up">Pasivo</td><td class="haber">Haber (der.)</td><td class="debe">Debe (izq.)</td></tr>
+    <tr><td class="up">Patrimonio</td><td class="haber">Haber (der.)</td><td class="debe">Debe (izq.)</td></tr>
+    <tr><td class="up">Ingreso</td><td class="haber">Haber (der.)</td><td class="debe">Debe (izq.)</td></tr>
+  </table>
+
+  <div class="big-mnem">
+    🧠 “<b>A</b>ctivo y <b>G</b>asto aumentan en el <b>Debe</b>.<br>
+    <b>P</b>asivo, <b>P</b>atrimonio e <b>I</b>ngreso aumentan en el <b>Haber</b>.”
+  </div>
+
+  <div class="note" style="border-left:4px solid var(--accent); background:var(--highlight); padding:1rem 1.2rem; border-radius:8px;">
+    ⚠️ <b>Regla de oro para las disminuciones — nunca uses números negativos.</b>
+    Una cuenta que <b>baja</b> se anota en la <b>columna contraria</b> a donde sube, con el
+    monto <b>positivo</b>. En un asiento <em>no existe</em> el signo menos.
+    <br><br>
+    Ejemplo: la Caja (activo) <b>aumenta</b> en el Debe; por tanto, cuando <b>disminuye</b>
+    se anota <b class="haber">$X en el Haber</b> — no “<span style="text-decoration:line-through">−X en el Debe</span>”.
+  </div>
+
+  <h2>Vocabulario equivalente</h2>
+  <div class="cols2">
+    <div class="card">
+      <h3 class="debe">Lado del Debe</h3>
+      Debe = débito = cargo.<br>
+      Anotar ahí = <b>cargar</b>.<br>
+      Es la columna <b>izquierda</b>.
+    </div>
+    <div class="card">
+      <h3 class="haber">Lado del Haber</h3>
+      Haber = crédito = abono.<br>
+      Anotar ahí = <b>abonar</b>.<br>
+      Es la columna <b>derecha</b>.
+    </div>
+  </div>
+  <p class="note">
+    <b>Débito y crédito son solo columnas</b> (izquierda y derecha): <em>no</em> significan
+    aumento ni disminución. Eso lo decide la familia de la cuenta (mnemónico AG/PPI).
+    <b>Cuidado con el banco:</b> cuando “te acredita” un depósito, estás viendo <em>sus</em>
+    libros (donde tú eres un pasivo de ellos), no los tuyos. Y “un crédito” en la calle =
+    un préstamo: otro sentido distinto de la misma palabra.
+  </p>
+
+  <h2>Cómo escribir un asiento</h2>
+  <ol style="font-family:var(--sans); font-size:.95rem; line-height:1.7;">
+    <li>Identifica las cuentas que se mueven (al menos dos) y su familia.</li>
+    <li>Decide si cada una <b>aumenta</b> o <b>disminuye</b>.</li>
+    <li>Usa la tabla para saber si va al <b>Debe</b> o al <b>Haber</b>.</li>
+    <li>Escribe primero lo que va al Debe (pegado al margen); debajo y con sangría lo del Haber.</li>
+    <li>Verifica: <b>Total Debe = Total Haber</b>. Si no, hay error.</li>
+  </ol>
+
+  <h2>Ejemplos rápidos (asientos modelo)</h2>
+  <div class="scroll-x">
+  <table class="ledger">
+    <tr><th>Operación</th><th>Se carga (Debe)</th><th>Se abona (Haber)</th></tr>
+    <tr><td>Recibe préstamo bancario</td><td class="debe">Bancos</td><td class="haber">Préstamos bancarios</td></tr>
+    <tr><td>Vende mercadería de contado</td><td class="debe">Efectivo / Bancos</td><td class="haber">Ingresos por ventas</td></tr>
+    <tr><td>Compra mercadería de contado</td><td class="debe">Inventario de mercaderías</td><td class="haber">Efectivo / Bancos</td></tr>
+    <tr><td>Compra mercadería al crédito</td><td class="debe">Inventario de mercaderías</td><td class="haber">Cuentas por pagar</td></tr>
+    <tr><td>Paga sueldos de contado</td><td class="debe">Gasto de sueldos</td><td class="haber">Efectivo / Bancos</td></tr>
+    <tr><td>Paga a un proveedor</td><td class="debe">Cuentas por pagar</td><td class="haber">Efectivo / Bancos</td></tr>
+  </table>
+  </div>
+  <p class="note">
+    Estos ejemplos omiten el IVA (13%) a propósito, para enfocarnos en la mecánica. El IVA se
+    incorpora más adelante. Ver <a href="catalogo-de-cuentas.html">catálogo de cuentas</a> y
+    <a href="../lessons/0003-debito-y-haber.html">Lección 3</a>.
+  </p>
+
+  <footer class="lesson-nav">
+    <span>Referencia · Reglas del Debe y el Haber</span>
+    <span>Relacionado: <a href="../lessons/0003-debito-y-haber.html">Lección 3</a> · <a href="catalogo-de-cuentas.html">Catálogo</a></span>
+  </footer>
+
+</div>
+</body>
+</html>

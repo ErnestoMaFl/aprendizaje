@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lección 2 · Las cinco familias de cuentas</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+  <style>
+    .families { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:.7rem; margin:1.6rem 0; font-family:var(--sans); }
+    .fam { border:1px solid var(--rule); border-radius:8px; padding:.9rem 1rem; background:#fff; }
+    .fam .code { font-family:var(--mono); font-size:.8rem; color:var(--ink-soft); }
+    .fam .name { font-weight:700; font-size:1.05rem; margin:.15rem 0 .3rem; }
+    .fam .desc { font-size:.85rem; color:var(--ink-soft); line-height:1.4; }
+    .fam.activo  { border-top:4px solid var(--blue); }
+    .fam.pasivo  { border-top:4px solid var(--accent); }
+    .fam.patrim  { border-top:4px solid var(--accent-2); }
+    .fam.ingreso { border-top:4px solid #b8860b; }
+    .fam.gasto   { border-top:4px solid #7a1f5c; }
+  </style>
+</head>
+<body>
+<a class="online-link" href="https://ernestomafl.github.io/aprendizaje/" title="Ir al índice de mis cursos en línea">🌐 Mis cursos</a>
+<div class="wrap">
+
+  <p class="eyebrow">Lección 2 · Fundamentos</p>
+  <h1>Las cinco familias de cuentas</h1>
+  <p class="dek">Dos cajones nuevos que explican por qué la empresa gana o pierde.</p>
+
+  <div class="mission">
+    <b>Por qué esto sigue.</b> Ya dominas la ecuación (<a href="0001-la-ecuacion-contable.html">Lección 1</a>)
+    y tienes el <a href="../reference/catalogo-de-cuentas.html">catálogo de cuentas</a> a la mano.
+    Como auxiliar contable, cada comprobante (el documento que respalda una operación, como una
+    factura) que registres cae en <b>una</b> de cinco familias.
+    Dominar esta clasificación es lo que te deja registrar sin dudar. Es el paso previo, y
+    necesario, a la partida doble.
+  </div>
+
+  <h2>De 3 cajones a 5</h2>
+  <p>
+    La ecuación tiene tres familias: <strong>Activo</strong>, <strong>Pasivo</strong> y
+    <strong>Patrimonio</strong>. Pero el patrimonio de los dueños <em>cambia</em> todos los días:
+    sube cuando el negocio gana y baja cuando gasta. Para <em>explicar</em> ese cambio, la
+    contabilidad abre dos familias más:
+  </p>
+
+  <div class="families">
+    <div class="fam activo"><div class="code">Rubro 1</div><div class="name">Activo</div><div class="desc">Lo que la empresa <b>tiene</b></div></div>
+    <div class="fam pasivo"><div class="code">Rubro 2</div><div class="name">Pasivo</div><div class="desc">Lo que la empresa <b>debe</b></div></div>
+    <div class="fam patrim"><div class="code">Rubro 3</div><div class="name">Patrimonio</div><div class="desc">Lo que es de los <b>dueños</b></div></div>
+    <div class="fam ingreso"><div class="code">Rubro 5</div><div class="name">Ingreso</div><div class="desc">Lo que la empresa <b>gana</b> (sube el patrimonio)</div></div>
+    <div class="fam gasto"><div class="code">Rubro 4</div><div class="name">Gasto</div><div class="desc">Lo que la empresa <b>consume</b> (baja el patrimonio)</div></div>
+  </div>
+
+  <div class="note">
+    <b>Ingreso vs. gasto, en simple.</b> <b>Ingreso</b> = entra riqueza por vender o cobrar
+    (ventas, intereses ganados). <b>Gasto</b> = se consume riqueza para operar (sueldos,
+    alquiler, luz). No confundas <em>gasto</em> con <em>pagar</em>: comprar un camión es adquirir
+    un <b>activo</b>, no un gasto. El gasto es lo que se consume y no vuelve.
+  </div>
+
+  <h2>La ecuación, ampliada</h2>
+  <p>
+    Los ingresos aumentan el patrimonio y los gastos lo disminuyen. Así que la ecuación
+    que ya conoces se puede escribir mostrando ese motor por dentro:
+  </p>
+
+  <div class="equation" style="font-size:1.25rem">
+    <span class="activo">Activo</span>
+    <span class="op">=</span>
+    <span class="pasivo">Pasivo</span>
+    <span class="op">+</span>
+    <span class="patrim">Patrimonio</span>
+    <span class="op">+</span>
+    <span style="color:#b8860b">Ingresos</span>
+    <span class="op">−</span>
+    <span style="color:#7a1f5c">Gastos</span>
+  </div>
+
+  <p>
+    Al final del año, la diferencia <em>Ingresos − Gastos</em> es la <strong>utilidad</strong>
+    (o pérdida), y se traslada al patrimonio. Por eso ingresos y gastos son cuentas
+    <em>temporales</em>: viven un año, se saldan y su resultado engorda o adelgaza el patrimonio.
+    Ver el rubro 6 (Pérdidas y ganancias) en el <a href="../reference/catalogo-de-cuentas.html">catálogo</a>.
+  </p>
+
+  <h2>Practiquemos</h2>
+  <p>Sin volver a mirar arriba: clasifica cada caso en su familia.</p>
+
+  <div class="quiz" data-answer="0">
+    <div class="q-num">Pregunta 1</div>
+    <div class="q-text">La empresa paga los sueldos del mes a sus empleados. ¿Qué familia?</div>
+    <button class="opt">Gasto</button>
+    <button class="opt">Ingreso</button>
+    <button class="opt">Activo</button>
+    <div class="feedback ok" data-for="ok">Correcto. El sueldo se <b>consume</b> para operar y no vuelve: es un <b>gasto</b> (baja el patrimonio).</div>
+    <div class="feedback no" data-for="no">Es un <b>gasto</b>. El trabajo del mes se consume para operar; disminuye el patrimonio de los dueños.</div>
+  </div>
+
+  <div class="quiz" data-answer="1">
+    <div class="q-num">Pregunta 2</div>
+    <div class="q-text">La empresa vende mercadería y cobra de contado. Esa venta es…</div>
+    <button class="opt">Pasivo</button>
+    <button class="opt">Ingreso</button>
+    <button class="opt">Gasto</button>
+    <div class="feedback ok" data-for="ok">Correcto. Vender (la actividad principal, o <em>giro</em>, del negocio) genera riqueza: es un <b>ingreso</b> que sube el patrimonio. El efectivo que entra es aparte, un activo.</div>
+    <div class="feedback no" data-for="no">Es un <b>ingreso</b>. Vender es la actividad principal del negocio (su <em>giro</em>) y aumenta el patrimonio. (El efectivo cobrado es, además, un activo.)</div>
+  </div>
+
+  <div class="quiz" data-answer="2">
+    <div class="q-num">Pregunta 3</div>
+    <div class="q-text">La empresa compra al contado un vehículo para repartir. Ese vehículo es…</div>
+    <button class="opt">Un gasto</button>
+    <button class="opt">Un ingreso</button>
+    <button class="opt">Un activo</button>
+    <div class="feedback ok" data-for="ok">Correcto. El vehículo <b>se queda</b> y da beneficio por años: es un <b>activo</b> (no corriente), no un gasto.</div>
+    <div class="feedback no" data-for="no">Es un <b>activo</b>. Pagar no siempre es gasto: aquí la empresa cambió efectivo por otro bien que conserva y le sirve por años.</div>
+  </div>
+
+  <div class="quiz" data-answer="0">
+    <div class="q-num">Pregunta 4</div>
+    <div class="q-text">Sobre el patrimonio de los dueños, los gastos lo…</div>
+    <button class="opt">Disminuyen</button>
+    <button class="opt">Aumentan</button>
+    <button class="opt">Mantienen</button>
+    <div class="feedback ok" data-for="ok">Correcto. Los gastos <b>disminuyen</b> el patrimonio; los ingresos lo aumentan. Su diferencia es la utilidad del año.</div>
+    <div class="feedback no" data-for="no">Lo <b>disminuyen</b>. Gastar consume riqueza de los dueños; los ingresos hacen lo contrario.</div>
+  </div>
+
+  <div class="note">
+    <b>Regla de bolsillo para clasificar.</b> Pregúntate en orden: ¿lo <em>tengo</em>? → activo ·
+    ¿lo <em>debo</em>? → pasivo · ¿es aporte o resultado de los <em>dueños</em>? → patrimonio ·
+    ¿<em>gané</em> por operar? → ingreso · ¿<em>consumí</em> para operar? → gasto.
+  </div>
+
+  <div class="primary-source">
+    <span class="label">Fuente primaria recomendada</span>
+    NIIF para las PYMES, <a href="https://www.ifrs.org/issued-standards/ifrs-for-smes/" target="_blank" rel="noopener">Sección 2 — Conceptos y principios fundamentales</a>
+    (define activo, pasivo, patrimonio, ingresos y gastos). Es densa; léela para ver las
+    definiciones oficiales que sustentan estas 5 familias. No hace falta memorizarla aún.
+  </div>
+
+  <div class="ask-tutor">
+    <b>Soy tu tutor.</b> Si dudaste en la Pregunta 3 (activo vs. gasto), pídeme más ejemplos:
+    es la confusión #1 al empezar y vale la pena aplanarla ahora. Pregúntame en el chat.
+  </div>
+
+  <footer class="lesson-nav">
+    <span><a href="0001-la-ecuacion-contable.html">← Lección 1</a></span>
+    <span>Siguiente: <a href="0003-debito-y-haber.html"><b>Lección 3 — Débito y haber (partida doble) →</b></a></span>
+  </footer>
+
+</div>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

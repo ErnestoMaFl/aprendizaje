@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Referencia · Anatomía de un componente .astro</title>
+<link rel="stylesheet" href="../assets/styles.css">
+<style>
+  .ref-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; margin: 1.5rem 0; }
+  .ref-card { border: 1px solid var(--rule); border-radius: 8px; padding: 1rem 1.2rem;
+              background: #fff; }
+  .ref-card h3 { margin-top: 0; }
+  table { width: 100%; border-collapse: collapse; font-size: .9rem; margin: 1rem 0; }
+  th, td { text-align: left; padding: .5rem .6rem; border-bottom: 1px solid var(--rule);
+           vertical-align: top; }
+  th { font-family: var(--sans); font-size: .78rem; text-transform: uppercase;
+       letter-spacing: .06em; color: var(--ink-soft); }
+  td code { font-size: .82em; }
+</style>
+</head>
+<body>
+<a class="online-link" href="https://ernestomafl.github.io/aprendizaje/" title="Ir al índice de mis cursos en línea">🌐 Mis cursos</a>
+
+<div class="kicker">Referencia · Astro</div>
+<h1>Anatomía de un componente <code>.astro</code></h1>
+<p class="subtitle">La chuleta de una sola página. Vuelve aquí cuando dudes de la estructura.</p>
+
+<div class="ref-card">
+<h3>Las dos zonas de todo archivo <code>.astro</code></h3>
+<pre><code><span class="tok-fence">---</span>              <span class="tok-comment">// 1) SCRIPT DEL COMPONENTE (frontmatter)</span>
+import Tarjeta from '../components/Tarjeta.astro';
+const titulo = 'Servicios';
+const { destacado = false } = Astro.props;   <span class="tok-comment">// props recibidas</span>
+<span class="tok-fence">---</span>
+<span class="tok-comment">&lt;!-- 2) PLANTILLA (HTML + expresiones) --&gt;</span>
+<span class="tok-tag">&lt;h1&gt;</span>{titulo}<span class="tok-tag">&lt;/h1&gt;</span>
+{destacado &amp;&amp; <span class="tok-tag">&lt;span&gt;</span>★<span class="tok-tag">&lt;/span&gt;</span>}
+<span class="tok-tag">&lt;Tarjeta</span> /<span class="tok-tag">&gt;</span></code></pre>
+</div>
+
+<div class="ref-grid">
+  <div class="ref-card">
+    <h3>① Script (entre <code>---</code>)</h3>
+    <ul>
+      <li>Es JavaScript/TypeScript normal.</li>
+      <li>Corre en el <strong>servidor / en el build</strong>, nunca en el navegador.</li>
+      <li>Todo lo que pongas aquí <strong>se elimina</strong> del HTML final que recibe
+          el usuario.</li>
+      <li>Sirve para: <code>import</code>, definir variables, obtener datos (<code>fetch</code>,
+          <code>await</code>), leer <code>Astro.props</code>.</li>
+    </ul>
+  </div>
+  <div class="ref-card">
+    <h3>② Plantilla (debajo del <code>---</code>)</h3>
+    <ul>
+      <li>Parece HTML, con extras tipo JSX.</li>
+      <li>Expresiones con llaves: <code>{variable}</code>.</li>
+      <li>Listas con <code>{items.map(i =&gt; &lt;li&gt;{i}&lt;/li&gt;)}</code>.</li>
+      <li>Condicionales con <code>{cond &amp;&amp; &lt;p&gt;…&lt;/p&gt;}</code>.</li>
+      <li>Puedes usar otros componentes como etiquetas: <code>&lt;Tarjeta /&gt;</code>.</li>
+    </ul>
+  </div>
+</div>
+
+<h2>Piezas clave del vocabulario</h2>
+<table>
+  <tr><th>Término</th><th>Qué es</th></tr>
+  <tr><td><code>---</code> (code fence)</td><td>Las dos líneas de tres guiones que delimitan el script del componente.</td></tr>
+  <tr><td>Frontmatter</td><td>Otro nombre para el script del componente (por analogía con Markdown).</td></tr>
+  <tr><td><code>Astro.props</code></td><td>Objeto con los datos que el componente recibe desde quien lo usa.</td></tr>
+  <tr><td><code>&lt;slot /&gt;</code></td><td>Hueco donde se inyecta el contenido hijo pasado al componente.</td></tr>
+  <tr><td>Cero JS por defecto</td><td>El HTML enviado no lleva JavaScript salvo que lo pidas explícitamente (islas).</td></tr>
+</table>
+
+<div class="callout key">
+  <h3>La idea que lo explica todo</h3>
+  <p>Un componente <code>.astro</code> es una <strong>plantilla que se ejecuta una vez
+  en el servidor</strong> y produce HTML plano. Por eso el sitio es rápido: el navegador
+  recibe HTML terminado, no un programa que tenga que ejecutar.</p>
+</div>
+
+<p class="source">Fuente primaria:
+  <a href="https://docs.astro.build/en/basics/astro-components/">docs.astro.build · Componentes de Astro</a>.
+  Chuleta hermana:
+  <a href="props-y-componentes-reutilizables.html">Props y componentes reutilizables</a>.
+  Lección relacionada:
+  <a href="../lessons/0001-que-es-astro-y-el-componente-astro.html">0001 · Qué es Astro y el componente .astro</a>.
+</p>
+
+</body>
+</html>

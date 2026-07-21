@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lección 1 · Anatomía de una regla CSS</title>
+  <link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+<a class="online-link" href="https://ernestomafl.github.io/aprendizaje/" title="Ir al índice de mis cursos en línea">🌐 Mis cursos</a>
+  <main class="lienzo">
+
+    <p class="leccion-kicker">Lección 01 · Leer CSS</p>
+    <h1>La anatomía de una regla</h1>
+    <p class="lede">
+      Todo el CSS del mundo está hecho de una sola pieza repetida miles de veces: la
+      <strong>regla</strong>. Si aprendes a "traducir" una regla, ya puedes empezar a leer
+      cualquier hoja de estilos. Ese es el logro de hoy.
+    </p>
+
+    <h2>El patrón que se repite siempre</h2>
+    <p>
+      Mira este fragmento. No importa si no reconoces las palabras todavía — fíjate solo en la
+      <em>forma</em>:
+    </p>
+
+<pre><code><span class="t-sel">h1</span> <span class="t-punt">{</span>
+  <span class="t-prop">color</span><span class="t-punt">:</span> <span class="t-val">red</span><span class="t-punt">;</span>
+  <span class="t-prop">font-size</span><span class="t-punt">:</span> <span class="t-val">32px</span><span class="t-punt">;</span>
+<span class="t-punt">}</span></code></pre>
+
+    <p>Esta regla se lee, en español llano:</p>
+    <p style="padding-left:1rem;border-left:3px solid var(--regla);color:var(--tinta-suave)">
+      «A los <strong>h1</strong> ponles el <strong>color</strong> <strong>rojo</strong> y un
+      <strong>tamaño de letra</strong> de <strong>32 píxeles</strong>.»
+    </p>
+
+    <h2>Las cuatro partes</h2>
+    <p>Cada regla tiene siempre estas piezas. Aprende sus nombres — los usaremos en todas las lecciones:</p>
+
+    <div class="anatomia">
+      <span class="t-sel">h1</span>
+      <span class="t-punt">{</span>
+        <span class="t-prop">color</span><span class="t-punt">:</span>
+        <span class="t-val">red</span><span class="t-punt">;</span>
+      <span class="t-punt">}</span>
+      <div style="margin-top:1.4rem;font-family:var(--sans);font-size:.8rem;line-height:2">
+        <span class="etiqueta" style="background:var(--acento-suave);color:var(--azul)">selector → <b>a qué</b> apunta</span>
+        &nbsp;
+        <span class="etiqueta" style="background:var(--acento-suave);color:var(--acento)">propiedad → <b>qué</b> cambia</span>
+        &nbsp;
+        <span class="etiqueta" style="background:var(--verde-suave);color:var(--verde)">valor → <b>cómo</b> queda</span>
+      </div>
+    </div>
+
+    <h3>1 · Selector <span style="color:var(--azul)">■</span></h3>
+    <p>
+      Va <strong>antes</strong> de la llave <code>{</code>. Responde: <em>¿a qué elementos de la
+      página afecta esta regla?</em> Aquí, <code>h1</code> significa "todos los títulos
+      <code>&lt;h1&gt;</code> del HTML". Los selectores son un mundo entero — los veremos a fondo
+      en la <a href="#proximas">próxima lección</a>.
+    </p>
+
+    <h3>2 · Bloque de declaraciones <span style="color:var(--tinta-suave)">{ … }</span></h3>
+    <p>
+      Todo lo que va <strong>entre llaves</strong> <code>{ }</code>. Es la lista de cambios que se
+      aplican al selector. Dentro puede haber una declaración o cien.
+    </p>
+
+    <h3>3 · Propiedad <span style="color:var(--acento)">■</span></h3>
+    <p>
+      El <strong>qué</strong> vas a cambiar: <code>color</code>, <code>font-size</code>,
+      <code>margin</code>, <code>background</code>... Va a la izquierda de los dos puntos
+      <code>:</code>. Hay cientos, pero unas 30 cubren la mayoría del código real.
+    </p>
+
+    <h3>4 · Valor <span style="color:var(--verde)">■</span></h3>
+    <p>
+      El <strong>cómo</strong>: el ajuste concreto de esa propiedad. Va a la derecha de los dos
+      puntos <code>:</code> y termina en punto y coma <code>;</code>.
+    </p>
+
+    <div class="nota acento">
+      <p class="nota-titulo">La combinación clave</p>
+      <p style="margin:0">
+        <code>propiedad: valor;</code> juntos se llaman una <strong>declaración</strong>. Leer CSS
+        es, en el fondo, leer declaración tras declaración: «esta propiedad queda con este valor».
+      </p>
+    </div>
+
+    <div class="nota">
+      <p class="nota-titulo">Señales de puntuación para leer rápido</p>
+      <p style="margin:0">
+        <code>:</code> separa propiedad de valor (léelo como "queda en"). &nbsp;
+        <code>;</code> termina cada declaración. &nbsp;
+        <code>{ }</code> agrupan lo que le pasa a un selector. &nbsp;
+        <code>/* … */</code> es un <strong>comentario</strong>: texto ignorado por el navegador,
+        notas para humanos.
+      </p>
+    </div>
+
+    <h2>Compruébalo tú — recuerda, no releas</h2>
+    <p>
+      Sin volver a mirar arriba, responde. Equivocarte aquí es parte del método: el esfuerzo de
+      recordar es lo que fija el conocimiento.
+    </p>
+
+    <div class="quiz" data-correcta="1">
+      <p class="quiz-pregunta"><span class="quiz-num">Pregunta 1</span><br>
+        En <code>p { margin: 0; }</code>, ¿cuál es el <strong>selector</strong>?</p>
+      <div class="opciones">
+        <button class="opcion">La palabra margin</button>
+        <button class="opcion">La letra p sola</button>
+        <button class="opcion">El número cero</button>
+      </div>
+      <div class="feedback ok" data-para="ok">Correcto. <code>p</code> va antes de la llave: apunta a todos los párrafos.</div>
+      <div class="feedback no" data-para="no"><code>p</code> es el selector: va antes de <code>{</code> e indica a qué apunta. <code>margin</code> es la propiedad.</div>
+    </div>
+
+    <div class="quiz" data-correcta="2">
+      <p class="quiz-pregunta"><span class="quiz-num">Pregunta 2</span><br>
+        En <code>a { color: blue; }</code>, la pieza <code>blue</code> es el/la…</p>
+      <div class="opciones">
+        <button class="opcion">selector de la regla</button>
+        <button class="opcion">propiedad que cambia</button>
+        <button class="opcion">valor de la propiedad</button>
+      </div>
+      <div class="feedback ok" data-para="ok">Correcto. <code>blue</code> va tras los dos puntos: es el <em>cómo</em> queda el color.</div>
+      <div class="feedback no" data-para="no">Fíjate en la posición: tras los <code>:</code> siempre va el <strong>valor</strong>. <code>color</code> es la propiedad.</div>
+    </div>
+
+    <div class="quiz" data-correcta="0">
+      <p class="quiz-pregunta"><span class="quiz-num">Pregunta 3</span><br>
+        ¿Cómo se llama <code>color: blue;</code> completo, propiedad y valor juntos?</p>
+      <div class="opciones">
+        <button class="opcion">Una declaración de estilo</button>
+        <button class="opcion">Un selector de bloque</button>
+        <button class="opcion">Un comentario de regla</button>
+      </div>
+      <div class="feedback ok" data-para="ok">Correcto. <code>propiedad: valor;</code> es una <strong>declaración</strong>.</div>
+      <div class="feedback no" data-para="no">Es una <strong>declaración</strong>: la pareja <code>propiedad: valor;</code>. Varias declaraciones forman el bloque entre <code>{ }</code>.</div>
+    </div>
+
+    <h2>Tu misión de lectura (30 segundos)</h2>
+    <p>Traduce esta regla en voz alta, parte por parte, antes de seguir:</p>
+<pre><code><span class="t-com">/* tarjeta de la web */</span>
+<span class="t-sel">.card</span> <span class="t-punt">{</span>
+  <span class="t-prop">background</span><span class="t-punt">:</span> <span class="t-val">white</span><span class="t-punt">;</span>
+  <span class="t-prop">padding</span><span class="t-punt">:</span> <span class="t-val">16px</span><span class="t-punt">;</span>
+<span class="t-punt">}</span></code></pre>
+    <p style="color:var(--tinta-suave);font-size:.95rem">
+      (Selector <code>.card</code>, dos declaraciones. El <code>.</code> delante significa "clase" —
+      justo lo que veremos después. ¿Qué crees que hace ese punto? Guárdalo para la próxima lección.)
+    </p>
+
+    <!-- PIE -->
+    <div class="pie">
+      <div class="fuente-primaria">
+        <p class="nota-titulo">📖 Fuente primaria recomendada</p>
+        <p style="margin:0">
+          Lee <a href="https://developer.mozilla.org/es/docs/Learn_web_development/Core/Styling_basics/Getting_started">
+          «Empezar con CSS» en MDN Web Docs</a> (Mozilla, en español). Es la referencia más
+          confiable de la web; la primera parte muestra reglas reales con su selector, propiedad y
+          valor, justo lo de hoy, con ejemplos que puedes editar.
+        </p>
+      </div>
+
+      <div class="recordatorio-tutor">
+        💬 <strong>Soy tu tutor.</strong> Si algo no cuadró — una pieza, un símbolo, un ejemplo —
+        pregúntame ahora mismo en el chat. Resolver la duda en caliente vale más que seguir adelante
+        con una grieta en la base.
+      </div>
+
+      <div id="proximas">
+        <p class="nota-titulo" style="color:var(--tinta-suave)">Siguiente</p>
+        <p style="margin:.2rem 0 0;font-family:var(--sans);font-size:.95rem">
+          <strong>Lección 02 — Selectores:</strong> aprenderás a leer <em>a qué</em> apunta una regla
+          (por qué <code>.card</code>, <code>#menu</code> y <code>h1</code> significan cosas distintas).
+          Dímelo cuando quieras continuar.
+        </p>
+      </div>
+
+      <div class="nav-lecciones">
+        <span></span>
+        <a href="0002-selectores.html">Lección 02 · Selectores →</a>
+      </div>
+    </div>
+
+  </main>
+  <script src="../assets/quiz.js"></script>
+</body>
+</html>

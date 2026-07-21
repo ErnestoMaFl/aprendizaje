@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Referencia · Catálogo de cuentas (PYME comercial, El Salvador)</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+  <style>
+    /* Ajustes específicos de esta referencia (tabla densa) */
+    table.coa { width:100%; border-collapse:collapse; font-family:var(--sans); font-size:.9rem; margin:1rem 0; }
+    table.coa th { text-align:left; font-weight:600; border-bottom:2px solid var(--ink); padding:.4rem .6rem; position:sticky; top:0; background:var(--paper); }
+    table.coa td { padding:.35rem .6rem; border-bottom:1px solid var(--rule); vertical-align:top; }
+    table.coa td.code { font-family:var(--mono); color:var(--ink-soft); white-space:nowrap; font-size:.82rem; }
+    table.coa tr.rubro td { background:#f4f1e9; font-weight:700; letter-spacing:.02em; }
+    table.coa tr.grupo td { font-weight:600; }
+    table.coa tr.grupo td.code { color:var(--blue); }
+    table.coa td.what { color:var(--ink-soft); }
+    .contra { color:var(--accent); font-style:italic; }
+    .legend { font-family:var(--sans); font-size:.82rem; color:var(--ink-soft); display:flex; gap:1.4rem; flex-wrap:wrap; margin:.6rem 0 1.4rem; }
+    .legend span b { color:var(--ink); }
+    dl.mini dt { font-weight:600; margin-top:.9rem; }
+    dl.mini dd { margin:.15rem 0 0; color:var(--ink-soft); font-family:var(--sans); font-size:.92rem; }
+  </style>
+</head>
+<body>
+<a class="online-link" href="https://ernestomafl.github.io/aprendizaje/" title="Ir al índice de mis cursos en línea">🌐 Mis cursos</a>
+<div class="wrap">
+
+  <p class="eyebrow">Documento de referencia · Vuelve a mí siempre</p>
+  <h1>Catálogo de cuentas</h1>
+  <p class="dek">Modelo típico de una PYME comercial en El Salvador · NIIF para las PYMES.</p>
+
+  <div class="mission">
+    <b>Cómo usar esto.</b> Un catálogo de cuentas es la <b>lista maestra</b> de todas las
+    “gavetas” donde el contador guarda cada movimiento. Cuando registres una transacción,
+    primero decides <em>en qué cuenta va</em>. Ten esta tabla al lado mientras practicas:
+    con el tiempo los códigos se te quedarán de memoria, como a cualquier auxiliar contable.
+  </div>
+
+  <h2>Cómo se leen los códigos</h2>
+  <p>
+    El catálogo salvadoreño usa un <strong>sistema decimal jerárquico</strong>: se agregan
+    dígitos a la derecha para ir del rubro general al detalle. Cada nivel “vive dentro” del anterior.
+  </p>
+
+  <div class="scroll-x">
+  <table class="ledger">
+    <tr><th>Nivel</th><th>Ejemplo</th><th>Qué es</th></tr>
+    <tr><td>Rubro (1 dígito)</td><td class="num" style="text-align:left; font-family:var(--mono)">1</td><td>Activo</td></tr>
+    <tr><td>Cuenta de mayor (2)</td><td style="font-family:var(--mono)">11</td><td>Activo corriente</td></tr>
+    <tr><td>Cuenta (4)</td><td style="font-family:var(--mono)">1103</td><td>Inventarios</td></tr>
+    <tr><td>Subcuenta (6)</td><td style="font-family:var(--mono)">110301</td><td>Inventario de mercaderías</td></tr>
+  </table>
+  </div>
+
+  <div class="note">
+    <b>Corriente vs. no corriente.</b> <b>Corriente</b> = se vuelve efectivo o se paga
+    dentro de <b>un año</b> (caja, clientes, proveedores). <b>No corriente</b> = dura más de
+    un año (edificios, préstamos a largo plazo). Por eso el Activo se parte en 11 y 12, y el Pasivo en 21 y 22.
+  </div>
+
+  <h2>Los rubros (las 6 grandes familias)</h2>
+  <div class="scroll-x">
+  <table class="ledger">
+    <tr><th>Código</th><th>Rubro</th><th>Naturaleza</th></tr>
+    <tr><td style="font-family:var(--mono)">1</td><td>Activo</td><td>Lo que la empresa tiene</td></tr>
+    <tr><td style="font-family:var(--mono)">2</td><td>Pasivo</td><td>Lo que la empresa debe</td></tr>
+    <tr><td style="font-family:var(--mono)">3</td><td>Patrimonio</td><td>Lo que es de los dueños</td></tr>
+    <tr><td style="font-family:var(--mono)">4</td><td>Cuentas de resultado deudoras</td><td>Costos y gastos</td></tr>
+    <tr><td style="font-family:var(--mono)">5</td><td>Cuentas de resultado acreedoras</td><td>Ingresos</td></tr>
+    <tr><td style="font-family:var(--mono)">6</td><td>Cuenta liquidadora</td><td>Pérdidas y ganancias (cierre)</td></tr>
+  </table>
+  </div>
+  <p class="note">
+    Fíjate: <b>1, 2 y 3 son la ecuación contable</b> (Activo = Pasivo + Patrimonio). Los rubros
+    <b>4 y 5</b> (gastos e ingresos) explican <em>por qué cambió</em> el patrimonio durante el año.
+    Ya conoces la mitad del mapa. Ver <a href="../lessons/0001-la-ecuacion-contable.html">Lección 1</a>.
+  </p>
+
+  <h2>Catálogo práctico (PYME comercial)</h2>
+  <div class="legend">
+    <span><b>Código</b> · dígitos decimales</span>
+    <span><span class="contra">Cursiva roja</span> = cuenta <b>de valuación</b> (resta a su grupo — ver glosario abajo)</span>
+    <span>IVA en El Salvador = <b>13%</b></span>
+  </div>
+
+  <div class="scroll-x">
+  <table class="coa">
+    <thead>
+      <tr><th style="width:5.5rem">Código</th><th style="width:14rem">Cuenta</th><th>Qué registra</th></tr>
+    </thead>
+    <tbody>
+      <!-- ACTIVO -->
+      <tr class="rubro"><td class="code">1</td><td colspan="2">ACTIVO — lo que la empresa tiene</td></tr>
+      <tr class="grupo"><td class="code">11</td><td colspan="2">Activo corriente</td></tr>
+      <tr><td class="code">1101</td><td>Efectivo y equivalentes</td><td class="what">Dinero disponible</td></tr>
+      <tr><td class="code">110101</td><td>Caja</td><td class="what">Efectivo en la empresa</td></tr>
+      <tr><td class="code">110102</td><td>Caja chica</td><td class="what">Fondo para gastos menores</td></tr>
+      <tr><td class="code">110103</td><td>Bancos</td><td class="what">Saldo en cuentas bancarias</td></tr>
+      <tr><td class="code">1102</td><td>Cuentas por cobrar</td><td class="what">Lo que los clientes deben a la empresa</td></tr>
+      <tr><td class="code">110201</td><td>Clientes</td><td class="what">Ventas al crédito pendientes de cobro</td></tr>
+      <tr><td class="code">110202</td><td class="contra">(Estimación cuentas incobrables)</td><td class="what">Parte que quizá no se cobrará — resta</td></tr>
+      <tr><td class="code">1103</td><td>Inventarios</td><td class="what">Bienes para vender</td></tr>
+      <tr><td class="code">110301</td><td>Inventario de mercaderías</td><td class="what">La <b>mercadería</b> en bodega lista para venta</td></tr>
+      <tr><td class="code">1104</td><td>IVA — Crédito fiscal</td><td class="what">IVA pagado en compras (a favor de la empresa)</td></tr>
+      <tr><td class="code">1105</td><td>Pago a cuenta / anticipo ISR</td><td class="what">Anticipos de impuesto sobre la renta</td></tr>
+
+      <tr class="grupo"><td class="code">12</td><td colspan="2">Activo no corriente</td></tr>
+      <tr><td class="code">1201</td><td>Propiedad, planta y equipo</td><td class="what">Bienes de uso duradero (más de un año)</td></tr>
+      <tr><td class="code">120101</td><td>Terrenos</td><td class="what">Terrenos propiedad de la empresa</td></tr>
+      <tr><td class="code">120102</td><td>Edificios</td><td class="what">Construcciones e instalaciones</td></tr>
+      <tr><td class="code">120103</td><td>Mobiliario y equipo</td><td class="what">Escritorios, computadoras, equipo</td></tr>
+      <tr><td class="code">120104</td><td>Equipo de transporte</td><td class="what">Vehículos de la empresa</td></tr>
+      <tr><td class="code">120105</td><td class="contra">(Depreciación acumulada)</td><td class="what">Desgaste acumulado del activo — resta</td></tr>
+      <tr><td class="code">1202</td><td>Intangibles</td><td class="what">Software, marcas, licencias</td></tr>
+
+      <!-- PASIVO -->
+      <tr class="rubro"><td class="code">2</td><td colspan="2">PASIVO — lo que la empresa debe</td></tr>
+      <tr class="grupo"><td class="code">21</td><td colspan="2">Pasivo corriente</td></tr>
+      <tr><td class="code">2101</td><td>Cuentas por pagar (proveedores)</td><td class="what">Compras al crédito pendientes de pago</td></tr>
+      <tr><td class="code">2102</td><td>IVA — Débito fiscal</td><td class="what">IVA cobrado en ventas (se le debe a Hacienda)</td></tr>
+      <tr><td class="code">2103</td><td>Impuestos por pagar</td><td class="what">IVA por pagar, ISR, retenciones</td></tr>
+      <tr><td class="code">2104</td><td>Beneficios a empleados por pagar</td><td class="what">Salarios, AFP, ISSS, aguinaldo por pagar</td></tr>
+      <tr><td class="code">2105</td><td>Préstamos a corto plazo</td><td class="what">Deuda bancaria a menos de un año</td></tr>
+      <tr class="grupo"><td class="code">22</td><td colspan="2">Pasivo no corriente</td></tr>
+      <tr><td class="code">2201</td><td>Préstamos a largo plazo</td><td class="what">Deuda bancaria a más de un año</td></tr>
+
+      <!-- PATRIMONIO -->
+      <tr class="rubro"><td class="code">3</td><td colspan="2">PATRIMONIO — lo que es de los dueños</td></tr>
+      <tr><td class="code">31</td><td>Capital social</td><td class="what">Aporte de los socios/dueños</td></tr>
+      <tr><td class="code">32</td><td>Reserva legal</td><td class="what">Utilidad retenida por ley (7% hasta tope)</td></tr>
+      <tr><td class="code">33</td><td>Utilidades acumuladas</td><td class="what">Ganancias de años anteriores no repartidas</td></tr>
+      <tr><td class="code">34</td><td>Resultado del ejercicio</td><td class="what">Ganancia o pérdida del año actual</td></tr>
+
+      <!-- RESULTADO DEUDORAS -->
+      <tr class="rubro"><td class="code">4</td><td colspan="2">CUENTAS DE RESULTADO DEUDORAS — costos y gastos</td></tr>
+      <tr><td class="code">41</td><td>Costo de venta</td><td class="what">Costo de la mercadería que se vendió</td></tr>
+      <tr><td class="code">42</td><td>Gastos de venta</td><td class="what">Sueldos de ventas, publicidad, comisiones</td></tr>
+      <tr><td class="code">43</td><td>Gastos de administración</td><td class="what">Sueldos de oficina, alquiler, servicios</td></tr>
+      <tr><td class="code">44</td><td>Gastos financieros</td><td class="what">Intereses y comisiones bancarias</td></tr>
+
+      <!-- RESULTADO ACREEDORAS -->
+      <tr class="rubro"><td class="code">5</td><td colspan="2">CUENTAS DE RESULTADO ACREEDORAS — ingresos</td></tr>
+      <tr><td class="code">51</td><td>Ingresos por ventas</td><td class="what">Ventas de mercadería (giro del negocio)</td></tr>
+      <tr><td class="code">52</td><td>Otros ingresos</td><td class="what">Ingresos fuera del giro principal</td></tr>
+      <tr><td class="code">53</td><td>Productos financieros</td><td class="what">Intereses ganados</td></tr>
+
+      <!-- LIQUIDADORA -->
+      <tr class="rubro"><td class="code">6</td><td colspan="2">CUENTA LIQUIDADORA</td></tr>
+      <tr><td class="code">61</td><td>Pérdidas y ganancias</td><td class="what">Cuenta de cierre donde se enfrentan ingresos y gastos</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="note">
+    <b>Ojo — no es un catálogo oficial único.</b> En El Salvador <b>cada empresa autoriza su
+    propio catálogo</b> ante el CVPCPA; este es el <em>modelo típico</em> de una PYME comercial.
+    Cambian los nombres y el detalle, pero la estructura decimal y los rubros 1–6 son estándar.
+  </div>
+
+  <h2>Mini-glosario: términos que confunden al inicio</h2>
+  <dl class="mini">
+    <dt>Mercadería</dt>
+    <dd>Los bienes que la empresa <b>compra para revender</b> tal cual (el giro de un negocio
+      comercial). En la tienda: los productos en las góndolas y en bodega. Cuenta: <span style="font-family:var(--mono)">110301 Inventario de mercaderías</span>.</dd>
+
+    <dt>Inventario</dt>
+    <dd>Término más amplio: <b>todo</b> lo que la empresa tiene para vender o consumir en su
+      operación (mercadería, materia prima, productos terminados). En una PYME comercial,
+      “inventario de mercaderías” e “inventario” suelen usarse como equivalentes.</dd>
+
+    <dt>Cuenta</dt>
+    <dd>Cada “gaveta” individual del catálogo donde se acumulan los movimientos de un mismo
+      concepto (Caja, Clientes, Ventas…).</dd>
+
+    <dt>Rubro</dt>
+    <dd>Cada una de las 6 grandes familias del catálogo (Activo, Pasivo, Patrimonio, etc.).</dd>
+
+    <dt>Valor neto</dt>
+    <dd>Lo que queda de un valor <b>después de restarle algo</b>. Ejemplo: un vehículo costó
+      $10,000 y con el uso se ha “gastado” $3,000; su <b>valor neto</b> es $10,000 − $3,000 = $7,000.
+      “Neto” siempre significa “ya con la resta hecha” (lo contrario de “bruto”, que es antes de restar).</dd>
+
+    <dt>Cuenta de valuación (o contra-cuenta)</dt>
+    <dd>Cuenta que <b>resta</b> a otra para mostrar su valor neto. Ejemplo: la <em>depreciación
+      acumulada</em> (el desgaste sumado de un activo) resta al vehículo para dejar su valor neto.
+      Van en <span class="contra">rojo cursiva</span> en la tabla de arriba.</dd>
+
+    <dt>Crédito fiscal / Débito fiscal (IVA)</dt>
+    <dd>IVA de El Salvador = 13%. El <b>crédito fiscal</b> es el IVA que pagaste al comprar
+      (activo, a tu favor). El <b>débito fiscal</b> es el IVA que cobraste al vender (pasivo, se
+      lo debes a Hacienda). Lo veremos a fondo más adelante.</dd>
+  </dl>
+
+  <div class="primary-source">
+    <span class="label">Fuentes</span>
+    Modelos de catálogo NIIF para PYMES aplicados a El Salvador:
+    <a href="https://elcontadorsv.com/descarga/catalogo-de-cuentas-version-niif-para-las-pymes/" target="_blank" rel="noopener">ElContadorSV — Catálogo NIIF para PYMES</a>
+    y <a href="https://interbiznet.net/wp-content/uploads/2024/04/Modelo-de-Sistema-Contable-en-El-Salvador.pdf" target="_blank" rel="noopener">Modelo de Sistema Contable en El Salvador (PDF)</a>.
+  </div>
+
+  <div class="ask-tutor">
+    <b>Soy tu tutor.</b> ¿Quieres que agregue cuentas de una industria específica (servicios,
+    manufactura) o que te explique cualquier cuenta de esta tabla con un ejemplo? Pregúntame.
+  </div>
+
+  <footer class="lesson-nav">
+    <span>Referencia · Catálogo de cuentas (El Salvador)</span>
+    <span>Relacionado: <a href="../lessons/0001-la-ecuacion-contable.html">Lección 1 — La ecuación contable</a></span>
+  </footer>
+
+</div>
+</body>
+</html>

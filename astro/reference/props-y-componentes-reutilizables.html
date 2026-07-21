@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Referencia · Props y componentes reutilizables</title>
+<link rel="stylesheet" href="../assets/styles.css">
+<style>
+  .ref-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; margin: 1.5rem 0; }
+  .ref-card { border: 1px solid var(--rule); border-radius: 8px; padding: 1rem 1.2rem;
+              background: #fff; }
+  .ref-card h3 { margin-top: 0; }
+  table { width: 100%; border-collapse: collapse; font-size: .9rem; margin: 1rem 0; }
+  th, td { text-align: left; padding: .5rem .6rem; border-bottom: 1px solid var(--rule);
+           vertical-align: top; }
+  th { font-family: var(--sans); font-size: .78rem; text-transform: uppercase;
+       letter-spacing: .06em; color: var(--ink-soft); }
+  td code { font-size: .82em; }
+</style>
+</head>
+<body>
+<a class="online-link" href="https://ernestomafl.github.io/aprendizaje/" title="Ir al índice de mis cursos en línea">🌐 Mis cursos</a>
+
+<div class="kicker">Referencia · Astro 7</div>
+<h1>Props y componentes reutilizables</h1>
+<p class="subtitle">La chuleta para escribir un componente una vez y usarlo mil veces.</p>
+
+<div class="ref-card">
+<h3>El circuito completo de una prop</h3>
+<pre><code><span class="tok-comment">// src/components/Tarjeta.astro — el componente DEFINE qué recibe</span>
+<span class="tok-fence">---</span>
+const { icono = '🥖', titulo, texto } = Astro.props;
+<span class="tok-fence">---</span>
+<span class="tok-tag">&lt;article&gt;</span>
+  <span class="tok-tag">&lt;span&gt;</span>{icono}<span class="tok-tag">&lt;/span&gt;</span> <span class="tok-tag">&lt;h3&gt;</span>{titulo}<span class="tok-tag">&lt;/h3&gt;</span> <span class="tok-tag">&lt;p&gt;</span>{texto}<span class="tok-tag">&lt;/p&gt;</span>
+<span class="tok-tag">&lt;/article&gt;</span>
+
+<span class="tok-comment">// src/pages/index.astro — quien lo USA le pasa los datos como atributos</span>
+<span class="tok-fence">---</span>
+import Tarjeta from '../components/Tarjeta.astro';
+<span class="tok-fence">---</span>
+<span class="tok-tag">&lt;Tarjeta</span> titulo="Pan artesanal" texto="Horneado cada mañana." <span class="tok-tag">/&gt;</span></code></pre>
+</div>
+
+<div class="ref-grid">
+  <div class="ref-card">
+    <h3>Pasar props (quien usa)</h3>
+    <ul>
+      <li>Texto fijo, como atributo HTML: <code>titulo="Pan artesanal"</code>.</li>
+      <li>Cualquier valor JS, entre llaves: <code>precio={4.5}</code>, <code>activo={true}</code>,
+          <code>items={lista}</code>.</li>
+      <li>El componente se importa en el frontmatter y se usa como etiqueta:
+          <code>&lt;Tarjeta … /&gt;</code>.</li>
+      <li>Sin contenido hijo, ciérralo en la propia etiqueta: <code>/&gt;</code>.</li>
+    </ul>
+  </div>
+  <div class="ref-card">
+    <h3>Recibir props (el componente)</h3>
+    <ul>
+      <li>Todas llegan en el objeto <code>Astro.props</code>.</li>
+      <li>Lo habitual es desestructurar: <code>const { titulo, texto } = Astro.props;</code></li>
+      <li>Valor por defecto si no la pasan: <code>const { icono = '🥖' } = Astro.props;</code></li>
+      <li>En la plantilla se usan con llaves: <code>{titulo}</code> — también dentro de
+          atributos: <code>href={url}</code>.</li>
+    </ul>
+  </div>
+</div>
+
+<h2>Reglas y errores frecuentes</h2>
+<table>
+  <tr><th>Regla</th><th>Detalle</th></tr>
+  <tr><td>Dónde viven</td><td>Por convención, en <code>src/components/</code>. Las páginas, en <code>src/pages/</code>.</td></tr>
+  <tr><td>Nombre en mayúscula</td><td>El componente se usa como <code>&lt;Tarjeta /&gt;</code> — la mayúscula inicial lo distingue de una etiqueta HTML.</td></tr>
+  <tr><td>Solo lectura</td><td>Las props se leen una vez en el build. No hay estado ni re-render: si el dato cambia, se reconstruye el sitio.</td></tr>
+  <tr><td>Astro 7 es estricto</td><td>El compilador ya no corrige HTML mal formado: una etiqueta sin cerrar o un atributo a medias <strong>detienen el build con error</strong> (antes se autocorregían en silencio).</td></tr>
+  <tr><td>Tipado (opcional)</td><td>La documentación tipa las props con TypeScript: <code>interface Props { titulo: string; icono?: string }</code>. Da autocompletado y avisa si olvidas una prop obligatoria.</td></tr>
+</table>
+
+<div class="callout key">
+  <h3>La idea que lo explica todo</h3>
+  <p>Un componente con props es una <strong>plantilla con huecos</strong>: el HTML común se
+  escribe una sola vez y las props rellenan lo que cambia. Cuando el cliente pida un cambio
+  de diseño, lo tocas en <em>un</em> archivo y se aplica en todo el sitio.</p>
+</div>
+
+<p class="source">Fuente primaria:
+  <a href="https://docs.astro.build/es/basics/astro-components/">docs.astro.build · Componentes (en español)</a>.
+  Chuleta hermana:
+  <a href="anatomia-componente-astro.html">Anatomía de un componente .astro</a>.
+  Lección relacionada:
+  <a href="../lessons/0002-props-y-componentes-reutilizables.html">0002 · Props y componentes reutilizables</a>.
+</p>
+
+</body>
+</html>

@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lección 2 · Funciones y flechas</title>
+  <link rel="stylesheet" href="../assets/course.css">
+  <style>
+    .puente { width: 100%; border-collapse: collapse; margin: 1.4rem 0; font-size: .9rem; }
+    .puente th, .puente td { text-align: left; padding: .6rem .7rem; border-bottom: 1px solid var(--regla); vertical-align: top; }
+    .puente th { font-family: var(--sans); font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; color: var(--tinta-suave); }
+    .puente code { font-size: .8em; }
+    .frec {
+      font-family: var(--sans); font-size: .68rem; text-transform: uppercase;
+      letter-spacing: .05em; font-weight: 700; padding: .12rem .45rem;
+      border-radius: 4px; vertical-align: .15em; white-space: nowrap;
+    }
+    .frec.nucleo { background: var(--verde-suave); color: var(--verde); }
+    .frec.perif { background: var(--papel-hueso); color: var(--tinta-suave); }
+    /* Escalera de contracción: cada peldaño quita algo */
+    .escalera { margin: 1.5rem 0; }
+    .peldano {
+      display: grid; grid-template-columns: 2.2rem 1fr; gap: .8rem;
+      align-items: baseline; padding: .75rem 0; border-bottom: 1px dashed var(--regla);
+    }
+    .peldano:last-child { border-bottom: 0; }
+    .peldano-n {
+      font-family: var(--sans); font-size: .7rem; font-weight: 700;
+      color: #fff; background: var(--acento); border-radius: 50%;
+      width: 1.5rem; height: 1.5rem; display: grid; place-items: center;
+    }
+    .peldano pre { margin: 0 0 .35rem; border-left-width: 2px; padding: .6rem .8rem; }
+    .peldano-nota { font-family: var(--sans); font-size: .82rem; color: var(--tinta-suave); }
+  </style>
+</head>
+<body>
+<a class="online-link" href="https://ernestomafl.github.io/aprendizaje/" title="Ir al índice de mis cursos en línea">🌐 Mis cursos</a>
+  <main class="lienzo">
+
+    <p class="leccion-kicker">Lección 02 · JavaScript del 80%</p>
+    <h1>Funciones: leer la flecha <code>=&gt;</code></h1>
+    <p class="lede">
+      En Python solo hay una forma de escribir una función: <code>def</code>. En JavaScript
+      la misma función se puede escribir de cinco maneras que parecen distintas y hacen lo
+      mismo — y de una sexta que <em>parece</em> igual y devuelve basura. Eso es lo que hace
+      ilegible el código ajeno. Al terminar sabrás <strong>desenredar cualquier flecha</strong>
+      hasta su forma larga, y detectar la que está rota.
+    </p>
+
+    <!-- ================= PRETEST ================= -->
+    <div class="nota acento">
+      <p class="nota-titulo">Empieza fallando: predice antes de leer nada</p>
+      <p style="margin:0 0 .6rem">
+        Cinco maneras de escribir «dame el doble de un número». Todas se guardan en un
+        <code>const</code>, como aprendiste en la lección anterior — <strong>sí: en
+        JavaScript una función es un valor que se guarda en una variable</strong>.
+      </p>
+<pre style="margin:0 0 .8rem"><code><span class="t-kw">const</span> <span class="t-fn">doble1</span> <span class="t-punt">=</span> <span class="t-kw">function</span> <span class="t-punt">(</span><span class="t-var">n</span><span class="t-punt">) {</span> <span class="t-kw">return</span> <span class="t-var">n</span> <span class="t-punt">*</span> <span class="t-num">2</span><span class="t-punt">; };</span>
+<span class="t-kw">const</span> <span class="t-fn">doble2</span> <span class="t-punt">= (</span><span class="t-var">n</span><span class="t-punt">) =&gt; {</span> <span class="t-kw">return</span> <span class="t-var">n</span> <span class="t-punt">*</span> <span class="t-num">2</span><span class="t-punt">; };</span>
+<span class="t-kw">const</span> <span class="t-fn">doble3</span> <span class="t-punt">= (</span><span class="t-var">n</span><span class="t-punt">) =&gt;</span> <span class="t-var">n</span> <span class="t-punt">*</span> <span class="t-num">2</span><span class="t-punt">;</span>
+<span class="t-kw">const</span> <span class="t-fn">doble4</span> <span class="t-punt">=</span> <span class="t-var">n</span> <span class="t-punt">=&gt;</span> <span class="t-var">n</span> <span class="t-punt">*</span> <span class="t-num">2</span><span class="t-punt">;</span>
+<span class="t-kw">const</span> <span class="t-fn">doble5</span> <span class="t-punt">=</span> <span class="t-var">n</span> <span class="t-punt">=&gt; {</span> <span class="t-var">n</span> <span class="t-punt">*</span> <span class="t-num">2</span><span class="t-punt">; };</span>
+
+<span class="t-fn">console</span><span class="t-punt">.</span><span class="t-fn">log</span><span class="t-punt">(</span><span class="t-fn">doble1</span><span class="t-punt">(</span><span class="t-num">5</span><span class="t-punt">),</span> <span class="t-fn">doble2</span><span class="t-punt">(</span><span class="t-num">5</span><span class="t-punt">),</span> <span class="t-fn">doble3</span><span class="t-punt">(</span><span class="t-num">5</span><span class="t-punt">),</span> <span class="t-fn">doble4</span><span class="t-punt">(</span><span class="t-num">5</span><span class="t-punt">),</span> <span class="t-fn">doble5</span><span class="t-punt">(</span><span class="t-num">5</span><span class="t-punt">));</span></code></pre>
+      <p style="margin:0">
+        <strong>¿Qué imprime esa última línea?</strong> Escribe los cinco valores. Uno de los
+        cinco no vale 10 — y ese es el que te va a costar horas de depuración algún día si no
+        lo cazas hoy.
+      </p>
+      <label class="pregunta-abierta" style="margin:.9rem 0 0">
+        <span class="pa-titulo">✍️ Tu predicción, antes de ejecutar nada:</span>
+        <textarea class="abierta" data-label="Predicción (pretest): salida de los cinco dobles" rows="2" placeholder="doble1: … doble2: … doble3: … doble4: … doble5: … — el raro es … porque…"></textarea>
+      </label>
+    </div>
+
+    <div class="repl" data-titulo="Ahora sí: ejecútalo" data-pista="Primero escribe tu predicción arriba. Luego pulsa Ejecutar.">
+<textarea class="repl-codigo" rows="8">const doble1 = function (n) { return n * 2; };
+const doble2 = (n) => { return n * 2; };
+const doble3 = (n) => n * 2;
+const doble4 = n => n * 2;
+const doble5 = n => { n * 2; };
+
+console.log(doble1(5), doble2(5), doble3(5), doble4(5), doble5(5));</textarea>
+    </div>
+
+    <!-- ================= ESCALERA ================= -->
+    <h2>La escalera de contracción</h2>
+    <p>
+      Las cuatro primeras son <strong>la misma función</strong>, cada una un poco más
+      contraída que la anterior. No son cuatro cosas que aprender: son cuatro peldaños de una
+      sola escalera. Léela de arriba abajo una vez y ya sabrás subir y bajar por ella.
+    </p>
+
+    <div class="escalera">
+      <div class="peldano">
+        <span class="peldano-n">0</span>
+        <div>
+<pre><code><span class="t-kw">const</span> <span class="t-fn">doble</span> <span class="t-punt">=</span> <span class="t-kw">function</span> <span class="t-punt">(</span><span class="t-var">n</span><span class="t-punt">) {</span> <span class="t-kw">return</span> <span class="t-var">n</span> <span class="t-punt">*</span> <span class="t-num">2</span><span class="t-punt">; };</span></code></pre>
+          <p class="peldano-nota">Punto de partida: la palabra <code>function</code>, sin nombre.
+            Es lo que se escribía antes de 2015 y lo que verás en código antiguo.</p>
+        </div>
+      </div>
+
+      <div class="peldano">
+        <span class="peldano-n">1</span>
+        <div>
+<pre><code><span class="t-kw">const</span> <span class="t-fn">doble</span> <span class="t-punt">= (</span><span class="t-var">n</span><span class="t-punt">) =&gt; {</span> <span class="t-kw">return</span> <span class="t-var">n</span> <span class="t-punt">*</span> <span class="t-num">2</span><span class="t-punt">; };</span></code></pre>
+          <p class="peldano-nota">Quitas <code>function</code> y pones <code>=&gt;</code> entre los
+            paréntesis y las llaves. Mismo significado, cinco letras menos.</p>
+        </div>
+      </div>
+
+      <div class="peldano">
+        <span class="peldano-n">2</span>
+        <div>
+<pre><code><span class="t-kw">const</span> <span class="t-fn">doble</span> <span class="t-punt">= (</span><span class="t-var">n</span><span class="t-punt">) =&gt;</span> <span class="t-var">n</span> <span class="t-punt">*</span> <span class="t-num">2</span><span class="t-punt">;</span></code></pre>
+          <p class="peldano-nota"><strong>El peldaño importante.</strong> Si el cuerpo es
+            <em>una sola expresión</em>, puedes quitar las llaves — y al quitarlas
+            <code>return</code> se vuelve <strong>obligatorio quitarlo</strong>: se devuelve solo.
+            Es el <em>return implícito</em>.</p>
+        </div>
+      </div>
+
+      <div class="peldano">
+        <span class="peldano-n">3</span>
+        <div>
+<pre><code><span class="t-kw">const</span> <span class="t-fn">doble</span> <span class="t-punt">=</span> <span class="t-var">n</span> <span class="t-punt">=&gt;</span> <span class="t-var">n</span> <span class="t-punt">*</span> <span class="t-num">2</span><span class="t-punt">;</span></code></pre>
+          <p class="peldano-nota">Con <strong>exactamente un</strong> parámetro, los paréntesis
+            también sobran. Con cero o con dos, vuelven a ser obligatorios:
+            <code>() =&gt; 42</code>, <code>(a, b) =&gt; a + b</code>.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="nota">
+      <p class="nota-titulo">La regla que lo resume todo</p>
+      <p style="margin:0">
+        <strong>Llaves <code>{ }</code> después de la flecha ⇒ es un bloque de instrucciones, y
+        necesita <code>return</code>. Sin llaves ⇒ es una expresión, y se devuelve sola.</strong>
+        Esa única frase explica los cinco casos del pretest.
+      </p>
+    </div>
+
+    <h3>El que devuelve basura</h3>
+    <p>
+      <code>doble5</code> tiene llaves, así que su contenido es un <strong>bloque de
+      instrucciones</strong>. Dentro hay una instrucción, <code>n * 2</code>, que calcula 10…
+      y lo tira a la basura, porque nadie dijo <code>return</code>. Una función que llega al
+      final sin <code>return</code> devuelve <code>undefined</code>: el valor que JavaScript
+      usa para «aquí no hay nada».
+    </p>
+    <p>
+      Y no da error. Ese es el problema: te devuelve <code>undefined</code> en silencio y el
+      fallo aparece tres funciones más allá. En Python el equivalente sería un <code>def</code>
+      sin <code>return</code>, que devuelve <code>None</code> — misma idea, pero allí no te
+      pasa por accidente al contraer una línea.
+    </p>
+
+    <div class="nota acento">
+      <p class="nota-titulo">El caso que confunde a todo el mundo: devolver un objeto</p>
+      <p style="margin:0 0 .6rem">
+        Si el valor que quieres devolver es un objeto, tienes un choque: las llaves del objeto
+        parecen las llaves de un bloque. JavaScript siempre elige bloque. La solución es
+        envolver el objeto en <strong>paréntesis</strong>:
+      </p>
+<pre style="margin:0"><code><span class="t-kw">const</span> <span class="t-fn">crearCliente</span> <span class="t-punt">=</span> <span class="t-var">nombre</span> <span class="t-punt">=&gt; {</span> <span class="t-prop">nombre</span><span class="t-punt">:</span> <span class="t-var">nombre</span> <span class="t-punt">};</span>    <span class="t-com">// ✖ devuelve undefined</span>
+<span class="t-kw">const</span> <span class="t-fn">crearCliente</span> <span class="t-punt">=</span> <span class="t-var">nombre</span> <span class="t-punt">=&gt; ({</span> <span class="t-prop">nombre</span><span class="t-punt">:</span> <span class="t-var">nombre</span> <span class="t-punt">});</span>  <span class="t-com">// ✔ devuelve el objeto</span></code></pre>
+      <p style="margin:.6rem 0 0">
+        Ese <code>=&gt; ({ … })</code> aparece constantemente en código real. Ahora ya sabes
+        que los paréntesis no son adorno: son los que dicen «esto es un valor, no un bloque».
+      </p>
+    </div>
+
+    <!-- ================= FUNCTION DECLARATION ================= -->
+    <h2>La otra forma: <code>function</code> con nombre</h2>
+    <p>
+      Además de guardarse en una variable, una función se puede declarar con nombre propio.
+      Es lo más parecido al <code>def</code> de Python y lo verás por todas partes:
+    </p>
+<pre><code><span class="t-kw">function</span> <span class="t-fn">calcularIva</span><span class="t-punt">(</span><span class="t-var">base</span><span class="t-punt">) {</span>
+  <span class="t-kw">return</span> <span class="t-var">base</span> <span class="t-punt">*</span> <span class="t-num">0.21</span><span class="t-punt">;</span>
+<span class="t-punt">}</span></code></pre>
+
+    <table class="puente">
+      <thead><tr><th>Forma</th><th>Cuándo la verás</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><code>const f = () =&gt; …</code> <span class="frec nucleo">núcleo</span></td>
+          <td>La opción por defecto hoy, sobre todo para funciones cortas y para pasarlas como argumento.</td>
+        </tr>
+        <tr>
+          <td><code>function f() { … }</code> <span class="frec nucleo">núcleo</span></td>
+          <td>Muy viva para funciones «principales» con nombre. Escríbela sin complejos cuando la función es grande.</td>
+        </tr>
+        <tr>
+          <td><code>const f = function () { … }</code> <span class="frec perif">solo leer</span></td>
+          <td>La forma pre-2015. Reconócela: es una flecha sin contraer.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="nota">
+      <p class="nota-titulo">Aviso honesto, para que no te lo encuentres de golpe</p>
+      <p style="margin:0">
+        Las flechas y <code>function</code> <strong>no son intercambiables al 100%</strong>: se
+        comportan distinto con una palabra llamada <code>this</code>, y esa diferencia tiene
+        lección propia más adelante. Mientras no aparezca <code>this</code> en el código —que
+        es la mayoría del tiempo— puedes tratarlas como equivalentes.
+      </p>
+    </div>
+
+    <h3>Parámetros por defecto</h3>
+    <p>Igual que en Python, y se lee igual:</p>
+<pre><code><span class="t-kw">const</span> <span class="t-fn">saludar</span> <span class="t-punt">= (</span><span class="t-var">nombre</span><span class="t-punt">,</span> <span class="t-var">saludo</span> <span class="t-punt">=</span> <span class="t-str">"Hola"</span><span class="t-punt">) =&gt;</span> <span class="t-var">saludo</span> <span class="t-punt">+</span> <span class="t-str">", "</span> <span class="t-punt">+</span> <span class="t-var">nombre</span><span class="t-punt">;</span>
+
+<span class="t-fn">saludar</span><span class="t-punt">(</span><span class="t-str">"Ana"</span><span class="t-punt">)</span>              <span class="t-com">// "Hola, Ana"</span>
+<span class="t-fn">saludar</span><span class="t-punt">(</span><span class="t-str">"Ana"</span><span class="t-punt">,</span> <span class="t-str">"Buenas"</span><span class="t-punt">)</span>   <span class="t-com">// "Buenas, Ana"</span></code></pre>
+    <p style="font-size:.95rem;color:var(--tinta-suave)">
+      Detalle que usarás mucho: el <code>+</code> entre textos los <strong>pega</strong>.
+      <code>"Hola" + ", " + "Ana"</code> da <code>"Hola, Ana"</code>. (Hay una forma más cómoda
+      de hacer esto, las <em>plantillas</em>; tendrá su lección.)
+    </p>
+
+    <!-- ================= CALLBACKS ================= -->
+    <h2>Para qué tanta contracción: pasar funciones como argumento</h2>
+    <p>
+      Aquí está la razón de que la flecha exista. En JavaScript una función es un valor, así
+      que se puede <strong>pasar a otra función</strong> igual que se pasa un número. Una
+      función que recibes como argumento se llama <strong>callback</strong>.
+    </p>
+<pre><code><span class="t-kw">const</span> <span class="t-fn">aplicarDosVeces</span> <span class="t-punt">= (</span><span class="t-var">f</span><span class="t-punt">,</span> <span class="t-var">valor</span><span class="t-punt">) =&gt;</span> <span class="t-fn">f</span><span class="t-punt">(</span><span class="t-fn">f</span><span class="t-punt">(</span><span class="t-var">valor</span><span class="t-punt">));</span>
+
+<span class="t-fn">aplicarDosVeces</span><span class="t-punt">(</span><span class="t-var">n</span> <span class="t-punt">=&gt;</span> <span class="t-var">n</span> <span class="t-punt">*</span> <span class="t-num">2</span><span class="t-punt">,</span> <span class="t-num">5</span><span class="t-punt">)</span>   <span class="t-com">// 20 — dobla, y vuelve a doblar</span></code></pre>
+    <p>
+      Fíjate en <code>f(f(valor))</code>: <code>f</code> a secas es <em>la función</em>;
+      <code>f(…)</code> con paréntesis es <em>llamarla</em>. Esa distinción es la que más se
+      confunde al empezar, y es exactamente igual que en Python.
+    </p>
+    <p>
+      Escrita larga, la llamada de arriba ocuparía tres líneas para nada. Por eso ganó la
+      flecha: cuando la función es un argumento de paso, contraerla hace el código
+      <em>más</em> legible, no menos. Esta misma forma es la que verás en
+      <code>addEventListener("click", () =&gt; …)</code> o en <code>lista.map(x =&gt; …)</code>,
+      que llegarán en sus lecciones.
+    </p>
+
+    <div class="repl" data-titulo="Juega con ello" data-pista="Prueba a cambiar la función que le pasas: n => n + 1, n => n * n…">
+<textarea class="repl-codigo" rows="7">const aplicarDosVeces = (f, valor) => f(f(valor));
+
+console.log(aplicarDosVeces(n => n * 2, 5));
+console.log(aplicarDosVeces(n => n + 1, 5));
+
+// Escribe aquí una que eleve al cuadrado dos veces sobre el 3:
+</textarea>
+    </div>
+
+    <!-- ================= QUIZ ================= -->
+    <h2>Compruébalo — recuerda sin releer</h2>
+
+    <div class="quiz" data-correcta="2" data-num="1">
+      <p class="quiz-pregunta"><span class="quiz-num">Pregunta 1</span><br>
+        ¿Qué devuelve <code>precio(10)</code>?
+<pre style="margin:.7rem 0 0"><code><span class="t-kw">const</span> <span class="t-fn">precio</span> <span class="t-punt">=</span> <span class="t-var">base</span> <span class="t-punt">=&gt; {</span> <span class="t-var">base</span> <span class="t-punt">*</span> <span class="t-num">1.21</span><span class="t-punt">; };</span></code></pre></p>
+      <div class="opciones">
+        <button class="opcion">Devuelve el número 12.1</button>
+        <button class="opcion">Da un error de sintaxis</button>
+        <button class="opcion">Devuelve el valor undefined</button>
+      </div>
+      <div class="feedback ok" data-para="ok">Correcto. Hay llaves, así que es un <strong>bloque</strong>: calcula 12.1 y lo descarta porque falta <code>return</code>. La función termina sin devolver nada → <code>undefined</code>. Y lo peor es que no protesta: el fallo aparecerá más adelante.</div>
+      <div class="feedback no" data-para="no">Aplica la regla: <strong>llaves ⇒ bloque ⇒ hace falta <code>return</code></strong>. Aquí no lo hay, así que el 12.1 se calcula y se tira. La función devuelve <code>undefined</code>, y sin dar ningún error. Para que devolviera 12.1: <code>base =&gt; base * 1.21</code>, sin llaves.</div>
+    </div>
+
+    <div class="quiz" data-correcta="0" data-num="2">
+      <p class="quiz-pregunta"><span class="quiz-num">Pregunta 2</span><br>
+        ¿Cuál de estas tres flechas <strong>no</strong> es válida?</p>
+      <div class="opciones">
+        <button class="opcion"><code>const f = a, b =&gt; a + b;</code></button>
+        <button class="opcion"><code>const f = () =&gt; 42;</code></button>
+        <button class="opcion"><code>const f = a =&gt; a + 1;</code></button>
+      </div>
+      <div class="feedback ok" data-para="ok">Correcto. Los paréntesis solo se pueden omitir con <strong>exactamente un</strong> parámetro. Con dos son obligatorios: <code>(a, b) =&gt; a + b</code>. Con cero también: <code>() =&gt; 42</code>.</div>
+      <div class="feedback no" data-para="no">Las otras dos son correctas: sin parámetros los paréntesis vacíos son obligatorios (<code>() =&gt; 42</code>), y con un solo parámetro se pueden quitar (<code>a =&gt; a + 1</code>). La que falla es la de dos parámetros sin paréntesis: ahí sí son obligatorios.</div>
+    </div>
+
+    <div class="quiz quiz-corta" data-num="3" data-acepta="undefined">
+      <p class="quiz-pregunta"><span class="quiz-num">Pregunta 3 · escribe la respuesta</span><br>
+        ¿Qué valor devuelve en JavaScript una función que termina sin <code>return</code>?
+        (una palabra, tal como la escribiría JavaScript)</p>
+      <div class="corta-fila">
+        <input class="corta-input" type="text" placeholder="Escribe el valor…" autocomplete="off" spellcheck="false">
+        <button class="corta-comprobar" type="button">Comprobar</button>
+      </div>
+      <div class="feedback ok" data-para="ok">Correcto: <code>undefined</code>. Es el valor de «aquí no hay nada» — el equivalente del <code>None</code> que devuelve un <code>def</code> sin <code>return</code> en Python. Verlo aparecer en consola casi siempre significa «se me olvidó un <code>return</code>».</div>
+      <div class="feedback no" data-para="no">La respuesta es <code>undefined</code>. No es <code>null</code> (ese lo escribe un humano a propósito para decir «vacío intencionado»), ni <code>None</code> (eso es Python), ni un error: JavaScript devuelve <code>undefined</code> en silencio.</div>
+    </div>
+
+    <div class="quiz" data-correcta="1" data-num="4">
+      <p class="quiz-pregunta"><span class="quiz-num">Pregunta 4</span><br>
+        En <code>aplicarDosVeces(doble, 5)</code>, ¿por qué se escribe <code>doble</code> y no <code>doble()</code>?</p>
+      <div class="opciones">
+        <button class="opcion">Porque los paréntesis son opcionales aquí</button>
+        <button class="opcion">Porque se pasa la función, no su resultado</button>
+        <button class="opcion">Porque la función no recibe ningún argumento</button>
+      </div>
+      <div class="feedback ok" data-para="ok">Correcto. <code>doble</code> es la función como valor; <code>doble()</code> la <strong>ejecuta ya</strong> y pasaría lo que devuelva. Con los paréntesis estarías entregando un número, no una herramienta. Idéntico a Python.</div>
+      <div class="feedback no" data-para="no">Los paréntesis nunca son opcionales: son el gesto de <strong>llamar</strong>. <code>doble</code> = la función misma; <code>doble()</code> = ejecútala ahora y quédate el resultado. Como aquí queremos que <code>aplicarDosVeces</code> la llame ella misma (dos veces), hay que entregarla sin llamar.</div>
+    </div>
+
+    <div class="quiz" data-correcta="2" data-num="5">
+      <p class="quiz-pregunta"><span class="quiz-num">Pregunta 5 · repaso</span><br>
+        <span style="font-weight:400;color:var(--tinta-suave)">(de la Lección 01)</span>
+        ¿Qué ocurre con este código?
+<pre style="margin:.7rem 0 0"><code><span class="t-kw">const</span> <span class="t-fn">doble</span> <span class="t-punt">=</span> <span class="t-var">n</span> <span class="t-punt">=&gt;</span> <span class="t-var">n</span> <span class="t-punt">*</span> <span class="t-num">2</span><span class="t-punt">;</span>
+<span class="t-fn">doble</span> <span class="t-punt">=</span> <span class="t-var">n</span> <span class="t-punt">=&gt;</span> <span class="t-var">n</span> <span class="t-punt">*</span> <span class="t-num">3</span><span class="t-punt">;</span></code></pre></p>
+      <div class="opciones">
+        <button class="opcion">Funciona: ahora la función triplica</button>
+        <button class="opcion">Funciona, pero solo dentro del bloque</button>
+        <button class="opcion">Da error al reasignar una constante</button>
+      </div>
+      <div class="feedback ok" data-para="ok">Correcto. Que el valor sea una función no cambia nada: <code>doble</code> es una etiqueta pegada con <code>const</code>, y la segunda línea intenta despegarla → <code>TypeError</code>. Para poder cambiar la función habría que declararla con <code>let</code>.</div>
+      <div class="feedback no" data-para="no">Recuerda la etiqueta y la caja: la segunda línea <strong>despega la etiqueta</strong> <code>doble</code> para pegarla a otra función. Eso es reasignar, y <code>const</code> lo prohíbe → <code>TypeError: Assignment to constant variable</code>. Da igual que dentro haya una función y no un número.</div>
+    </div>
+
+    <label class="pregunta-abierta">
+      <span class="pa-titulo">🧠 Pregunta 6 · de memoria y con tus palabras: ¿cuál es la regla que decide si una flecha necesita <code>return</code> o no? (explicarla es lo que la fija)</span>
+      <textarea class="abierta" data-label="P6 (de memoria): ¿cuándo necesita return una flecha?" rows="3"></textarea>
+    </label>
+
+    <div class="nota">
+      <p class="nota-titulo">Antes de la misión: en qué orden se resuelve una cuenta</p>
+      <p style="margin:0 0 .6rem">
+        Añadido el 2026-07-21, porque lo usé sin haberlo dicho nunca. JavaScript sigue las
+        reglas de siempre: <strong><code>*</code> y <code>/</code> se resuelven antes que
+        <code>+</code> y <code>-</code></strong>, y los paréntesis mandan sobre todo. Idéntico
+        a Python y a las matemáticas del colegio.
+      </p>
+<pre style="margin:0"><code><span class="t-var">base</span> <span class="t-punt">+</span> <span class="t-var">base</span> <span class="t-punt">*</span> <span class="t-num">0.21</span>     <span class="t-com">// con base=1000 → 1000 + 210 = 1210</span>
+<span class="t-punt">(</span><span class="t-var">base</span> <span class="t-punt">+</span> <span class="t-var">base</span><span class="t-punt">) *</span> <span class="t-num">0.21</span>   <span class="t-com">// con base=1000 → 2000 × 0.21 = 420</span></code></pre>
+      <p style="margin:.6rem 0 0">
+        Es fácil leer la primera como si fuera la segunda cuando vas rápido. Al leer código
+        ajeno, si una cuenta mezcla <code>+</code> y <code>*</code>, párate un segundo y
+        resuelve primero la multiplicación.
+      </p>
+    </div>
+
+    <!-- ================= MISIÓN ================= -->
+    <h2>Tu misión de lectura</h2>
+    <p>
+      Código real de una web de cliente: calcula el presupuesto de un proyecto. Léelo
+      <strong>sin ejecutarlo</strong> y responde las cuatro preguntas.
+    </p>
+<pre><code><span class="t-kw">const</span> <span class="t-var">IVA</span> <span class="t-punt">=</span> <span class="t-num">0.21</span><span class="t-punt">;</span>
+
+<span class="t-kw">const</span> <span class="t-fn">conIva</span> <span class="t-punt">=</span> <span class="t-var">base</span> <span class="t-punt">=&gt;</span> <span class="t-var">base</span> <span class="t-punt">+</span> <span class="t-var">base</span> <span class="t-punt">*</span> <span class="t-var">IVA</span><span class="t-punt">;</span>
+<span class="t-kw">const</span> <span class="t-fn">descuento</span> <span class="t-punt">= (</span><span class="t-var">base</span><span class="t-punt">,</span> <span class="t-var">porcentaje</span> <span class="t-punt">=</span> <span class="t-num">10</span><span class="t-punt">) =&gt;</span> <span class="t-var">base</span> <span class="t-punt">-</span> <span class="t-var">base</span> <span class="t-punt">*</span> <span class="t-punt">(</span><span class="t-var">porcentaje</span> <span class="t-punt">/</span> <span class="t-num">100</span><span class="t-punt">);</span>
+<span class="t-kw">const</span> <span class="t-fn">aplicar</span> <span class="t-punt">= (</span><span class="t-var">f</span><span class="t-punt">,</span> <span class="t-var">base</span><span class="t-punt">) =&gt;</span> <span class="t-fn">f</span><span class="t-punt">(</span><span class="t-var">base</span><span class="t-punt">);</span>
+<span class="t-kw">const</span> <span class="t-fn">resumen</span> <span class="t-punt">=</span> <span class="t-var">total</span> <span class="t-punt">=&gt; {</span> <span class="t-prop">total</span><span class="t-punt">:</span> <span class="t-var">total</span> <span class="t-punt">};</span>
+
+<span class="t-fn">console</span><span class="t-punt">.</span><span class="t-fn">log</span><span class="t-punt">(</span><span class="t-fn">conIva</span><span class="t-punt">(</span><span class="t-num">1000</span><span class="t-punt">));</span>
+<span class="t-fn">console</span><span class="t-punt">.</span><span class="t-fn">log</span><span class="t-punt">(</span><span class="t-fn">descuento</span><span class="t-punt">(</span><span class="t-num">1000</span><span class="t-punt">));</span>
+<span class="t-fn">console</span><span class="t-punt">.</span><span class="t-fn">log</span><span class="t-punt">(</span><span class="t-fn">aplicar</span><span class="t-punt">(</span><span class="t-fn">conIva</span><span class="t-punt">,</span> <span class="t-num">2000</span><span class="t-punt">));</span>
+<span class="t-fn">console</span><span class="t-punt">.</span><span class="t-fn">log</span><span class="t-punt">(</span><span class="t-fn">resumen</span><span class="t-punt">(</span><span class="t-num">500</span><span class="t-punt">));</span></code></pre>
+    <p style="font-family:var(--sans);font-size:.95rem">
+      <strong>a)</strong> ¿Qué imprime cada una de las cuatro líneas? &nbsp;
+      <strong>b)</strong> ¿Por qué <code>descuento(1000)</code> funciona con un solo argumento? &nbsp;
+      <strong>c)</strong> En <code>aplicar(conIva, 2000)</code>, ¿qué pasaría si estuviera escrito <code>aplicar(conIva(), 2000)</code>? &nbsp;
+      <strong>d)</strong> <code>resumen</code> está roto. Arréglalo.
+    </p>
+
+    <details class="revelar pista">
+      <summary>Pista (si la necesitas)</summary>
+      <div class="revelar-cuerpo">
+        Para cada flecha, hazte una sola pregunta: <strong>¿hay llaves después de la
+        flecha?</strong> Si las hay, busca el <code>return</code>; si no está, ya sabes lo que
+        devuelve. Y para <strong>d)</strong>, recuerda el choque entre las llaves de un objeto
+        y las de un bloque.
+      </div>
+    </details>
+
+    <label class="pregunta-abierta">
+      <span class="pa-titulo">✍️ Escribe tus cuatro respuestas — <strong>antes</strong> de abrir la solución:</span>
+      <textarea class="abierta" data-label="Misión: a) las 4 salidas b) por qué un solo argumento c) qué pasa con conIva() d) arreglo de resumen" rows="5" placeholder="a) …   b) …   c) …   d) …"></textarea>
+    </label>
+
+    <details class="revelar">
+      <summary>Ver la solución (solo después de escribir la tuya)</summary>
+      <div class="revelar-cuerpo">
+        <p style="margin:0 0 .5rem">
+          <strong>a)</strong> <code>1210</code> · <code>900</code> · <code>2420</code> ·
+          <code>undefined</code>.<br>
+          <strong>b)</strong> Porque <code>porcentaje</code> tiene valor por defecto
+          (<code>= 10</code>): si no se lo pasas, vale 10.<br>
+          <strong>c)</strong> <code>conIva()</code> la llama <em>ya</em>, sin argumento, así que
+          <code>base</code> sería <code>undefined</code> y devolvería <code>NaN</code>
+          («no es un número»). Luego <code>aplicar</code> intentaría llamar a ese
+          <code>NaN</code> como si fuera una función → <code>TypeError: f is not a
+          function</code>. Pasar <code>conIva</code> sin paréntesis es justo lo que evita esto.<br>
+          <strong>d)</strong> <code>const resumen = total =&gt; ({ total: total });</code> —
+          los paréntesis convierten las llaves en un objeto en vez de un bloque.
+        </p>
+        <p style="margin:0">
+          Si sacaste la <strong>d)</strong> sin la pista, ya lees flechas mejor que buena parte
+          de la gente que las escribe a diario.
+        </p>
+      </div>
+    </details>
+
+    <div class="repl" data-titulo="Verifícalo tú mismo" data-pista="Ejecuta, compara con tus respuestas, y arregla la línea de resumen aquí mismo.">
+<textarea class="repl-codigo" rows="12">const IVA = 0.21;
+
+const conIva = base => base + base * IVA;
+const descuento = (base, porcentaje = 10) => base - base * (porcentaje / 100);
+const aplicar = (f, base) => f(base);
+const resumen = total => { total: total };
+
+console.log(conIva(1000));
+console.log(descuento(1000));
+console.log(aplicar(conIva, 2000));
+console.log(resumen(500));</textarea>
+    </div>
+
+    <div class="hoja-respuestas">
+      <p class="hr-intro">📋 <strong>Tu hoja de respuestas.</strong> Se rellena sola con tus quizzes (acierto/fallo y tu nivel de seguridad) y con lo que escribas arriba. Pulsa el botón y <strong>pégala en el chat</strong> — no reescribas nada.</p>
+      <textarea class="hr-salida" readonly rows="14"></textarea>
+      <br>
+      <button class="hr-copiar" type="button">Copiar para el chat</button>
+      <span class="hr-aviso"></span>
+    </div>
+
+    <!-- ================= PIE ================= -->
+    <div class="pie">
+      <div class="fuente-primaria">
+        <p class="nota-titulo">📖 Fuente primaria recomendada</p>
+        <p style="margin:0">
+          Lee <a href="https://es.javascript.info/arrow-functions-basics">«Funciones de flecha,
+          lo básico» en El Tutorial de JavaScript Moderno</a> (javascript.info, en español).
+          Es corto y cubre exactamente esta escalera. Si quieres la versión larga de
+          <code>function</code>, el capítulo previo es
+          <a href="https://es.javascript.info/function-expressions">«Expresiones de función»</a>.
+        </p>
+      </div>
+
+      <div class="recursos-practica">
+        <p class="nota-titulo">🎮 Recursos para practicar por tu cuenta</p>
+        <p style="font-family:var(--sans);font-size:.85rem;color:var(--tinta-suave);margin:0 0 .8rem">
+          Comprobados uno a uno: resolubles con lo de esta lección y la anterior. El resto sigue
+          en cola en el <a href="../reference/banco-de-retos.html"><strong>Banco de retos</strong></a>.
+        </p>
+        <ul class="rp-lista">
+          <li>
+            <a href="../reference/reto-01-desenreda-la-flecha.html">Reto 01 — Desenreda la flecha</a><span class="rp-etq">reto</span>
+            <span class="rp-nota">Hecho a medida para ti, porque los ejercicios públicos de este tema te van
+            a saber a poco: <strong>10 fragmentos de flecha contraída</strong> que tienes que
+            desplegar a su forma larga y predecir su salida. Cuatro están rotos de formas
+            distintas. Es análisis, no copia: no se parece a ningún ejemplo de la lección.</span>
+          </li>
+          <li>
+            <a href="https://es.javascript.info/arrow-functions-basics#tareas">javascript.info — Tarea «Reescribe con funciones de flecha»</a><span class="rp-etq suave">ejercicio</span>
+            <span class="rp-nota">Corto y directo: te dan una función con dos callbacks escritos a la
+            antigua y los conviertes en flechas. Es bajar por la escalera de contracción con
+            código de otro.
+            <br><em>Lo único nuevo que verás:</em> <code>confirm("…")</code> abre una ventanita
+            del navegador con Aceptar/Cancelar, y el <code>if/else</code> de dentro se lee tal
+            cual —«si dijo que sí, llama a la primera función; si no, a la otra»—. No tienes
+            que tocar esa parte.</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="recordatorio-tutor">
+        💬 <strong>Soy tu tutor.</strong> Si te encuentras una flecha que no sepas desenredar
+        —de esas con paréntesis dentro de paréntesis— pégamela en el chat y la desmontamos
+        juntos. Y manda tu hoja de respuestas al terminar.
+      </div>
+
+      <div>
+        <p class="nota-titulo" style="color:var(--tinta-suave)">Siguiente</p>
+        <p style="margin:.2rem 0 0;font-family:var(--sans);font-size:.95rem">
+          <strong>Lección 03 — Tipos y comparación:</strong> por qué <code>"5" == 5</code> es
+          <code>true</code> pero <code>"5" === 5</code> es <code>false</code>, qué es
+          <code>NaN</code> (ya te lo has cruzado hoy) y qué significa que un valor sea
+          «verdadero» sin ser <code>true</code>. Es la lección que más errores ajenos te va a
+          explicar. Di «continuar» cuando quieras.
+        </p>
+      </div>
+
+      <div class="nav-lecciones">
+        <a href="0001-const-y-let.html">← Lección 01 · const y let</a>
+        <a href="#">Lección 03 · Tipos y comparación →</a>
+      </div>
+    </div>
+
+  </main>
+  <script src="../assets/quiz.js"></script>
+  <script src="../assets/repl.js"></script>
+</body>
+</html>
