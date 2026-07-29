@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Referencia · Rutas de aprobación (HU06-010)</title>
+  <link rel="stylesheet" href="../assets/course.css">
+  <style>
+    .lienzo { max-width: 760px; }
+    .bloque-ref {
+      border: 1px solid var(--regla);
+      border-radius: 10px;
+      padding: 1.1rem 1.3rem;
+      margin: 1.4rem 0;
+      background: #fff;
+      box-shadow: var(--sombra);
+    }
+    .bloque-ref h3 { margin-top: 0; }
+    .chuleta { font-family: var(--sans); font-size: .93rem; }
+    .chuleta li { margin-bottom: .4rem; }
+    .frase-clave {
+      font-family: var(--serif);
+      font-size: 1.15rem;
+      font-style: italic;
+      text-align: center;
+      background: var(--acento-suave);
+      border-radius: 10px;
+      padding: 1.2rem 1.4rem;
+      margin: 1.6rem 0;
+      color: var(--acento);
+    }
+    .pendiente {
+      font-family: var(--sans);
+      font-size: .88rem;
+      color: var(--tinta-suave);
+      border-left: 3px solid var(--regla);
+      padding-left: .9rem;
+      margin: 1.2rem 0;
+    }
+  </style>
+</head>
+<body>
+<a class="online-link" href="https://ernestomafl.github.io/aprendizaje/" title="Ir al índice de mis cursos en línea">🌐 Mis cursos</a>
+  <main class="lienzo">
+
+    <p class="leccion-kicker">Referencia · HU06-010</p>
+    <h1>Rutas de aprobación</h1>
+    <p class="lede">Ficha de consulta rápida del motor de rutas del Módulo Legal. Pensada para
+      imprimir y para repasar cinco minutos antes de una reunión.</p>
+
+    <div class="frase-clave">
+      La ruta es una plantilla.<br>El expediente recibe una copia.
+    </div>
+
+    <div class="bloque-ref">
+      <h3>Identificación</h3>
+      <ul class="chuleta">
+        <li><strong>HU06-010</strong> — Configuración de rutas dinámicas de revisión, aprobación y archivado.</li>
+        <li><strong>Quién la pide:</strong> Gerencia Jurídica. <strong>Aprueba:</strong> Director de Área Legal.</li>
+        <li><strong>Qué es:</strong> el motor compartido de aprobaciones del módulo, configurable sin programar.</li>
+        <li><strong>Quién lo consume:</strong> <code>HU06-005</code> (servicios y entregables),
+          <code>HU06-004c</code> (tipos de documento), <code>HU06-007</code> (instanciación al confirmar),
+          <code>HU06-009</code> (revisión), <code>HU06-011</code> (firma), <code>HU06-018</code> (gestor documental).</li>
+        <li><strong>Dónde:</strong> fila <code>HU06-010</code> del CSV · <span class="rn fuente">§7.17</span> del PDF de arquitectura.</li>
+      </ul>
+    </div>
+
+    <div class="bloque-ref">
+      <h3>Anatomía de una ruta</h3>
+      <p style="font-family:var(--sans);font-size:.9rem"><strong>Cabecera</strong> — los cuatro datos:</p>
+      <table class="tabla-peso" style="margin-top:0">
+        <tbody>
+          <tr><td><strong>Nombre</strong></td><td>Texto libre.</td></tr>
+          <tr><td><strong>Propósito</strong></td><td>Revisión de expediente · Archivado documental. Decide qué gobierna y qué la dispara.</td></tr>
+          <tr><td><strong>Nivel de aplicación</strong></td><td>Expediente · Entregable · Documento. Sobre qué objeto se ejecuta.</td></tr>
+          <tr><td><strong>Estado</strong></td><td>Borrador → Activa → Inactiva.</td></tr>
+        </tbody>
+      </table>
+      <p style="font-family:var(--sans);font-size:.9rem;margin-bottom:.3rem"><strong>Pasos</strong>, en orden. Cuatro tipos posibles:</p>
+      <ul class="chuleta">
+        <li>Revisión · Aprobación · Firma · Informativo</li>
+      </ul>
+      <p style="font-family:var(--sans);font-size:.9rem;margin:.8rem 0 0"><strong>Regla de activación</strong>
+        <span class="rn">RN1.2</span>: nace en Borrador; se activa sólo con al menos un paso que tenga
+        <strong>aprobador y tiempo de respuesta</strong> definidos.</p>
+    </div>
+
+    <div class="bloque-ref">
+      <h3>Maestra vs. instanciada</h3>
+      <div class="dos-columnas" style="margin-top:.6rem">
+        <div>
+          <h4>Ruta maestra</h4>
+          <ul>
+            <li>Vive en la configuración.</li>
+            <li>La mantiene la Gerencia Jurídica.</li>
+            <li>Se vincula a servicios o tipos de documento.</li>
+            <li>Se versiona en cada cambio.</li>
+          </ul>
+        </div>
+        <div>
+          <h4>Ruta instanciada</h4>
+          <ul>
+            <li>Vive dentro de un expediente.</li>
+            <li>Nace al confirmarse el ticket.</li>
+            <li>Es la que se ejecuta paso a paso.</li>
+            <li>Guarda el estado de cada paso.</li>
+          </ul>
+        </div>
+      </div>
+      <p style="font-family:var(--sans);font-size:.9rem;margin:0">La instanciación es una
+        <strong>copia profunda</strong>: los pasos copiados son registros nuevos e independientes
+        <span class="rn">RN3</span>.</p>
+    </div>
+
+    <div class="bloque-ref">
+      <h3>Las tres consecuencias de copiar</h3>
+      <ul class="chuleta">
+        <li><strong>A · Los expedientes en curso son inmunes al cambio.</strong> La copia congela
+          pasos y condiciones al momento de la confirmación; modificar la maestra afecta a los
+          expedientes futuros, no a los que ya arrancaron
+          <span class="rn">RN3.1</span> <span class="rn">RN2.1</span>.</li>
+        <li><strong>B · La copia se retoca sin tocar la plantilla.</strong> La Gerencia puede
+          agregar, eliminar o reordenar pasos en un expediente concreto; queda en el chatter con
+          motivo obligatorio <span class="rn">RN3.2</span>.</li>
+        <li><strong>C · Una plantilla en uso no se retira.</strong> No se inactiva una ruta con
+          expedientes activos ejecutándola, y el sistema debe mostrar cuántos son
+          <span class="rn">RN2.3</span>. Con historial asociado no se elimina nunca: sólo se
+          inactiva <span class="rn">RN8.2</span>.</li>
+      </ul>
+      <p style="font-family:var(--sans);font-size:.9rem;margin:.8rem 0 0"><strong>Del lado de la
+        plantilla:</strong> toda modificación a una ruta activa genera versión nueva, con historial
+        inmutable —número, fecha, quién, pasos antes y después—
+        <span class="rn">RN8</span> <span class="rn">RN8.1</span>.</p>
+    </div>
+
+    <div class="bloque-ref">
+      <h3>La excepción: propósito «archivado documental»</h3>
+      <ul class="chuleta">
+        <li><strong>No</strong> se instancia al confirmar un ticket.</li>
+        <li>La dispara el <strong>cron</strong> del módulo cuando un documento cumple su periodo de
+          retención legal, y se ejecuta sobre ese documento individual
+          <span class="rn">RN10.2</span>.</li>
+        <li>Mismo motor de pasos, aprobadores, escalamiento y versionado.</li>
+      </ul>
+    </div>
+
+    <div class="bloque-ref">
+      <h3>En Odoo 19</h3>
+      <pre style="margin-bottom:0"><code><span class="t-mod">legal.approval.route</span>        <span class="t-com"># cabecera</span>
+    name, purpose, application_level, active
+
+<span class="t-mod">legal.approval.route.line</span>   <span class="t-com"># pasos (uno-a-muchos desde la cabecera)</span>
+    route_id, sequence, approver_type, approver_ref, condition</code></pre>
+    </div>
+
+    <p class="pendiente"><strong>Esta ficha crece cada sesión.</strong> Hoy cubre la anatomía de la
+      ruta y el patrón plantilla/instancia. Pendientes de lecciones futuras: los pasos condicionales
+      y sus condiciones admitidas, los tipos de aprobador y el pool, el escalamiento por tiempo
+      vencido, el paso de firma con Odoo Sign, y la vista previa con simulador.</p>
+
+    <div class="pie">
+      <div class="recordatorio-tutor">
+        ¿Algo de esta ficha no te cuadra con el CSV o con el PDF? Dímelo en el chat: la
+        especificación manda, y corrijo la referencia.
+      </div>
+      <div class="nav-lecciones">
+        <a href="../lessons/0007-ruta-plantilla-e-instancia.html">← Lección 07</a>
+        <a href="glosario.html">Glosario del módulo →</a>
+      </div>
+    </div>
+
+  </main>
+</body>
+</html>

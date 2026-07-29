@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reto 01 · Desenreda la flecha</title>
+  <link rel="stylesheet" href="../assets/course.css">
+  <style>
+    .item { border-top: 1px solid var(--regla); padding-top: 1.4rem; margin-top: 2rem; }
+    .item-n {
+      font-family: var(--sans); font-size: .72rem; letter-spacing: .08em;
+      text-transform: uppercase; color: var(--acento); font-weight: 700; margin: 0 0 .5rem;
+    }
+    .item .quiz { margin-top: .9rem; }
+    .aviso-dificultad {
+      font-family: var(--sans); font-size: .8rem; color: var(--tinta-suave);
+      background: var(--papel-hueso); border-radius: 6px; padding: .45rem .7rem;
+      display: inline-block; margin: 0 0 .6rem;
+    }
+  </style>
+</head>
+<body>
+<a class="online-link" href="https://ernestomafl.github.io/aprendizaje/" title="Ir al índice de mis cursos en línea">🌐 Mis cursos</a>
+  <main class="lienzo">
+
+    <p class="leccion-kicker">Reto 01 · Complemento de la Lección 02</p>
+    <h1>Desenreda la flecha</h1>
+    <p class="lede">
+      Diez fragmentos. Ninguno se parece a los ejemplos de la lección: aquí no vale reconocer
+      un patrón, hay que <strong>razonar cada uno</strong>. Cuatro están rotos, y cada uno lo
+      está de una forma distinta. Predice qué imprime cada <code>console.log</code>
+      <strong>antes</strong> de tocar la consola del final.
+    </p>
+
+    <div class="nota acento">
+      <p class="nota-titulo">Las dos únicas reglas que necesitas</p>
+      <p style="margin:0">
+        <strong>1.</strong> Llaves <code>{ }</code> tras la flecha ⇒ bloque ⇒ hace falta
+        <code>return</code>. Sin llaves ⇒ expresión ⇒ se devuelve sola.<br>
+        <strong>2.</strong> <code>f</code> es la función; <code>f()</code> es llamarla.
+      </p>
+      <p style="margin:.6rem 0 0">
+        Todo lo demás sale de aplicarlas con cuidado. Si un fragmento te parece imposible,
+        no te falta materia: te falta leerlo más despacio.
+      </p>
+    </div>
+
+    <!-- 1 -->
+    <div class="item">
+      <p class="item-n">Fragmento 1 · calentamiento</p>
+<pre><code><span class="t-kw">const</span> <span class="t-fn">siguiente</span> <span class="t-punt">=</span> <span class="t-var">x</span> <span class="t-punt">=&gt;</span> <span class="t-var">x</span> <span class="t-punt">+</span> <span class="t-num">1</span><span class="t-punt">;</span>
+<span class="t-fn">console</span><span class="t-punt">.</span><span class="t-fn">log</span><span class="t-punt">(</span><span class="t-fn">siguiente</span><span class="t-punt">(</span><span class="t-num">41</span><span class="t-punt">));</span></code></pre>
+      <div class="quiz quiz-corta" data-num="1" data-acepta="42">
+        <p class="quiz-pregunta">¿Qué imprime?</p>
+        <div class="corta-fila">
+          <input class="corta-input" type="text" placeholder="El valor exacto…" autocomplete="off" spellcheck="false">
+          <button class="corta-comprobar" type="button">Comprobar</button>
+        </div>
+        <div class="feedback ok" data-para="ok">Sin llaves ⇒ expresión ⇒ se devuelve sola. <code>42</code>.</div>
+        <div class="feedback no" data-para="no">Sin llaves tras la flecha, el cuerpo es una expresión que se devuelve sola: <code>41 + 1</code> = <code>42</code>.</div>
+      </div>
+    </div>
+
+    <!-- 2 -->
+    <div class="item">
+      <p class="item-n">Fragmento 2</p>
+<pre><code><span class="t-kw">const</span> <span class="t-fn">mitad</span> <span class="t-punt">= (</span><span class="t-var">x</span><span class="t-punt">) =&gt; {</span> <span class="t-var">x</span> <span class="t-punt">/</span> <span class="t-num">2</span><span class="t-punt">; };</span>
+<span class="t-fn">console</span><span class="t-punt">.</span><span class="t-fn">log</span><span class="t-punt">(</span><span class="t-fn">mitad</span><span class="t-punt">(</span><span class="t-num">10</span><span class="t-punt">));</span></code></pre>
+      <div class="quiz quiz-corta" data-num="2" data-acepta="undefined">
+        <p class="quiz-pregunta">¿Qué imprime?</p>
+        <div class="corta-fila">
+          <input class="corta-input" type="text" placeholder="El valor exacto…" autocomplete="off" spellcheck="false">
+          <button class="corta-comprobar" type="button">Comprobar</button>
+        </div>
+        <div class="feedback ok" data-para="ok">Correcto: <code>undefined</code>. Hay llaves, así que es un bloque; calcula 5 y lo tira porque falta <code>return</code>. <strong>Roto nº 1.</strong></div>
+        <div class="feedback no" data-para="no">Llaves ⇒ bloque ⇒ hace falta <code>return</code>, y no lo hay. El 5 se calcula y se descarta; la función devuelve <code>undefined</code> sin dar ningún error. <strong>Roto nº 1.</strong></div>
+      </div>
+    </div>
+
+    <!-- 3 -->
+    <div class="item">
+      <p class="item-n">Fragmento 3</p>
+<pre><code><span class="t-kw">const</span> <span class="t-fn">suma</span> <span class="t-punt">= (</span><span class="t-var">a</span><span class="t-punt">,</span> <span class="t-var">b</span><span class="t-punt">) =&gt;</span> <span class="t-var">a</span> <span class="t-punt">+</span> <span class="t-var">b</span><span class="t-punt">;</span>
+<span class="t-fn">console</span><span class="t-punt">.</span><span class="t-fn">log</span><span class="t-punt">(</span><span class="t-fn">suma</span><span class="t-punt">(</span><span class="t-num">7</span><span class="t-punt">));</span></code></pre>
+      <p class="aviso-dificultad">Pista de vocabulario: <code>NaN</code> significa «no es un número» — es lo que sale al hacer cuentas con algo que no lo es.</p>
+      <div class="quiz quiz-corta" data-num="3" data-acepta="nan">
+        <p class="quiz-pregunta">¿Qué imprime?</p>
+        <div class="corta-fila">
+          <input class="corta-input" type="text" placeholder="El valor exacto…" autocomplete="off" spellcheck="false">
+          <button class="corta-comprobar" type="button">Comprobar</button>
+        </div>
+        <div class="feedback ok" data-para="ok">Correcto: <code>NaN</code>. Falta el segundo argumento, así que <code>b</code> vale <code>undefined</code>, y <code>7 + undefined</code> no es un número. Ojo: <strong>no da error</strong>. En Python esto habría reventado con <code>TypeError</code>; JavaScript sigue tan tranquilo. <strong>Roto nº 2.</strong></div>
+        <div class="feedback no" data-para="no">JavaScript no exige que pases todos los argumentos: los que faltan valen <code>undefined</code>. Así que la cuenta es <code>7 + undefined</code> → <code>NaN</code> («no es un número»), <strong>sin ningún error</strong>. Ésta es una diferencia grande con Python, que sí habría reventado. <strong>Roto nº 2.</strong></div>
+      </div>
+    </div>
+
+    <!-- 4 -->
+    <div class="item">
+      <p class="item-n">Fragmento 4</p>
+<pre><code><span class="t-kw">const</span> <span class="t-fn">etiqueta</span> <span class="t-punt">=</span> <span class="t-var">texto</span> <span class="t-punt">=&gt; {</span> <span class="t-prop">valor</span><span class="t-punt">:</span> <span class="t-var">texto</span> <span class="t-punt">};</span>
+<span class="t-fn">console</span><span class="t-punt">.</span><span class="t-fn">log</span><span class="t-punt">(</span><span class="t-fn">etiqueta</span><span class="t-punt">(</span><span class="t-str">"oferta"</span><span class="t-punt">));</span></code></pre>
+      <div class="quiz quiz-corta" data-num="4" data-acepta="undefined">
+        <p class="quiz-pregunta">¿Qué imprime?</p>
+        <div class="corta-fila">
+          <input class="corta-input" type="text" placeholder="El valor exacto…" autocomplete="off" spellcheck="false">
+          <button class="corta-comprobar" type="button">Comprobar</button>
+        </div>
+        <div class="feedback ok" data-para="ok">Correcto: <code>undefined</code>. Parece que devuelve un objeto, pero JavaScript lee esas llaves como un <strong>bloque</strong>, no como un objeto. Y un bloque sin <code>return</code> devuelve <code>undefined</code>. <strong>Roto nº 3.</strong></div>
+        <div class="feedback no" data-para="no">Trampa clásica: las llaves de un objeto y las de un bloque se escriben igual, y JavaScript siempre elige <strong>bloque</strong>. Así que esto es un bloque sin <code>return</code> → <code>undefined</code>. <strong>Roto nº 3.</strong></div>
+      </div>
+    </div>
+
+    <!-- 5 -->
+    <div class="item">
+      <p class="item-n">Fragmento 5 · el mismo, arreglado</p>
+<pre><code><span class="t-kw">const</span> <span class="t-fn">etiqueta</span> <span class="t-punt">=</span> <span class="t-var">texto</span> <span class="t-punt">=&gt; ({</span> <span class="t-prop">valor</span><span class="t-punt">:</span> <span class="t-var">texto</span> <span class="t-punt">});</span>
+<span class="t-fn">console</span><span class="t-punt">.</span><span class="t-fn">log</span><span class="t-punt">(</span><span class="t-fn">etiqueta</span><span class="t-punt">(</span><span class="t-str">"oferta"</span><span class="t-punt">));</span></code></pre>
+      <div class="quiz quiz-corta" data-num="5" data-acepta="{ valor: &quot;oferta&quot; }|{valor: &quot;oferta&quot;}|{ valor: oferta }|{valor: oferta}|{ valor: 'oferta' }|{valor: 'oferta'}|un objeto|el objeto|objeto">
+        <p class="quiz-pregunta">¿Qué imprime? (escríbelo tal cual, o «un objeto» si te basta con la idea)</p>
+        <div class="corta-fila">
+          <input class="corta-input" type="text" placeholder="El valor exacto…" autocomplete="off" spellcheck="false">
+          <button class="corta-comprobar" type="button">Comprobar</button>
+        </div>
+        <div class="feedback ok" data-para="ok">Correcto: el objeto <code>{ valor: "oferta" }</code>. Los paréntesis obligan a leer las llaves como un valor, no como un bloque. Un solo carácter de diferencia con el fragmento 4, y resultado completamente distinto.</div>
+        <div class="feedback no" data-para="no">Aquí sí devuelve el objeto <code>{ valor: "oferta" }</code>. Los paréntesis envolviendo las llaves son los que dicen «esto es un valor, no un bloque de instrucciones». Compáralo con el fragmento 4: cambian dos caracteres y cambia todo.</div>
+      </div>
+    </div>
+
+    <!-- 6 -->
+    <div class="item">
+      <p class="item-n">Fragmento 6</p>
+<pre><code><span class="t-kw">const</span> <span class="t-fn">saludar</span> <span class="t-punt">= (</span><span class="t-var">saludo</span> <span class="t-punt">=</span> <span class="t-str">"Hola"</span><span class="t-punt">,</span> <span class="t-var">nombre</span><span class="t-punt">) =&gt;</span> <span class="t-var">saludo</span> <span class="t-punt">+</span> <span class="t-str">", "</span> <span class="t-punt">+</span> <span class="t-var">nombre</span><span class="t-punt">;</span>
+<span class="t-fn">console</span><span class="t-punt">.</span><span class="t-fn">log</span><span class="t-punt">(</span><span class="t-fn">saludar</span><span class="t-punt">(</span><span class="t-str">"Ana"</span><span class="t-punt">));</span></code></pre>
+      <div class="quiz quiz-corta" data-num="6" data-acepta="ana, undefined|&quot;ana, undefined&quot;|'ana, undefined'">
+        <p class="quiz-pregunta">¿Qué imprime?</p>
+        <div class="corta-fila">
+          <input class="corta-input" type="text" placeholder="El texto exacto…" autocomplete="off" spellcheck="false">
+          <button class="corta-comprobar" type="button">Comprobar</button>
+        </div>
+        <div class="feedback ok" data-para="ok">Correcto: <code>"Ana, undefined"</code>. Los argumentos se reparten <strong>por posición</strong>, no por sentido: <code>"Ana"</code> cae en el primer hueco, que es <code>saludo</code>. El valor por defecto no se usa (ese hueco sí venía relleno) y <code>nombre</code> se queda vacío. <strong>Roto nº 4</strong> — y el más traicionero, porque el error está en el <em>orden de los parámetros</em>, no en la llamada.</div>
+        <div class="feedback no" data-para="no">Cuidado con la posición: <code>"Ana"</code> es el <strong>primer</strong> argumento, así que va a parar a <code>saludo</code>, no a <code>nombre</code>. Resultado: <code>"Ana, undefined"</code>. Lección práctica: un parámetro con valor por defecto solo es útil si va <strong>al final</strong> de la lista. <strong>Roto nº 4.</strong></div>
+      </div>
+    </div>
+
+    <!-- 7 -->
+    <div class="item">
+      <p class="item-n">Fragmento 7</p>
+<pre><code><span class="t-kw">const</span> <span class="t-fn">doble</span> <span class="t-punt">=</span> <span class="t-var">n</span> <span class="t-punt">=&gt;</span> <span class="t-var">n</span> <span class="t-punt">*</span> <span class="t-num">2</span><span class="t-punt">;</span>
+<span class="t-fn">console</span><span class="t-punt">.</span><span class="t-fn">log</span><span class="t-punt">(</span><span class="t-fn">doble</span><span class="t-punt">);</span></code></pre>
+      <div class="quiz quiz-corta" data-num="7" data-acepta="la función|la funcion|la función misma|la funcion misma|una función|una funcion|función|funcion|la propia función|la propia funcion">
+        <p class="quiz-pregunta">¿Imprime un número o algo distinto? (responde en dos palabras)</p>
+        <div class="corta-fila">
+          <input class="corta-input" type="text" placeholder="Dos palabras…" autocomplete="off" spellcheck="false">
+          <button class="corta-comprobar" type="button">Comprobar</button>
+        </div>
+        <div class="feedback ok" data-para="ok">Correcto: imprime <strong>la función misma</strong>, porque faltan los paréntesis que la llaman. En la consola verás algo como <code>ƒ doble()</code>. No está roto del todo — está pidiendo que lo llames.</div>
+        <div class="feedback no" data-para="no">No hay paréntesis, así que no se llama a nada: se imprime <strong>la función</strong> como valor (verás algo tipo <code>ƒ doble()</code>). Recuerda la regla 2: <code>doble</code> es la función, <code>doble(4)</code> es el resultado de usarla.</div>
+      </div>
+    </div>
+
+    <!-- 8 -->
+    <div class="item">
+      <p class="item-n">Fragmento 8</p>
+<pre><code><span class="t-kw">const</span> <span class="t-fn">doble</span> <span class="t-punt">=</span> <span class="t-var">n</span> <span class="t-punt">=&gt;</span> <span class="t-var">n</span> <span class="t-punt">*</span> <span class="t-num">2</span><span class="t-punt">;</span>
+<span class="t-kw">const</span> <span class="t-fn">aplicar</span> <span class="t-punt">= (</span><span class="t-var">f</span><span class="t-punt">,</span> <span class="t-var">v</span><span class="t-punt">) =&gt;</span> <span class="t-fn">f</span><span class="t-punt">(</span><span class="t-var">v</span><span class="t-punt">);</span>
+<span class="t-fn">console</span><span class="t-punt">.</span><span class="t-fn">log</span><span class="t-punt">(</span><span class="t-fn">aplicar</span><span class="t-punt">(</span><span class="t-fn">doble</span><span class="t-punt">(</span><span class="t-num">3</span><span class="t-punt">),</span> <span class="t-num">5</span><span class="t-punt">));</span></code></pre>
+      <div class="quiz quiz-corta" data-num="8" data-acepta="typeerror|error|un error|type error|f is not a function|typeerror: f is not a function">
+        <p class="quiz-pregunta">¿Qué ocurre? (una palabra)</p>
+        <div class="corta-fila">
+          <input class="corta-input" type="text" placeholder="Una palabra…" autocomplete="off" spellcheck="false">
+          <button class="corta-comprobar" type="button">Comprobar</button>
+        </div>
+        <div class="feedback ok" data-para="ok">Correcto: <code>TypeError: f is not a function</code>. <code>doble(3)</code> se ejecuta primero y entrega un <strong>6</strong>; entonces <code>aplicar</code> intenta hacer <code>6(5)</code>, y un número no se puede llamar. Lo correcto era pasar <code>doble</code> sin paréntesis.</div>
+        <div class="feedback no" data-para="no">Mira el orden: <code>doble(3)</code> se ejecuta <em>antes</em> de entrar en <code>aplicar</code>, así que lo que se pasa es el número <strong>6</strong>. Dentro, <code>f(v)</code> intenta llamar a <code>6</code> como si fuera una función → <code>TypeError: f is not a function</code>.</div>
+      </div>
+    </div>
+
+    <!-- 9 -->
+    <div class="item">
+      <p class="item-n">Fragmento 9 · el jefe final</p>
+      <p class="aviso-dificultad">Esta forma no salió en la lección. No hace falta: sale de aplicar las dos reglas dos veces seguidas. Léela muy despacio.</p>
+<pre><code><span class="t-kw">const</span> <span class="t-fn">multiplicador</span> <span class="t-punt">=</span> <span class="t-var">factor</span> <span class="t-punt">=&gt;</span> <span class="t-var">n</span> <span class="t-punt">=&gt;</span> <span class="t-var">n</span> <span class="t-punt">*</span> <span class="t-var">factor</span><span class="t-punt">;</span>
+
+<span class="t-kw">const</span> <span class="t-fn">triple</span> <span class="t-punt">=</span> <span class="t-fn">multiplicador</span><span class="t-punt">(</span><span class="t-num">3</span><span class="t-punt">);</span>
+<span class="t-fn">console</span><span class="t-punt">.</span><span class="t-fn">log</span><span class="t-punt">(</span><span class="t-fn">triple</span><span class="t-punt">(</span><span class="t-num">4</span><span class="t-punt">));</span></code></pre>
+      <div class="quiz quiz-corta" data-num="9" data-acepta="12">
+        <p class="quiz-pregunta">¿Qué imprime?</p>
+        <div class="corta-fila">
+          <input class="corta-input" type="text" placeholder="El valor exacto…" autocomplete="off" spellcheck="false">
+          <button class="corta-comprobar" type="button">Comprobar</button>
+        </div>
+        <div class="feedback ok" data-para="ok">Correcto: <code>12</code>. <code>multiplicador</code> no tiene llaves, así que devuelve su expresión… y su expresión <em>es otra flecha</em>. Por eso <code>multiplicador(3)</code> no da un número: da una <strong>función</strong> que recuerda que <code>factor</code> vale 3. Al llamarla con 4 → <code>4 * 3 = 12</code>. Esto es una fábrica de funciones, y lo verás en código real.</div>
+        <div class="feedback no" data-para="no">Desenrédala por partes: <code>factor =&gt; ( n =&gt; n * factor )</code>. La flecha exterior no tiene llaves, así que devuelve lo que hay a su derecha — y ahí hay <strong>otra flecha</strong>. Entonces <code>multiplicador(3)</code> devuelve una función que multiplica por 3, y <code>triple(4)</code> da <code>12</code>.</div>
+      </div>
+    </div>
+
+    <!-- 10 -->
+    <div class="item">
+      <p class="item-n">Fragmento 10 · cierre</p>
+<pre><code><span class="t-kw">const</span> <span class="t-fn">resumen</span> <span class="t-punt">= (</span><span class="t-var">total</span><span class="t-punt">) =&gt; {</span>
+  <span class="t-kw">return</span> <span class="t-punt">{</span> <span class="t-prop">total</span><span class="t-punt">:</span> <span class="t-var">total</span> <span class="t-punt">};</span>
+<span class="t-punt">};</span>
+<span class="t-fn">console</span><span class="t-punt">.</span><span class="t-fn">log</span><span class="t-punt">(</span><span class="t-fn">resumen</span><span class="t-punt">(</span><span class="t-num">500</span><span class="t-punt">));</span></code></pre>
+      <div class="quiz quiz-corta" data-num="10" data-acepta="{ total: 500 }|{total: 500}|un objeto|el objeto|objeto|{ total: 500}|{total:500}">
+        <p class="quiz-pregunta">¿Qué imprime? (tal cual, o «un objeto»)</p>
+        <div class="corta-fila">
+          <input class="corta-input" type="text" placeholder="El valor exacto…" autocomplete="off" spellcheck="false">
+          <button class="corta-comprobar" type="button">Comprobar</button>
+        </div>
+        <div class="feedback ok" data-para="ok">Correcto: <code>{ total: 500 }</code>. Aquí las llaves exteriores <strong>sí</strong> son un bloque, y dentro hay un <code>return</code> explícito con un objeto. Moraleja: el problema del fragmento 4 nunca fue el objeto — era la falta de <code>return</code>.</div>
+        <div class="feedback no" data-para="no">Funciona: hay llaves (bloque) <em>y</em> hay <code>return</code>, así que devuelve el objeto <code>{ total: 500 }</code>. Compara los fragmentos 4, 5 y 10: son las tres maneras de intentar devolver un objeto, y solo la primera falla.</div>
+      </div>
+    </div>
+
+    <h2>Ahora sí: compruébalo</h2>
+    <p>
+      Pega aquí cualquier fragmento que quieras verificar, o ejecútalos todos de golpe. El
+      octavo lanza un error a propósito — es lo que debe pasar.
+    </p>
+    <div class="repl" data-titulo="Banco de pruebas" data-pista="Descomenta o pega el fragmento que quieras comprobar.">
+<textarea class="repl-codigo" rows="10">const mitad = (x) => { x / 2; };
+console.log(mitad(10));
+
+const etiqueta = texto => ({ valor: texto });
+console.log(etiqueta("oferta"));
+
+const multiplicador = factor => n => n * factor;
+console.log(multiplicador(3)(4));</textarea>
+    </div>
+
+    <label class="pregunta-abierta">
+      <span class="pa-titulo">🧠 Última pregunta, la que de verdad mide si lo tienes: de los cuatro fragmentos rotos (2, 3, 4 y 6), <strong>¿cuál te parece el más peligroso en un proyecto real y por qué?</strong> No hay respuesta única; me interesa tu criterio.</span>
+      <textarea class="abierta" data-label="Reto 01 · ¿cuál de los cuatro rotos es el más peligroso y por qué?" rows="3"></textarea>
+    </label>
+
+    <div class="hoja-respuestas">
+      <p class="hr-intro">📋 <strong>Tu hoja de respuestas.</strong> Se rellena sola. Pulsa el botón y <strong>pégala en el chat</strong>.</p>
+      <textarea class="hr-salida" readonly rows="14"></textarea>
+      <br>
+      <button class="hr-copiar" type="button">Copiar para el chat</button>
+      <span class="hr-aviso"></span>
+    </div>
+
+    <div class="pie">
+      <div class="recordatorio-tutor">
+        💬 <strong>Soy tu tutor.</strong> Si alguno te ha parecido injusto —que dependiera de
+        algo no enseñado— dímelo y lo corrijo. Es mi error, no tuyo.
+      </div>
+      <div class="nav-lecciones">
+        <a href="../lessons/0002-funciones-y-flechas.html">← Lección 02 · Funciones y flechas</a>
+        <a href="banco-de-retos.html">Banco de retos →</a>
+      </div>
+    </div>
+
+  </main>
+  <script src="../assets/quiz.js"></script>
+  <script src="../assets/repl.js"></script>
+</body>
+</html>

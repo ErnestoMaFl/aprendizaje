@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 2 · Props y componentes reutilizables</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<a class="online-link" href="https://ernestomafl.github.io/aprendizaje/" title="Ir al índice de mis cursos en línea">🌐 Mis cursos</a>
+
+<div class="kicker">Lección 2 · Curso de Astro 7 <span class="mission-tag">misión: webs rápidas de cliente</span></div>
+<h1>Props: escribe la tarjeta una vez, úsala mil veces</h1>
+<p class="subtitle">La victoria de hoy: convertir HTML repetido en un componente con
+huecos, y rellenar esos huecos con props — la pieza central de toda web de cliente
+mantenible.</p>
+
+<div class="win">🎯 <strong>Al terminar podrás:</strong> crear un componente en
+<code>src/components/</code>, pasarle datos como atributos y leerlos con
+<code>Astro.props</code> (con valores por defecto), y explicar por qué eso te ahorra
+horas cuando el cliente pida cambios.</div>
+
+<hr>
+
+<!-- ===================== PROBLEMA ANTES QUE INSTRUCCIÓN ===================== -->
+<h2>Primero, un problema (intenta antes de leer)</h2>
+<div class="callout problem">
+<p>La Panadería Aurora quiere una sección de «Servicios» con tres tarjetas. Tu primer
+impulso podría ser este HTML en la página de inicio:</p>
+<pre><code><span class="tok-tag">&lt;article</span> class="tarjeta"<span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;span&gt;</span>🥖<span class="tok-tag">&lt;/span&gt;</span> <span class="tok-tag">&lt;h3&gt;</span>Pan artesanal<span class="tok-tag">&lt;/h3&gt;</span> <span class="tok-tag">&lt;p&gt;</span>Horneado cada mañana.<span class="tok-tag">&lt;/p&gt;</span>
+<span class="tok-tag">&lt;/article&gt;</span>
+<span class="tok-tag">&lt;article</span> class="tarjeta"<span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;span&gt;</span>🎂<span class="tok-tag">&lt;/span&gt;</span> <span class="tok-tag">&lt;h3&gt;</span>Pasteles por encargo<span class="tok-tag">&lt;/h3&gt;</span> <span class="tok-tag">&lt;p&gt;</span>Para bodas y eventos.<span class="tok-tag">&lt;/p&gt;</span>
+<span class="tok-tag">&lt;/article&gt;</span>
+<span class="tok-tag">&lt;article</span> class="tarjeta"<span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;span&gt;</span>☕<span class="tok-tag">&lt;/span&gt;</span> <span class="tok-tag">&lt;h3&gt;</span>Café de especialidad<span class="tok-tag">&lt;/h3&gt;</span> <span class="tok-tag">&lt;p&gt;</span>De tostado local.<span class="tok-tag">&lt;/p&gt;</span>
+<span class="tok-tag">&lt;/article&gt;</span></code></pre>
+<p><strong>Tu predicción:</strong> el cliente llama y pide añadir un precio a <em>todas</em>
+las tarjetas (y la semana que viene habrá tarjetas también en la página «Sobre nosotros»).
+¿Qué problema le ves a este enfoque, y — con lo que viste de <code>Astro.props</code> en la
+lección 1 más lo que sepas de React — cómo intentarías resolverlo? Escribe tu idea antes
+de abrir la respuesta:</p>
+<textarea class="open-answer" data-label="Predicción inicial (problema antes que instrucción)" rows="4"
+  placeholder="No pasa nada si te equivocas: intentarlo antes de leer hace que lo que viene se fije mejor."></textarea>
+</div>
+
+<details class="predict">
+<summary>Ya escribí mi idea — muéstrame la respuesta</summary>
+<p>El problema es la <strong>repetición</strong>: la estructura de la tarjeta vive en tres
+sitios (pronto más). Cada cambio de diseño hay que aplicarlo N veces, y tarde o temprano
+una tarjeta se queda distinta de las demás.</p>
+<p>La solución en Astro: escribir la estructura <strong>una sola vez</strong> en un
+componente (<code>Tarjeta.astro</code>) dejando <em>huecos</em> para lo que cambia
+(icono, título, texto), y rellenar esos huecos con <strong>props</strong> al usarlo:</p>
+<pre><code><span class="tok-tag">&lt;Tarjeta</span> icono="🥖" titulo="Pan artesanal" texto="Horneado cada mañana." <span class="tok-tag">/&gt;</span>
+<span class="tok-tag">&lt;Tarjeta</span> icono="🎂" titulo="Pasteles por encargo" texto="Para bodas y eventos." <span class="tok-tag">/&gt;</span>
+<span class="tok-tag">&lt;Tarjeta</span> icono="☕" titulo="Café de especialidad" texto="De tostado local." <span class="tok-tag">/&gt;</span></code></pre>
+<p>¿Precio nuevo en todas? Se añade <em>una vez</em> en <code>Tarjeta.astro</code> y listo.
+Si vienes de React esto te suena: es la misma idea de props — la diferencia es
+<em>dónde</em> corre, y eso lo vemos ahora.</p>
+</details>
+
+<hr>
+
+<!-- ===================== CONOCIMIENTO ===================== -->
+<h2>El circuito de una prop: definir → pasar → usar</h2>
+
+<div class="callout">
+<p><strong>Contexto que necesitas primero (2 carpetas, nada más).</strong> Aún no hemos
+montado ningún proyecto — eso llega en la próxima lección —, pero para leer los ejemplos
+de hoy te bastan dos convenciones de todo proyecto Astro:<sup class="cite"><a href="https://docs.astro.build/es/basics/project-structure/">1</a></sup></p>
+<ul>
+  <li><code>src/pages/</code> — las <strong>páginas</strong> del sitio: cada archivo aquí
+      se convierte en una URL (<code>index.astro</code> es la portada).</li>
+  <li><code>src/components/</code> — las <strong>piezas reutilizables</strong> que las
+      páginas usan (nuestra <code>Tarjeta.astro</code>).</li>
+</ul>
+<p>Consecuencia práctica: como la página vive en <code>src/pages/</code> y el componente
+en <code>src/components/</code>, la página lo importa con una <strong>ruta relativa entre
+carpetas hermanas</strong>: <code>'../components/Tarjeta.astro'</code> (sube un nivel,
+entra en <code>components</code>), siempre entre comillas por ser un import de JavaScript.
+Por ahora léelo como contexto; lo teclearás de verdad cuando montemos el proyecto.</p>
+</div>
+
+<p>Este es <code>Tarjeta.astro</code> completo — fíjate en que son las dos zonas que ya
+conoces (<a href="../reference/anatomia-componente-astro.html">script + plantilla</a>):<sup class="cite"><a href="https://docs.astro.build/es/basics/astro-components/">2</a></sup></p>
+
+<pre><code><span class="tok-comment">// src/components/Tarjeta.astro</span>
+<span class="tok-fence">---</span>
+const { icono = '🍞', titulo, texto } = Astro.props;  <span class="tok-comment">// ① DEFINE sus huecos</span>
+<span class="tok-fence">---</span>
+<span class="tok-tag">&lt;article</span> class="tarjeta"<span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;span&gt;</span>{icono}<span class="tok-tag">&lt;/span&gt;</span>
+  <span class="tok-tag">&lt;h3&gt;</span>{titulo}<span class="tok-tag">&lt;/h3&gt;</span>
+  <span class="tok-tag">&lt;p&gt;</span>{texto}<span class="tok-tag">&lt;/p&gt;</span>
+<span class="tok-tag">&lt;/article&gt;</span></code></pre>
+
+<p>Y así lo usa la página de inicio:</p>
+
+<pre><code><span class="tok-comment">// src/pages/index.astro</span>
+<span class="tok-fence">---</span>
+import Tarjeta from '../components/Tarjeta.astro';   <span class="tok-comment">// ② lo IMPORTA</span>
+<span class="tok-fence">---</span>
+<span class="tok-tag">&lt;section</span> class="servicios"<span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;Tarjeta</span> icono="🥖" titulo="Pan artesanal" texto="Horneado cada mañana." <span class="tok-tag">/&gt;</span>
+  <span class="tok-tag">&lt;Tarjeta</span> titulo="Café de especialidad" texto="De tostado local." <span class="tok-tag">/&gt;</span>
+<span class="tok-tag">&lt;/section&gt;</span>                                <span class="tok-comment">// ③ le PASA los datos como atributos</span></code></pre>
+
+<p>Tres piezas que encajan:<sup class="cite"><a href="https://docs.astro.build/es/basics/astro-components/">2</a></sup></p>
+<ul>
+  <li><strong>Definir.</strong> Todas las props llegan al componente en el objeto
+      <code>Astro.props</code>. Lo habitual es desestructurarlas:
+      <code>const { titulo, texto } = Astro.props;</code>. Un <strong>valor por
+      defecto</strong> (<code>icono = '🍞'</code>) cubre el caso en que no la pasen —
+      mira la segunda tarjeta: no lleva <code>icono</code>, y saldrá 🍞.</li>
+  <li><strong>Pasar.</strong> Quien usa el componente le pasa los datos <em>como
+      atributos HTML</em>. Texto fijo entre comillas (<code>titulo="Pan artesanal"</code>);
+      cualquier valor de JavaScript entre llaves (<code>precio={4.5}</code>,
+      <code>destacada={true}</code>).</li>
+  <li><strong>Usar.</strong> En la plantilla, las llaves insertan la prop donde toque:
+      <code>{titulo}</code> — y también dentro de atributos: <code>href={url}</code>.</li>
+</ul>
+
+<div class="callout">
+<p><strong>Contraste con React.</strong> El modelo mental es el mismo (props hacia abajo,
+componente en mayúscula como <code>&lt;Tarjeta /&gt;</code>), pero aquí las props se leen
+<strong>una vez en el build</strong>, en el servidor. No hay estado ni re-render: el
+resultado es HTML terminado. Si el dato cambia, se reconstruye el sitio — para la web de
+un cliente (contenido que cambia poco), eso es una ventaja, no una limitación.</p>
+</div>
+
+<div class="callout key">
+<p><strong>Novedad de Astro 7 que te va a pasar.</strong> El compilador nuevo (reescrito
+en Rust) es estricto como JSX: una etiqueta sin cerrar o un atributo a medias ya
+<strong>no se autocorrigen en silencio — detienen el build con un error</strong> que
+señala la línea.<sup class="cite"><a href="https://astro.build/blog/astro-7/">3</a></sup>
+Al principio molesta; en la web de un cliente es un regalo: el HTML roto se detecta en tu
+máquina, no en el navegador del visitante. Ojo con los componentes sin contenido:
+ciérralos en la propia etiqueta, <code>&lt;Tarjeta … /&gt;</code>.</p>
+</div>
+
+<p class="aside">En la documentación verás las props tipadas con TypeScript
+(<code>interface Props { titulo: string }</code>). Es el estándar de los proyectos serios
+porque avisa si olvidas una prop obligatoria — lo incorporaremos cuando montemos el
+proyecto real; hoy no lo necesitas.</p>
+
+<p class="source">📌 Todo lo de hoy, condensado en la chuleta imprimible:
+<a href="../reference/props-y-componentes-reutilizables.html">Referencia · Props y componentes reutilizables</a>.</p>
+
+<hr>
+
+<!-- ===================== PRÁCTICA GUIADA → SOLO ===================== -->
+<h2>Practícalo (de más guiado a menos)</h2>
+
+<h3>Paso 1 · Completa el componente</h3>
+<p>La panadería quiere una cita de un cliente satisfecho. La plantilla ya está hecha;
+te falta el frontmatter. Escribe la línea que extrae <code>nombre</code> y
+<code>frase</code>, y <code>estrellas</code> con <code>'⭐⭐⭐⭐⭐'</code> por defecto:</p>
+<pre><code><span class="tok-comment">// src/components/Testimonio.astro</span>
+<span class="tok-fence">---</span>
+<span class="tok-comment">// … tu línea aquí …</span>
+<span class="tok-fence">---</span>
+<span class="tok-tag">&lt;blockquote&gt;</span>
+  <span class="tok-tag">&lt;p&gt;</span>«{frase}»<span class="tok-tag">&lt;/p&gt;</span>
+  <span class="tok-tag">&lt;footer&gt;</span>— {nombre} <span class="tok-tag">&lt;span&gt;</span>{estrellas}<span class="tok-tag">&lt;/span&gt;</span><span class="tok-tag">&lt;/footer&gt;</span>
+<span class="tok-tag">&lt;/blockquote&gt;</span></code></pre>
+<textarea class="open-answer" data-label="Paso 1 · Frontmatter de Testimonio.astro" rows="2"
+  placeholder="Escribe aquí la línea del frontmatter…"></textarea>
+
+<details class="predict">
+<summary>Comparar con la solución del paso 1</summary>
+<pre><code>const { nombre, frase, estrellas = '⭐⭐⭐⭐⭐' } = Astro.props;</code></pre>
+<p>Claves: se desestructura desde <code>Astro.props</code>, y el valor por defecto va con
+<code>=</code> <em>dentro</em> de las llaves de desestructuración (es JavaScript normal,
+el mismo que usarías en cualquier función).</p>
+</details>
+
+<h3>Paso 2 · Úsalo desde la página</h3>
+<p>Ahora escribe las <strong>dos líneas</strong> que faltan en
+<code>src/pages/index.astro</code> para mostrar el testimonio de Marta («El mejor pan del
+barrio»): la de importar y la de usar el componente. Tienes el patrón exacto en el
+ejemplo de <code>index.astro</code> de arriba — la ruta funciona igual aquí.</p>
+<textarea class="open-answer" data-label="Paso 2 · Importar y usar Testimonio" rows="3"
+  placeholder="Línea 1: el import (¿en qué zona del archivo va?)&#10;Línea 2: la etiqueta con sus props…"></textarea>
+
+<details class="predict">
+<summary>Comparar con la solución del paso 2</summary>
+<pre><code><span class="tok-fence">---</span>
+import Testimonio from '../components/Testimonio.astro';
+<span class="tok-fence">---</span>
+<span class="tok-tag">&lt;Testimonio</span> nombre="Marta" frase="El mejor pan del barrio" <span class="tok-tag">/&gt;</span></code></pre>
+<p>El <code>import</code> siempre va en el frontmatter (entre los <code>---</code>). Las
+props de texto van como atributos con comillas, y como no le pasamos
+<code>estrellas</code>, saldrá el valor por defecto. Nota Astro 7: sin el
+<code>/&gt;</code> de cierre, el build fallaría con error.</p>
+</details>
+
+<h3>Paso 3 · Tú solo: el botón del sitio</h3>
+<p>Sin mirar los pasos anteriores: escribe <strong>completo</strong> un componente
+<code>Boton.astro</code> que reciba <code>texto</code>, <code>url</code> y
+<code>tipo</code> (por defecto <code>'primario'</code>), y pinte un enlace
+<code>&lt;a&gt;</code> cuya <code>class</code> sea el tipo y cuyo <code>href</code> sea la
+url. Añade también una línea de ejemplo de cómo lo usaría la página.</p>
+<textarea class="open-answer" data-label="Paso 3 · Boton.astro completo + ejemplo de uso" rows="8"
+  placeholder="Todo el archivo Boton.astro (frontmatter + plantilla) y debajo un ejemplo de uso…"></textarea>
+
+<details class="predict">
+<summary>Comparar con la solución del paso 3</summary>
+<pre><code><span class="tok-comment">// src/components/Boton.astro</span>
+<span class="tok-fence">---</span>
+const { texto, url, tipo = 'primario' } = Astro.props;
+<span class="tok-fence">---</span>
+<span class="tok-tag">&lt;a</span> class={tipo} href={url}<span class="tok-tag">&gt;</span>{texto}<span class="tok-tag">&lt;/a&gt;</span>
+
+<span class="tok-comment">// y en la página, por ejemplo:</span>
+<span class="tok-tag">&lt;Boton</span> texto="Haz tu pedido" url="/contacto" <span class="tok-tag">/&gt;</span></code></pre>
+<p>Fíjate: <code>class={tipo}</code> y <code>href={url}</code> — las llaves funcionan
+también dentro de atributos. Si tu versión difiere en nombres pero el circuito
+definir→pasar→usar está bien, cuenta como correcta.</p>
+</details>
+
+<hr>
+
+<!-- ===================== SKILL: RETRIEVAL ===================== -->
+<h2>Comprueba que se te quedó (recupéralo de memoria)</h2>
+<p>Sin releer lo de arriba. Marca tu <strong>confianza</strong> en cada pregunta — si
+fallas algo estando «seguro», es la señal más valiosa para programar tu repaso.</p>
+
+<div id="quiz"></div>
+
+<h2>Explícate a ti mismo</h2>
+<div class="callout key">
+<p><strong>Pregunta de auto-explicación</strong> (escribirlo es la prueba de que lo
+dominas): ¿por qué a la web de tu cliente le conviene más una <code>&lt;Tarjeta /&gt;</code>
+con props que copiar el HTML tres veces? Piensa en el día que el cliente pida «añade el
+precio a todas las tarjetas».</p>
+<textarea class="open-answer" data-label="Auto-explicación · por qué props y no copiar-pegar" rows="4"
+  placeholder="2-3 frases con tus palabras…"></textarea>
+</div>
+
+<div id="hoja"></div>
+
+<hr>
+
+<!-- ===================== PRÁCTICA EXTERNA ===================== -->
+<h2>¿Quieres más práctica? (propuesta, no deberes)</h2>
+<p>Tres recursos externos comprobados, de más guiado a más libre. Cuéntame en el chat si
+haces alguno y lo incorporamos al plan:</p>
+<div class="link-group">
+  <span class="link-label src">📗 Reto oficial · tutorial de Astro, unidad 3 (componentes)</span>
+  <a href="https://docs.astro.build/en/tutorial/3-components/">Build it yourself: cabecera, pie y menú con componentes</a>
+  <span style="color:var(--ink-soft)">← retos «constrúyelo tú» dentro de un proyecto real (~30-45 min)</span>
+</div>
+<div class="link-group">
+  <span class="link-label src">📗 Lectura en español · tutorial de Luis Llamas</span>
+  <a href="https://www.luisllamas.es/astro-componentes-props-slots/">Componentes, props y slots en Astro</a>
+  <span style="color:var(--ink-soft)">← refuerza lo de hoy y asoma los «slots» (próxima lección)</span>
+</div>
+<div class="link-group">
+  <span class="link-label src">📗 Reto libre · Frontend Mentor (gratuito)</span>
+  <a href="https://www.frontendmentor.io/challenges">Elige un reto de tarjeta o landing y móntalo con componentes Astro</a>
+  <span style="color:var(--ink-soft)">← diseño real de cliente: perfecto para tu misión (cuando tengas el proyecto montado)</span>
+</div>
+
+<!-- ===================== PIE ===================== -->
+<div class="lesson-footer">
+  <h2 style="margin-top:0">Enlaces de esta lección</h2>
+  <p class="legend-note">Tres tipos distintos, separados a propósito. Los números en
+  superíndice del texto apuntan siempre a la <strong>fuente de la verdad</strong>.</p>
+
+  <div class="link-group">
+    <span class="link-label src">📗 Fuente de la verdad · documentación oficial de Astro</span>
+    <a href="https://docs.astro.build/es/basics/astro-components/">Componentes de Astro (en español)</a>
+    <a href="https://astro.build/blog/astro-7/">Anuncio de Astro 7 (compilador estricto)</a>
+    <span style="color:var(--ink-soft)">← la primera es la lectura recomendada de hoy (~10 min)</span>
+  </div>
+
+  <div class="link-group">
+    <span class="link-label course">📘 Material del curso · creado por tu profesor</span>
+    <a href="../reference/props-y-componentes-reutilizables.html">Chuleta: props y componentes reutilizables</a>
+    <a href="../reference/anatomia-componente-astro.html">Chuleta: anatomía de un .astro</a>
+    <a href="0001-que-es-astro-y-el-componente-astro.html">Lección anterior: qué es Astro</a>
+  </div>
+
+  <div class="link-group">
+    <span class="link-label nav">🧭 Navegación del curso</span>
+    <span style="color:var(--ink-soft)">Estás en la Lección 2 · Próxima → montar el proyecto real (Node 22 + <code>npm create astro@latest</code>)</span>
+  </div>
+
+  <div class="ask-teacher">
+    🧑‍🏫 <strong>Recuerda:</strong> soy tu profesor. Si algo no cuadra —la
+    desestructuración, por qué el import va arriba, qué pasa si pasas una prop que el
+    componente no espera— pregúntame ahora mismo. Las mejores dudas surgen justo aquí.
+  </div>
+</div>
+
+<script src="../assets/quiz.js"></script>
+<script>
+TeachQuiz.render('quiz', [
+  {
+    type: 'mc',
+    prompt: '¿Cómo recibe un componente <code>.astro</code> los datos que le pasan al usarlo?',
+    options: [
+      'Con un hook de estado en la plantilla web',
+      'Con atributos data-* leídos del navegador',
+      'Con el objeto Astro.props del frontmatter',
+      'Con una petición fetch al servidor local'
+    ],
+    answer: 2,
+    feedback: 'Todas las props llegan al objeto global <code>Astro.props</code>, que se lee en el frontmatter (normalmente desestructurando). No hay hooks ni estado: las props se leen una vez, en el build, y de ahí sale HTML terminado.'
+  },
+  {
+    type: 'mc',
+    prompt: 'En Astro 7, ¿qué ocurre si dejas una etiqueta sin cerrar en la plantilla de un componente?',
+    options: [
+      'El build se detiene con un error de sintaxis',
+      'La corrige el compilador y avisa en consola',
+      'La corrige el navegador al pintar la página',
+      'Se ignora esa etiqueta y se pinta lo demás'
+    ],
+    answer: 0,
+    feedback: 'El compilador nuevo de Astro 7 (en Rust) es estricto como JSX: ya no autocorrige el HTML mal formado — falla el build señalando la línea. Es un cambio respecto a versiones anteriores, y juega a tu favor: el error aparece en tu máquina, no en el navegador del visitante.'
+  },
+  {
+    type: 'short',
+    prompt: 'Por convención, ¿en qué carpeta del proyecto se guardan los componentes reutilizables como <code>Tarjeta.astro</code>?',
+    accept: ['src/components', 'components'],
+    model: 'src/components/',
+    feedback: 'Los componentes reutilizables van en <code>src/components/</code>; las páginas del sitio, en <code>src/pages/</code>. Esta separación la usaremos constantemente al montar el proyecto real.'
+  },
+  {
+    type: 'recall',
+    prompt: 'De memoria y con tus palabras: tienes el mismo bloque de HTML repetido 3 veces en una página. Describe los pasos para convertirlo en un componente con props (qué haces en el archivo nuevo, y qué escribes donde estaba el HTML repetido).',
+    model: '1) Creo un archivo en src/components (p. ej. Tarjeta.astro): pego el HTML una sola vez y sustituyo lo que cambia por expresiones {prop}, leyendo las props en el frontmatter con const { … } = Astro.props (con valores por defecto si conviene). 2) Donde estaba el HTML repetido: importo el componente en el frontmatter de la página y lo uso como etiqueta, una vez por tarjeta, pasándole los datos como atributos: <Tarjeta titulo="…" texto="…" />.',
+    feedback: 'Las ideas clave: (1) archivo nuevo en src/components con el HTML una sola vez; (2) los huecos se leen de Astro.props en el frontmatter; (3) en la página, import + etiqueta con los datos como atributos. Si tu respuesta recorre ese circuito definir→pasar→usar, la tienes.'
+  }
+]);
+TeachQuiz.answerSheet('hoja', { titulo: 'Lección 2 · Props y componentes reutilizables' });
+</script>
+
+</body>
+</html>

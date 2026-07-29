@@ -1,0 +1,421 @@
+/* course.css — hoja de estilos compartida para todas las lecciones.
+   Inspiración: Tufte. Tipografía legible, mucho aire, buena impresión. */
+
+:root {
+  --tinta: #2b2723;
+  --tinta-suave: #6b6257;
+  --papel: #fdfbf7;
+  --papel-hueso: #f4efe6;
+  --acento: #9a3412;      /* terracota — para resaltar CSS */
+  --acento-suave: #fef3ec;
+  --verde: #3f6212;       /* aciertos */
+  --verde-suave: #ecfccb;
+  --rojo: #b91c1c;        /* errores */
+  --rojo-suave: #fee2e2;
+  --azul: #1e40af;        /* enlaces/selector */
+  --regla: #e4ddd0;
+  --codigo-fondo: #f6f2ea;
+  --sombra: 0 1px 3px rgba(43, 39, 35, .08), 0 6px 24px rgba(43, 39, 35, .06);
+  --serif: Georgia, "Iowan Old Style", "Times New Roman", serif;
+  --sans: "Segoe UI", Helvetica, Arial, sans-serif;
+  --mono: "SF Mono", "JetBrains Mono", "Fira Code", Consolas, monospace;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--papel);
+  color: var(--tinta);
+  font-family: var(--serif);
+  font-size: 19px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+.lienzo {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 3.5rem 1.5rem 6rem;
+}
+
+/* --- Encabezado de lección --- */
+.leccion-kicker {
+  font-family: var(--sans);
+  font-size: .8rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--acento);
+  font-weight: 600;
+  margin: 0 0 .5rem;
+}
+h1 {
+  font-size: 2.4rem;
+  line-height: 1.1;
+  margin: 0 0 1rem;
+  font-weight: 700;
+  letter-spacing: -.01em;
+}
+h2 {
+  font-size: 1.5rem;
+  margin: 2.8rem 0 .8rem;
+  font-weight: 700;
+  border-bottom: 1px solid var(--regla);
+  padding-bottom: .3rem;
+}
+h3 { font-size: 1.15rem; margin: 1.8rem 0 .4rem; font-family: var(--sans); }
+
+p { margin: 0 0 1.1rem; }
+strong { color: #1a1712; }
+a { color: var(--azul); text-decoration: none; border-bottom: 1px solid rgba(30,64,175,.3); }
+a:hover { border-bottom-color: var(--azul); }
+
+.lede {
+  font-size: 1.2rem;
+  color: var(--tinta-suave);
+  line-height: 1.55;
+  margin-bottom: 2rem;
+}
+
+/* --- Código --- */
+code {
+  font-family: var(--mono);
+  font-size: .85em;
+  background: var(--codigo-fondo);
+  padding: .12em .38em;
+  border-radius: 4px;
+  color: var(--acento);
+}
+pre {
+  font-family: var(--mono);
+  font-size: .82rem;
+  line-height: 1.6;
+  background: var(--codigo-fondo);
+  border: 1px solid var(--regla);
+  border-left: 3px solid var(--acento);
+  border-radius: 6px;
+  padding: 1.1rem 1.2rem;
+  overflow-x: auto;
+  margin: 0 0 1.2rem;
+}
+pre code { background: none; padding: 0; color: var(--tinta); }
+
+/* Tokens de sintaxis CSS resaltada */
+.t-sel  { color: var(--azul); font-weight: 600; }   /* selector */
+.t-prop { color: var(--acento); }                    /* propiedad */
+.t-val  { color: var(--verde); }                     /* valor */
+.t-punt { color: var(--tinta-suave); }               /* puntuación { } : ; */
+.t-com  { color: #94a3b8; font-style: italic; }      /* comentario */
+
+/* --- Cajas de nota --- */
+.nota {
+  background: var(--papel-hueso);
+  border-radius: 8px;
+  padding: 1rem 1.2rem;
+  margin: 1.5rem 0;
+  font-size: .95rem;
+  border-left: 3px solid var(--tinta-suave);
+}
+.nota-titulo {
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: .8rem;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--tinta-suave);
+  margin: 0 0 .3rem;
+}
+.nota.acento { background: var(--acento-suave); border-left-color: var(--acento); }
+.nota.acento .nota-titulo { color: var(--acento); }
+
+/* --- Diagrama de anatomía --- */
+.anatomia {
+  font-family: var(--mono);
+  font-size: 1.15rem;
+  text-align: center;
+  background: var(--papel-hueso);
+  border-radius: 10px;
+  padding: 2rem 1rem;
+  margin: 1.5rem 0;
+  box-shadow: var(--sombra);
+}
+.etiqueta {
+  font-family: var(--sans);
+  font-size: .68rem;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  display: inline-block;
+  padding: .1rem .4rem;
+  border-radius: 4px;
+  vertical-align: middle;
+}
+
+/* --- Quiz --- */
+.quiz {
+  background: #fff;
+  border: 1px solid var(--regla);
+  border-radius: 10px;
+  padding: 1.4rem 1.5rem;
+  margin: 1.6rem 0;
+  box-shadow: var(--sombra);
+}
+.quiz-pregunta { font-weight: 700; margin: 0 0 1rem; font-size: 1.05rem; }
+.quiz-num {
+  font-family: var(--sans);
+  font-size: .72rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--acento);
+  font-weight: 700;
+}
+.opciones { display: flex; flex-direction: column; gap: .5rem; margin: 0; }
+.opcion {
+  font-family: var(--sans);
+  font-size: .95rem;
+  text-align: left;
+  padding: .7rem .9rem;
+  border: 1.5px solid var(--regla);
+  border-radius: 8px;
+  background: var(--papel);
+  color: var(--tinta);
+  cursor: pointer;
+  transition: border-color .15s, background .15s;
+}
+.opcion:hover { border-color: var(--tinta-suave); }
+.opcion.correcta { border-color: var(--verde); background: var(--verde-suave); }
+.opcion.incorrecta { border-color: var(--rojo); background: var(--rojo-suave); }
+.opcion:disabled { cursor: default; }
+.feedback {
+  font-family: var(--sans);
+  font-size: .9rem;
+  margin-top: .9rem;
+  padding: .7rem .9rem;
+  border-radius: 8px;
+  display: none;
+}
+.feedback.mostrar { display: block; }
+.feedback.ok { background: var(--verde-suave); color: var(--verde); }
+.feedback.no { background: var(--rojo-suave); color: var(--rojo); }
+
+/* --- Selector de seguridad (aparece al responder un quiz) --- */
+.confianza {
+  display: none;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .4rem;
+  margin-top: .9rem;
+  font-family: var(--sans);
+}
+.confianza.activa { display: flex; }
+.conf-etq { font-size: .82rem; color: var(--tinta-suave); margin-right: .2rem; }
+.conf-chip {
+  font-family: var(--sans);
+  font-size: .82rem;
+  padding: .3rem .7rem;
+  border: 1.5px solid var(--regla);
+  border-radius: 999px;
+  background: var(--papel);
+  color: var(--tinta-suave);
+  cursor: pointer;
+  transition: border-color .15s, background .15s, color .15s;
+}
+.conf-chip:hover { border-color: var(--tinta-suave); }
+.conf-chip.elegido { border-color: var(--acento); background: var(--acento-suave); color: var(--acento); font-weight: 600; }
+
+/* --- Revelar: respuestas, soluciones y pistas SIEMPRE ocultas hasta que el usuario decida.
+       Uso:  <details class="revelar"><summary>Ver la respuesta</summary> … </details>  --- */
+.revelar {
+  background: var(--papel-hueso);
+  border: 1px solid var(--regla);
+  border-left: 3px solid var(--tinta-suave);
+  border-radius: 8px;
+  margin: 1.2rem 0;
+  font-family: var(--sans);
+  font-size: .93rem;
+}
+.revelar > summary {
+  cursor: pointer;
+  padding: .7rem 1.1rem;
+  font-weight: 600;
+  color: var(--tinta-suave);
+  list-style: none;
+  user-select: none;
+}
+.revelar > summary::-webkit-details-marker { display: none; }
+.revelar > summary::before {
+  content: "▸ ";
+  color: var(--acento);
+  font-weight: 700;
+}
+.revelar[open] > summary {
+  border-bottom: 1px solid var(--regla);
+  color: var(--acento);
+}
+.revelar[open] > summary::before { content: "▾ "; }
+.revelar > summary:hover { color: var(--acento); }
+.revelar .revelar-cuerpo { padding: .9rem 1.1rem 1rem; }
+.revelar .revelar-cuerpo > :last-child { margin-bottom: 0; }
+.revelar.pista { border-left-color: var(--azul); }
+.revelar.pista > summary::before { color: var(--azul); }
+.revelar.pista[open] > summary { color: var(--azul); }
+@media print { .revelar > .revelar-cuerpo { display: block; } }
+
+/* --- Preguntas abiertas --- */
+.pregunta-abierta { display: block; margin: 1.4rem 0; }
+.pregunta-abierta .pa-titulo {
+  display: block;
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: .98rem;
+  margin-bottom: .45rem;
+}
+textarea.abierta, .hr-salida {
+  width: 100%;
+  font-family: var(--sans);
+  font-size: .92rem;
+  line-height: 1.5;
+  padding: .7rem .8rem;
+  border: 1.5px solid var(--regla);
+  border-radius: 8px;
+  background: var(--papel);
+  color: var(--tinta);
+  resize: vertical;
+  box-sizing: border-box;
+}
+textarea.abierta:focus { border-color: var(--acento); outline: none; }
+
+/* --- Hoja de respuestas copiable --- */
+.hoja-respuestas {
+  background: var(--papel-hueso);
+  border: 1px solid var(--regla);
+  border-radius: 10px;
+  padding: 1.3rem 1.4rem;
+  margin: 2.2rem 0;
+}
+.hr-intro { font-family: var(--sans); font-size: .92rem; color: var(--tinta-suave); margin: 0 0 .8rem; }
+.hr-salida { font-family: var(--mono); font-size: .8rem; background: #fff; min-height: 8rem; }
+.hr-copiar {
+  font-family: var(--sans);
+  font-size: .9rem;
+  font-weight: 600;
+  margin-top: .8rem;
+  padding: .6rem 1.1rem;
+  border: none;
+  border-radius: 8px;
+  background: var(--acento);
+  color: #fff;
+  cursor: pointer;
+}
+.hr-copiar:hover { background: #7c2d12; }
+.hr-aviso { font-family: var(--sans); font-size: .85rem; color: var(--verde); margin-left: .7rem; }
+
+/* --- Recursos prácticos externos: retos que el usuario resuelve por su cuenta.
+       Uso:  <div class="recursos-practica"> <p class="nota-titulo">…</p> <ul class="rp-lista"> <li>… --- */
+.recursos-practica {
+  background: var(--verde-suave);
+  border-radius: 8px;
+  padding: 1rem 1.2rem;
+  margin: 1.5rem 0;
+  font-family: var(--sans);
+  font-size: .93rem;
+}
+.recursos-practica .nota-titulo { color: var(--verde); }
+.rp-lista { list-style: none; padding: 0; margin: .6rem 0 0; }
+.rp-lista li { padding: .5rem 0; border-top: 1px solid rgba(63, 98, 18, .18); }
+.rp-lista li:first-child { border-top: none; }
+.rp-lista a { font-weight: 600; }
+.rp-nota { display: block; color: var(--tinta-suave); font-size: .87rem; margin-top: .15rem; }
+.rp-etq {
+  display: inline-block;
+  font-size: .62rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  font-weight: 700;
+  padding: .1rem .4rem;
+  border-radius: 4px;
+  background: var(--verde);
+  color: #fff;
+  margin-left: .3rem;
+  vertical-align: middle;
+}
+.rp-etq.suave { background: var(--tinta-suave); }
+
+/* --- Tabla comparativa (pesos, unidades, herencia…) ---
+       .nucleo en un <tr> marca la fila como parte del núcleo-80% (punto verde). */
+.tabla-peso {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--sans);
+  font-size: .92rem;
+  margin: 1.2rem 0;
+}
+.tabla-peso th, .tabla-peso td {
+  text-align: left;
+  padding: .55rem .7rem;
+  border-bottom: 1px solid var(--regla);
+  vertical-align: top;
+}
+.tabla-peso th {
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--tinta-suave);
+}
+.tabla-peso td code { font-size: .82rem; }
+.tabla-peso .nucleo td:first-child::after { content: " ●"; color: var(--verde); }
+@media (max-width:600px){ .tabla-peso { font-size: .82rem; } }
+
+/* --- Pie de lección: navegación y recordatorios --- */
+.pie {
+  margin-top: 3.5rem;
+  padding-top: 1.5rem;
+  border-top: 2px solid var(--regla);
+  font-family: var(--sans);
+  font-size: .95rem;
+}
+.fuente-primaria {
+  background: var(--acento-suave);
+  border-radius: 8px;
+  padding: 1rem 1.2rem;
+  margin: 1.5rem 0;
+}
+.fuente-primaria .nota-titulo { color: var(--acento); }
+.recordatorio-tutor {
+  font-family: var(--sans);
+  font-size: .9rem;
+  color: var(--tinta-suave);
+  background: var(--papel-hueso);
+  border-radius: 8px;
+  padding: .9rem 1.1rem;
+  margin: 1.2rem 0;
+}
+.nav-lecciones {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+.nav-lecciones a { font-family: var(--sans); font-size: .9rem; }
+
+@media print {
+  body { font-size: 12pt; background: #fff; }
+  .quiz, .opcion { box-shadow: none; }
+  .feedback { display: block !important; }
+}
+
+@media (max-width: 600px) {
+  body { font-size: 17px; }
+  h1 { font-size: 1.9rem; }
+  .anatomia { font-size: .95rem; }
+}
+
+/* Botón "Ver en línea": enlace a la ruta publicada del documento (GitHub Pages) */
+.online-link {
+  position: fixed; top: 12px; right: 12px; z-index: 999;
+  font: 14px/1 system-ui, sans-serif;
+  padding: 0.5em 0.9em; border-radius: 999px;
+  background: #2a6fbb; color: #fff; text-decoration: none;
+  opacity: 0.85; box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+}
+.online-link:hover { opacity: 1; }
+@media print { .online-link { display: none; } }

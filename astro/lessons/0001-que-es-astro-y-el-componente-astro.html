@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lección 1 · Qué es Astro y el componente .astro</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<a class="online-link" href="https://ernestomafl.github.io/aprendizaje/" title="Ir al índice de mis cursos en línea">🌐 Mis cursos</a>
+
+<div class="kicker">Lección 1 · Curso de Astro <span class="mission-tag">misión: webs rápidas de cliente</span></div>
+<h1>Qué es Astro y cómo se lee un componente <code>.astro</code></h1>
+<p class="subtitle">Tu primera victoria: leer un archivo <code>.astro</code> y explicar qué recibe
+el navegador — y por qué eso hace que el sitio de tu cliente vuele.</p>
+
+<div class="win">🎯 <strong>Al terminar podrás:</strong> señalar las dos partes de un componente
+<code>.astro</code>, decir dónde se ejecuta cada una, y explicar en una frase por qué Astro
+produce sitios más ligeros que un enfoque solo-React.</div>
+
+<hr>
+
+<!-- ===================== PROBLEMA ANTES QUE INSTRUCCIÓN ===================== -->
+<h2>Primero, un problema (intenta antes de leer)</h2>
+<div class="callout problem">
+<p>Un cliente te pide una web corporativa <strong>muy rápida</strong>. Un compañero te
+enseña este archivo, que dibuja el titular de la página de inicio:</p>
+<pre><code><span class="tok-fence">---</span>
+const empresa = 'Panadería Aurora';
+const anio = new Date().getFullYear();
+<span class="tok-fence">---</span>
+<span class="tok-tag">&lt;h1&gt;</span>{empresa}<span class="tok-tag">&lt;/h1&gt;</span>
+<span class="tok-tag">&lt;p&gt;</span>© {anio}<span class="tok-tag">&lt;/p&gt;</span></code></pre>
+<p><strong>Tu predicción:</strong> cuando un visitante abre esta página, ¿cuánto
+JavaScript descarga y ejecuta su navegador para ver el titular y el año? ¿Se ejecuta
+ese <code>new Date()</code> en el móvil del visitante o en otro sitio?</p>
+</div>
+
+<details class="predict">
+<summary>Ya lo pensé — muéstrame la respuesta</summary>
+<p>El navegador descarga <strong>cero JavaScript</strong> para esto. Astro ejecuta el
+código de arriba <em>una sola vez, en el servidor o durante el build</em>, calcula
+<code>empresa</code> y <code>anio</code>, y manda al navegador únicamente el HTML ya
+resuelto:</p>
+<pre><code><span class="tok-tag">&lt;h1&gt;</span>Panadería Aurora<span class="tok-tag">&lt;/h1&gt;</span>
+<span class="tok-tag">&lt;p&gt;</span>© 2026<span class="tok-tag">&lt;/p&gt;</span></code></pre>
+<p>El <code>new Date()</code> corrió en el servidor, no en el móvil del visitante. Si
+esto fuera un componente típico de React, el navegador descargaría la librería de React
+<em>más</em> tu componente y volvería a calcularlo en el dispositivo. Esa diferencia es
+el corazón de la lección.</p>
+</details>
+
+<p class="aside">Equivocarte en la predicción es parte del método: intentar antes de
+leer hace que la explicación se fije mucho mejor. No te saltes el intento.</p>
+
+<hr>
+
+<!-- ===================== CONOCIMIENTO ===================== -->
+<h2>Qué es Astro (y para qué NO es)</h2>
+<p>Astro es un <strong>framework web para construir sitios orientados a contenido</strong>
+— blogs, marketing, e-commerce, webs corporativas.<sup class="cite"><a href="https://docs.astro.build/en/concepts/why-astro/">1</a></sup>
+Justo el tipo de sitio de tu misión. Su apuesta de diseño es <strong>«servidor primero»</strong>:
+mueve el trabajo desde el dispositivo del visitante hacia el servidor, y por eso su lema es
+<em>«menos JavaScript de cliente que ralentice tu sitio»</em>.<sup class="cite"><a href="https://docs.astro.build/en/concepts/why-astro/">1</a></sup></p>
+
+<p>La consecuencia práctica se llama <strong>cero JS por defecto</strong>: tus componentes
+se renderizan a HTML plano en el servidor, y el navegador no recibe JavaScript salvo que
+tú lo pidas explícitamente para una parte concreta (eso son las «islas», tema de una
+lección futura). La documentación reporta cargas <em>«40% más rápidas con 90% menos
+JavaScript»</em> frente a alternativas cargadas de React.<sup class="cite"><a href="https://docs.astro.build/en/concepts/why-astro/">1</a></sup>
+Y la velocidad no es estética: más velocidad se traduce en más conversiones para tu
+cliente.</p>
+
+<div class="callout">
+<p><strong>Contraste con lo que ya conoces.</strong> En React, un componente es código que
+normalmente se envía al navegador y se ejecuta allí. En Astro, un componente
+<code>.astro</code> es una <strong>plantilla que se ejecuta en el servidor</strong> y de
+la que solo sale HTML. Misma palabra —«componente»— idea distinta de <em>dónde</em> corre.</p>
+</div>
+
+<h2>Las dos zonas de un archivo <code>.astro</code></h2>
+<p>Todo componente <code>.astro</code> tiene exactamente dos partes.<sup class="cite"><a href="https://docs.astro.build/en/basics/astro-components/">2</a></sup></p>
+
+<pre><code><span class="tok-fence">---</span>                          <span class="tok-comment">// ① SCRIPT: JS que corre en el SERVIDOR</span>
+const empresa = 'Panadería Aurora';   <span class="tok-comment">//    y se ELIMINA del HTML final</span>
+<span class="tok-fence">---</span>
+<span class="tok-tag">&lt;h1&gt;</span>{empresa}<span class="tok-tag">&lt;/h1&gt;</span>              <span class="tok-comment">&lt;!-- ② PLANTILLA: HTML + expresiones {…} --&gt;</span></code></pre>
+
+<p><strong>① El script del componente</strong> va entre las dos líneas de <code>---</code>
+(llamadas <em>code fence</em>; a esta zona también se le dice <em>frontmatter</em>). Es
+JavaScript normal que corre en el build o en el servidor, e importante: <em>«todo será
+eliminado de la página final enviada al navegador»</em>.<sup class="cite"><a href="https://docs.astro.build/en/basics/astro-components/">2</a></sup>
+Aquí importas otros componentes, defines variables y obtienes datos.</p>
+
+<p><strong>② La plantilla</strong> va debajo del segundo <code>---</code>. Parece HTML, con
+extras al estilo JSX: insertas valores con llaves <code>{empresa}</code>, recorres listas
+con <code>.map()</code> y muestras condicionales con <code>{cond &amp;&amp; …}</code>.<sup class="cite"><a href="https://docs.astro.build/en/basics/astro-components/">2</a></sup></p>
+
+<p>Un componente también puede recibir datos de quien lo usa a través de
+<code>Astro.props</code> — lo veremos en detalle en la próxima lección, pero conviene que
+te suene el nombre desde ya.</p>
+
+<p class="source">📌 Todo esto está condensado en la chuleta imprimible:
+<a href="../reference/anatomia-componente-astro.html">Referencia · Anatomía de un componente .astro</a>.</p>
+
+<hr>
+
+<!-- ===================== SKILL: RETRIEVAL ===================== -->
+<h2>Comprueba que se te quedó (recupéralo de memoria)</h2>
+<p>No releas lo de arriba: intenta recuperarlo. Marca tu <strong>confianza</strong> en cada
+pregunta — es tan importante como acertar. Si fallas algo estando «seguro», eso es oro para
+programar tu repaso.</p>
+
+<div id="quiz"></div>
+
+<h2>Explícate a ti mismo</h2>
+<div class="callout key">
+<p><strong>Pregunta de auto-explicación:</strong> un colega dice «pongamos toda la web del
+cliente en React, que es lo que sé». Con lo de hoy, ¿qué le responderías en 2-3 frases sobre
+<em>por qué</em> Astro puede convenir más para una web corporativa? Escríbelo o dímelo — tu
+respuesta es la prueba de que lo dominas.</p>
+</div>
+
+<!-- ===================== PIE ===================== -->
+<div class="lesson-footer">
+  <h2 style="margin-top:0">Enlaces de esta lección</h2>
+  <p class="legend-note">Tres tipos distintos, separados a propósito. Los números en
+  superíndice del texto (como <sup class="cite"><a href="https://docs.astro.build/en/concepts/why-astro/">1</a></sup>)
+  también apuntan siempre a la <strong>fuente de la verdad</strong>.</p>
+
+  <div class="link-group">
+    <span class="link-label src">📗 Fuente de la verdad · documentación oficial de Astro</span>
+    <a href="https://docs.astro.build/en/concepts/why-astro/">¿Por qué Astro?</a>
+    <a href="https://docs.astro.build/en/basics/astro-components/">Componentes de Astro</a>
+    <span style="color:var(--ink-soft)">← lee estas para profundizar (~10 min)</span>
+  </div>
+
+  <div class="link-group">
+    <span class="link-label course">📘 Material del curso · creado por tu profesor</span>
+    <a href="../reference/anatomia-componente-astro.html">Chuleta: anatomía de un .astro</a>
+    <a href="../MISSION.md">Tu misión</a>
+  </div>
+
+  <div class="link-group">
+    <span class="link-label nav">🧭 Navegación del curso</span>
+    <span style="color:var(--ink-soft)">Estás en la Lección 1 · Próxima →</span>
+    <a href="0002-props-y-componentes-reutilizables.html">0002 · Props y componentes reutilizables</a>
+  </div>
+
+  <div class="ask-teacher">
+    🧑‍🏫 <strong>Recuerda:</strong> soy tu profesor. Si algo no cuadra —qué es una «isla»,
+    la diferencia entre build y servidor, cómo se instala Astro— pregúntame ahora mismo.
+    Las mejores dudas surgen justo aquí.
+  </div>
+</div>
+
+<script src="../assets/quiz.js"></script>
+<script>
+TeachQuiz.render('quiz', [
+  {
+    type: 'mc',
+    prompt: '¿Dónde se ejecuta el código que está entre las dos líneas de <code>---</code>?',
+    options: [
+      'Solo en el navegador del visitante web',
+      'En el servidor; se elimina del HTML',
+      'En el navegador tras cargar la página',
+      'En el servidor y en el navegador web'
+    ],
+    answer: 1,
+    feedback: 'El script del componente corre en el build/servidor y se <em>elimina</em> del HTML que recibe el navegador. Por eso ese código no añade peso ni ejecución en el dispositivo del visitante.'
+  },
+  {
+    type: 'mc',
+    prompt: '¿Para cuál de estos proyectos encaja mejor Astro <em>por diseño</em>?',
+    options: [
+      'Un panel con mucho estado en vivo',
+      'Una web corporativa de contenido',
+      'Un editor colaborativo en tiempo real',
+      'Un juego de navegador con física'
+    ],
+    answer: 1,
+    feedback: 'Astro se define como framework para sitios <em>orientados a contenido</em> (blogs, marketing, corporativos). Las apps con mucho estado interactivo en el cliente no son su punto fuerte — ahí brillan las SPA.'
+  },
+  {
+    type: 'short',
+    prompt: '¿Cómo se llama el objeto que usa un componente para leer los datos que recibe de quien lo usa?',
+    accept: ['astro.props', 'props'],
+    model: 'Astro.props',
+    feedback: 'Un componente accede a los datos que le pasan a través de <code>Astro.props</code>. Lo usaremos a fondo en la lección 2 para hacer componentes reutilizables.'
+  },
+  {
+    type: 'recall',
+    prompt: 'De memoria y con tus palabras: ¿por qué un sitio hecho con Astro suele cargar más rápido que uno hecho solo con React?',
+    model: 'Astro renderiza los componentes a HTML plano en el servidor y, por defecto, no envía JavaScript al navegador (cero JS por defecto). React, en cambio, suele mandar su librería y los componentes al navegador para ejecutarlos allí. Menos JS que descargar y ejecutar = carga más rápida.',
+    feedback: 'Las ideas clave que deberían aparecer: (1) Astro genera HTML en el servidor; (2) cero JS por defecto; (3) React envía y ejecuta JS en el cliente. Si mencionaste al menos dos, vas muy bien.'
+  }
+]);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lección 7 · La ruta es una plantilla</title>
+  <link rel="stylesheet" href="../assets/course.css">
+  <style>
+    /* Bloque de apuesta: el pretest de la lección */
+    .apuesta {
+      border: 1px dashed var(--acento);
+      border-radius: 10px;
+      padding: 1.2rem 1.4rem;
+      margin: 2rem 0;
+      background: var(--acento-suave);
+    }
+    .apuesta .nota-titulo { color: var(--acento); }
+    .apuesta .pregunta-abierta { margin-bottom: .6rem; }
+    /* Tabla de anatomía de la cabecera */
+    .tabla-peso td:first-child { white-space: nowrap; }
+  </style>
+</head>
+<body>
+<a class="online-link" href="https://ernestomafl.github.io/aprendizaje/" title="Ir al índice de mis cursos en línea">🌐 Mis cursos</a>
+  <main class="lienzo">
+
+    <p class="leccion-kicker">Lección 07 · Módulo Legal KIVA</p>
+    <h1>La ruta es una plantilla; el expediente recibe una copia</h1>
+    <p class="lede">La idea central de la <code>HU06-010</code>, y la que más consecuencias tiene
+      en el resto del módulo. Si sólo te llevas una cosa de esta historia, que sea ésta.</p>
+
+    <div class="nota">
+      <p class="nota-titulo">Dónde encaja esta lección · leer primero</p>
+      <p>Esta lección va <strong>fuera de orden</strong>: se escribió antes que las demás porque la
+        HU06-010 fue por donde entraste al módulo. Ubícala en el mapa antes de empezar —
+        <a href="0001-mapa-del-modulo-legal.html">Lección 01</a>:</p>
+      <ul style="font-family:var(--sans);font-size:.93rem;margin:.3rem 0 0">
+        <li><strong>Familia B</strong> (catálogos): la ruta se <em>configura</em> aquí.</li>
+        <li><strong>Hito 1 · Configurar</strong>: se vincula a un servicio del catálogo.</li>
+        <li><strong>Hito 3 · Decidir</strong>: se copia dentro del expediente al confirmar el ticket.</li>
+        <li><strong>Hito 5 · Revisar</strong>: se ejecuta paso a paso.</li>
+      </ul>
+    </div>
+
+    <div class="nota">
+      <p class="nota-titulo">Tu misión, para calibrar</p>
+      <p style="margin:0">Quieres poder <strong>explicar cualquier HU sin leerla</strong>. Por eso
+        esta lección no te pasea por las once reglas de la historia: te deja sólida <em>una</em>
+        idea, la que sostiene a las demás y que además reaparece en el catálogo de servicios y en
+        el gestor documental. Las condiciones, los pools de aprobadores, el escalamiento por tiempo
+        y la firma vienen en lecciones propias.</p>
+    </div>
+
+    <div class="ficha-hu">
+      <p class="fh-id">HU06-010</p>
+      <p class="fh-nombre">Configuración de rutas dinámicas de revisión, aprobación y archivado</p>
+      <dl>
+        <dt>Quién la pide</dt><dd>Gerencia Jurídica</dd>
+        <dt>Para qué</dt><dd>Configurar y mantener rutas de aprobación reutilizables —pasos,
+          aprobadores y condiciones— <strong>sin programar</strong>.</dd>
+        <dt>Por qué importa</dt><dd>Es el <strong>motor compartido</strong> del módulo: lo consumen
+          el catálogo de servicios (<code>HU06-005</code>), los tipos de documento
+          (<code>HU06-004c</code>), la revisión del expediente (<code>HU06-009</code>), la firma
+          (<code>HU06-011</code>) y el gestor documental (<code>HU06-018</code>).</dd>
+        <dt>Dónde leerla</dt><dd>Fila <code>HU06-010</code> de <code>HUS_LEGAL.csv</code> ·
+          sección <span class="rn fuente">§7.17</span> del PDF de arquitectura</dd>
+      </dl>
+    </div>
+
+    <!-- ================= APUESTA / PRETEST ================= -->
+    <div class="apuesta">
+      <p class="nota-titulo">Apuesta antes de leer</p>
+      <p>Todavía no te he explicado nada. <strong>Adivina</strong>: esto es a propósito, arriesgar
+        una respuesta antes de conocerla hace que la explicación se te quede mucho mejor pegada.
+        Equivocarte aquí no cuenta como error.</p>
+      <p>Hoy la Gerencia Jurídica <strong>añade un paso nuevo</strong> a la ruta «Revisión de
+        contratos de arrendamiento». En este momento hay <strong>12 expedientes en curso</strong>
+        que están ejecutando esa ruta.</p>
+      <label class="pregunta-abierta">
+        <span class="pa-titulo">¿Cuántos de esos 12 expedientes pasan a tener el paso nuevo, y por qué?</span>
+        <textarea class="abierta" data-label="Apuesta (pretest)" rows="3" placeholder="Tu apuesta, sin buscarlo…"></textarea>
+      </label>
+      <details class="revelar">
+        <summary>Ver la respuesta (sólo después de apostar)</summary>
+        <div class="revelar-cuerpo">
+          <p><strong>Ninguno de los 12.</strong> El paso nuevo sólo aparecerá en los expedientes
+            que se creen a partir de ahora.</p>
+          <p style="margin:0">Si tu apuesta fue «los 12», o «los que aún no hayan llegado a ese
+            paso», estás en muy buena compañía: es la respuesta intuitiva. El resto de la lección
+            explica por qué el sistema hace lo contrario, y qué se gana con ello.</p>
+        </div>
+      </details>
+    </div>
+
+    <!-- ================= BLOQUE 1 ================= -->
+    <h2>1. Qué es una ruta, exactamente</h2>
+
+    <p>Una <strong>ruta de aprobación</strong> es una <em>plantilla</em>: una secuencia ordenada de
+      pasos que hay que recorrer para dar el visto bueno a algo. La Gerencia Jurídica la crea desde
+      la interfaz de Odoo, <strong>sin código, sin acceso al servidor y sin pedirle nada al
+      administrador técnico</strong> <span class="rn">RN1</span>. Ése es el punto entero de la
+      historia: que el área legal cambie sus propios procesos de aprobación sin abrir un ticket de
+      desarrollo.</p>
+
+    <p>Una ruta tiene una <strong>cabecera</strong> de cuatro datos y una <strong>lista de
+      pasos</strong>. La cabecera es lo que tienes que poder recitar:</p>
+
+    <table class="tabla-peso">
+      <thead>
+        <tr><th>Dato de cabecera</th><th>Qué decide</th><th>Valores</th></tr>
+      </thead>
+      <tbody>
+        <tr class="nucleo">
+          <td><strong>Nombre</strong></td>
+          <td>Cómo la identifica quien la vincula a un servicio.</td>
+          <td>Texto libre</td>
+        </tr>
+        <tr class="nucleo">
+          <td><strong>Propósito</strong></td>
+          <td>Para qué sirve la ruta. Es el dato que más consecuencias tiene: decide qué la
+            dispara y qué puede evaluar.</td>
+          <td>Revisión de expediente · Archivado documental</td>
+        </tr>
+        <tr class="nucleo">
+          <td><strong>Nivel de aplicación</strong></td>
+          <td>Sobre qué objeto concreto se ejecuta.</td>
+          <td>Expediente · Entregable · Documento</td>
+        </tr>
+        <tr class="nucleo">
+          <td><strong>Estado</strong></td>
+          <td>Si la ruta puede usarse ya o no.</td>
+          <td>Borrador → Activa → Inactiva</td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="font-size:.86rem;color:var(--tinta-suave);font-family:var(--sans);margin-top:-.6rem">
+      El punto verde marca lo que es <strong>núcleo</strong>: esto lo vas a decir en toda reunión
+      donde se hable de rutas.</p>
+
+    <p>Y los <strong>pasos</strong>, en orden. Cada paso lleva su tipo, quién lo resuelve y en
+      cuánto tiempo debe hacerlo. Así se ve una ruta de tres pasos:</p>
+
+    <ol class="ruta-flujo">
+      <li class="paso">
+        <span class="paso-tipo">Revisión</span>
+        <span class="paso-quien">Abogado Senior (rol)</span>
+        <span class="paso-tiempo">24 h hábiles</span>
+      </li>
+      <li class="paso">
+        <span class="paso-tipo">Aprobación</span>
+        <span class="paso-quien">Gerencia Jurídica</span>
+        <span class="paso-tiempo">48 h hábiles</span>
+      </li>
+      <li class="paso">
+        <span class="paso-tipo">Firma</span>
+        <span class="paso-quien">Director de Área Legal</span>
+        <span class="paso-tiempo">72 h hábiles</span>
+      </li>
+    </ol>
+
+    <p>Los cuatro <strong>tipos de paso</strong> posibles son: <strong>revisión</strong>,
+      <strong>aprobación</strong>, <strong>firma</strong> e <strong>informativo</strong>. Cada paso
+      define además su aprobador —que puede ser un usuario concreto, un rol o un grupo de usuarios—,
+      un tiempo máximo de respuesta y, opcionalmente, una condición. Todo eso lo desmenuzamos en
+      las lecciones 2 y 3.</p>
+
+    <div class="nota acento">
+      <p class="nota-titulo">La regla que impide rutas rotas</p>
+      <p style="margin:0">Una ruta <strong>nace siempre en Borrador</strong>, y sólo puede
+        activarse cuando tiene <strong>al menos un paso con aprobador y tiempo de respuesta
+        definidos</strong> <span class="rn">RN1.2</span>. Es la validación que evita que alguien
+        vincule a un servicio una ruta vacía que bloquearía todos sus expedientes.</p>
+    </div>
+
+    <h3>Cómo se ve esto en Odoo <span class="peso periferia">reconócelo y sigue</span></h3>
+    <p>El documento de arquitectura resuelve la cabecera y los pasos como dos modelos con relación
+      uno-a-muchos <span class="rn fuente">§5</span>:</p>
+    <pre><code><span class="t-com"># la cabecera de la ruta</span>
+<span class="t-mod">legal.approval.route</span>
+    name               <span class="t-tipo">Char</span>        <span class="t-com"># nombre</span>
+    purpose            <span class="t-tipo">Selection</span>   <span class="t-com"># revisión de expediente / archivado documental</span>
+    application_level  <span class="t-tipo">Selection</span>   <span class="t-com"># expediente / entregable / documento</span>
+    active             <span class="t-tipo">Boolean</span>     <span class="t-com"># activa o inactiva</span>
+
+<span class="t-com"># cada paso de esa ruta</span>
+<span class="t-mod">legal.approval.route.line</span>
+    route_id           <span class="t-tipo">M2O → approval.route</span>   <span class="t-com"># a qué ruta pertenece</span>
+    sequence           <span class="t-tipo">Integer</span>                <span class="t-com"># el orden del paso</span>
+    approver_type      <span class="t-tipo">Selection</span>              <span class="t-com"># usuario / rol / pool</span>
+    approver_ref       <span class="t-tipo">Reference</span>              <span class="t-com"># a quién apunta</span>
+    condition          <span class="t-tipo">Char</span>                   <span class="t-com"># condición para que el paso aplique</span></code></pre>
+    <p style="font-size:.9rem;color:var(--tinta-suave)"><code>M2O</code> es la abreviatura de
+      <em>many2one</em>: el campo apunta a un registro de otro modelo. No necesitas retener los
+      nombres de campo para explicar la historia; sí te conviene reconocer que son
+      <strong>dos</strong> modelos y no uno.</p>
+
+    <!-- ================= BLOQUE 2 ================= -->
+    <h2>2. Al confirmar el ticket, la ruta se copia</h2>
+
+    <p>Aquí está la idea que da título a la lección. Cuando un ticket se <strong>confirma</strong>
+      y nace el expediente (<code>HU06-007</code>), el sistema no deja al expediente
+      <em>apuntando</em> a la ruta del servicio. Hace algo distinto: <strong>copia la ruta entera
+      dentro del expediente</strong> <span class="rn">RN3</span>.</p>
+
+    <p>Y es una <strong>copia profunda</strong>: los pasos copiados son registros nuevos e
+      independientes, no referencias a los pasos de la ruta original. A partir de ese momento
+      existen dos cosas con vidas separadas:</p>
+
+    <div class="dos-columnas">
+      <div>
+        <h4>Ruta maestra</h4>
+        <ul>
+          <li>Vive en la configuración del módulo.</li>
+          <li>La crea y mantiene la Gerencia Jurídica.</li>
+          <li>Se vincula a uno o varios servicios del catálogo.</li>
+          <li>Es la plantilla de la que se sacan copias.</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Ruta instanciada</h4>
+        <ul>
+          <li>Vive dentro de <em>un</em> expediente.</li>
+          <li>Nace al confirmarse el ticket.</li>
+          <li>Es la que realmente se ejecuta paso a paso.</li>
+          <li>Guarda el estado de cada paso.</li>
+        </ul>
+      </div>
+    </div>
+
+    <p>De esa decisión salen las tres consecuencias que un desarrollador implementaría mal si no
+      las conociera. Éstas son las que tienes que poder soltar de memoria:</p>
+
+    <h3>Consecuencia A · Los expedientes en curso son inmunes al cambio</h3>
+    <p>La instanciación congela los pasos y condiciones tal como estaban <strong>en el momento de
+      la confirmación</strong>. Si la ruta maestra se modifica después, el expediente en curso no
+      se entera <span class="rn">RN3.1</span>. Los cambios a una ruta afectan a los expedientes
+      <strong>futuros</strong> de esos servicios, nunca a los que ya arrancaron
+      <span class="rn">RN2.1</span>.</p>
+    <p>Ésta era la respuesta de la apuesta: ninguno de los 12. Y el motivo es de fondo, no técnico:
+      un expediente legal debe poder auditarse contra las reglas que estaban vigentes cuando se
+      tramitó, no contra las de hoy.</p>
+
+    <h3>Consecuencia B · La copia se puede retocar sin tocar la plantilla</h3>
+    <p>La Gerencia Jurídica puede ajustar la ruta ya instanciada de <em>un</em> expediente concreto
+      —agregar, eliminar o reordenar pasos— <strong>sin modificar la ruta maestra</strong>. El
+      ajuste queda registrado en el chatter del expediente con <strong>motivo obligatorio</strong>
+      <span class="rn">RN3.2</span>.</p>
+    <p>Esto es lo que hace «dinámicas» a las rutas del título de la historia: la plantilla da el
+      estándar, y el caso particular admite excepción justificada y trazable.</p>
+
+    <h3>Consecuencia C · Una plantilla en uso no se puede retirar</h3>
+    <p>No se puede inactivar una ruta que tenga expedientes activos ejecutándola. Antes de permitir
+      el cambio de estado, el sistema debe <strong>mostrar cuántos expedientes activos dependen de
+      ella</strong> <span class="rn">RN2.3</span>. Y una ruta con historial de expedientes
+      asociados <strong>no se puede eliminar</strong> nunca: sólo inactivarse
+      <span class="rn">RN8.2</span>.</p>
+
+    <div class="nota">
+      <p class="nota-titulo">Y del lado de la plantilla: versionado</p>
+      <p style="margin:0">Toda modificación a una ruta <em>activa</em> genera automáticamente una
+        <strong>versión nueva</strong>, con historial inmutable: número, fecha, quién modificó,
+        pasos anteriores y pasos nuevos <span class="rn">RN8</span>
+        <span class="rn">RN8.1</span>. Junta esto con la consecuencia A y tienes la trazabilidad
+        completa: cada expediente conserva su copia, y la plantilla conserva la memoria de todos
+        sus cambios.</p>
+    </div>
+
+    <div class="nota acento">
+      <p class="nota-titulo">La excepción que debes recordar</p>
+      <p style="margin:0">Todo lo anterior describe las rutas de propósito <strong>revisión de
+        expediente</strong>. Las de propósito <strong>archivado documental</strong>
+        <em>no se instancian al confirmar un ticket</em>: las dispara una acción planificada (un
+        cron) cuando un documento cumple su periodo de retención legal, y se ejecutan sobre ese
+        documento individual <span class="rn">RN10.2</span>. Mismo motor de pasos, aprobadores y
+        versionado; disparo distinto.</p>
+    </div>
+
+    <h3>El mismo patrón, en todo el módulo <span class="peso nucleo">te sirve en reunión</span></h3>
+    <p>Esto no es una decisión aislada de la <code>HU06-010</code>. El documento de arquitectura la
+      eleva a <strong>decisión arquitectónica transversal</strong> del módulo entero, con nombre
+      propio: <em>«herencia por snapshot inmutable»</em>
+      <span class="rn fuente">§1.4 · decisión 3</span>.</p>
+    <p>Dice, literalmente, que al confirmar el ticket <strong>la configuración del servicio se copia
+      al expediente como una fotografía</strong>, y que los cambios posteriores al catálogo no
+      alteran expedientes ya generados. Es decir: la ruta no es el único elemento que se copia
+      —también la configuración del servicio del catálogo—, y por el mismo motivo.</p>
+    <p>Guárdate la frase «snapshot inmutable»: cuando la digas en una reunión, estás citando una
+      decisión de arquitectura del proyecto, no una opinión.</p>
+
+    <!-- ================= QUIZ ================= -->
+    <h2>Comprueba que lo puedes producir</h2>
+    <p>Recordar reconociendo es fácil; recordar produciendo es lo que te hace falta para explicar
+      una HU sin leerla. Responde sin volver a subir.</p>
+
+    <div class="quiz" data-correcta="2" data-num="1">
+      <p class="quiz-pregunta"><span class="quiz-num">Pregunta 1</span><br>
+        Una ruta nueva tiene tres pasos, todos con aprobador asignado, pero a ninguno se le puso
+        tiempo máximo de respuesta. ¿Qué ocurre al intentar activarla?</p>
+      <div class="opciones">
+        <button class="opcion">Se activa, y el sistema asigna un tiempo por defecto a cada paso</button>
+        <button class="opcion">Se activa, pero queda marcada con una advertencia de configuración</button>
+        <button class="opcion">No se activa: falta un paso con aprobador y tiempo definidos</button>
+        <button class="opcion">No se activa, y además el sistema borra los pasos incompletos</button>
+      </div>
+      <div class="feedback ok" data-para="ok">Correcto. La RN1.2 pide las dos cosas a la vez:
+        al menos un paso con aprobador <em>y</em> tiempo de respuesta. Con aprobador solo no basta,
+        porque sin tiempo máximo el escalamiento automático no tendría cuándo dispararse: el
+        expediente podría quedarse esperando para siempre.</div>
+      <div class="feedback no" data-para="no">No. La RN1.2 exige al menos un paso con aprobador
+        <em>y</em> tiempo de respuesta definidos para pasar de Borrador a Activa; sin eso, la
+        activación se bloquea. Y nada se borra: el estado Borrador existe justamente para que la
+        ruta pueda quedarse incompleta sin romper nada.</div>
+    </div>
+
+    <div class="quiz" data-correcta="1" data-num="2">
+      <p class="quiz-pregunta"><span class="quiz-num">Pregunta 2</span><br>
+        La Gerencia quiere <strong>inactivar</strong> la ruta «Revisión de contratos». Hay 12
+        expedientes en curso ejecutándola. ¿Cómo debe comportarse el sistema?</p>
+      <div class="opciones">
+        <button class="opcion">La inactiva: los 12 expedientes ya tienen su copia y no dependen de ella</button>
+        <button class="opcion">Bloquea el cambio y le muestra cuántos expedientes activos dependen de ella</button>
+        <button class="opcion">La inactiva y cancela automáticamente la revisión de esos 12 expedientes</button>
+        <button class="opcion">Pide confirmación y luego migra los 12 expedientes a otra ruta activa</button>
+      </div>
+      <div class="feedback ok" data-para="ok">Exacto, RN2.3. Y fíjate en la tensión: es verdad que
+        cada expediente tiene su copia independiente, así que técnicamente podrían seguir. Pero la
+        regla protege a la operación de un cambio a ciegas, obligando a que la Gerencia vea el
+        impacto antes de decidir. La regla de negocio manda sobre lo que el modelo permitiría.</div>
+      <div class="feedback no" data-para="no">No. La RN2.3 bloquea la inactivación mientras haya
+        expedientes activos ejecutándola, y obliga al sistema a mostrar cuántos son antes de
+        permitir el cambio de estado. Nada se cancela ni se migra automáticamente: la decisión es
+        de la Gerencia, informada.</div>
+    </div>
+
+    <div class="quiz quiz-corta" data-num="3" data-acepta="propósito|proposito|el propósito|el proposito|purpose|el purpose">
+      <p class="quiz-pregunta"><span class="quiz-num">Pregunta 3</span><br>
+        ¿Cuál de los cuatro datos de cabecera decide si la ruta gobierna la revisión de expedientes
+        o el archivado de documentos? Escribe sólo el nombre del dato.</p>
+      <div class="corta-fila">
+        <input class="corta-input" type="text" placeholder="Tu respuesta…">
+        <button class="corta-comprobar" type="button">Comprobar</button>
+      </div>
+      <div class="feedback ok" data-para="ok">Correcto: el <strong>propósito</strong>
+        (<code>purpose</code>). Es el dato con más consecuencias de los cuatro, porque además de
+        decidir qué gobierna la ruta, decide qué la dispara: la de revisión se instancia al
+        confirmar el ticket; la de archivado la lanza el cron al cumplirse la retención.</div>
+      <div class="feedback no" data-para="no">La respuesta es el <strong>propósito</strong>
+        (<code>purpose</code>), con sus dos valores: revisión de expediente y archivado documental.
+        Cuidado de no confundirlo con el <em>nivel de aplicación</em>, que dice sobre qué objeto se
+        ejecuta (expediente, entregable o documento), no para qué sirve la ruta.</div>
+    </div>
+
+    <label class="pregunta-abierta">
+      <span class="pa-titulo">Pregunta 4 · De memoria, sin subir: nombra los cuatro datos de cabecera de una ruta.</span>
+      <textarea class="abierta" data-label="P4 · Cabecera de memoria" rows="2" placeholder="1… 2… 3… 4…"></textarea>
+    </label>
+
+    <label class="pregunta-abierta">
+      <span class="pa-titulo">Pregunta 5 · El porqué: ¿por qué el sistema copia la ruta dentro del expediente en lugar de dejarlo apuntando a la ruta maestra? Da la razón de negocio, no la técnica.</span>
+      <textarea class="abierta" data-label="P5 · Por qué se copia" rows="3" placeholder="Porque…"></textarea>
+    </label>
+
+    <!-- ================= PRÁCTICA SOBRE LA ESPECIFICACIÓN ================= -->
+    <h2>Para practicar por tu cuenta</h2>
+    <p>Dos misiones opcionales, las dos sobre <strong>la especificación del proyecto</strong>: el
+      CSV de historias y el PDF de arquitectura. Nada que no vayas a usar en KIVA.</p>
+
+    <div class="recursos-practica">
+      <p class="nota-titulo">Retos para resolver tú</p>
+      <ul class="rp-lista">
+        <li>
+          <strong>Caza la otra punta del vínculo</strong>
+          <span class="rp-etq">reto</span>
+          <span class="rp-nota">Hoy viste el motor desde el lado de la ruta. Abre
+            <code>HUS_LEGAL.csv</code> en la fila <code>HU06-005</code> (catálogo de servicios) y
+            busca la palabra «ruta». Responde: <strong>¿cuántas rutas distintas puede llegar a
+            tener vinculadas un mismo servicio, y por qué más de una?</strong> Tráelo al chat.</span>
+        </li>
+        <li>
+          <strong>Sesenta segundos en voz alta</strong>
+          <span class="rp-etq">reto</span>
+          <span class="rp-nota">Ésta es la que de verdad entrena tu misión. Sin mirar nada,
+            explícale en voz alta a alguien —o a la pared— <strong>por qué cambiar una ruta no
+            cambia los expedientes en curso</strong>, en menos de un minuto. Si te trabas, ya sabes
+            qué repasar. Grabarte con el móvil y escucharte es incómodo y funciona.</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="fuente-primaria">
+      <p class="nota-titulo">Fuente primaria de esta lección</p>
+      <p style="margin:0">La fila <code>HU06-010</code> de <code>HUS_LEGAL.csv</code> —reglas 1, 2,
+        3, 8 y 10.2— y la sección <span class="rn fuente">§7.17</span> del documento
+        <em>06 Arqui Diseño Módulo Legal v01</em>, más el modelo de datos del capítulo 5. Son la
+        especificación del proyecto: mandan sobre cualquier cosa que diga esta lección o yo.</p>
+    </div>
+
+    <!-- ================= HOJA DE RESPUESTAS ================= -->
+    <div class="hoja-respuestas">
+      <p class="hr-intro">Cuando termines, pulsa el botón y pega esto en el chat. Se ha ido
+        rellenando solo con tus respuestas.</p>
+      <textarea class="hr-salida" readonly rows="12"></textarea>
+      <button class="hr-copiar" type="button">Copiar para el chat</button>
+      <span class="hr-aviso"></span>
+    </div>
+
+    <div class="pie">
+      <p><strong>En la próxima lección:</strong> los <em>pasos condicionales</em> —cómo un paso se
+        activa o se salta solo según el costo, la prioridad o el resultado del paso anterior—, que
+        es la otra mitad de por qué estas rutas se llaman «dinámicas».</p>
+
+      <div class="recordatorio-tutor">
+        Soy tu profesor en este taller: pregúntame lo que sea. Si una regla te suena contradictoria,
+        si quieres ver cómo se implementaría en Odoo 19, o si prefieres que ataquemos la HU por otro
+        lado, dímelo y cambiamos el plan.
+      </div>
+
+      <div class="nav-lecciones">
+        <a href="0001-mapa-del-modulo-legal.html">← Lección 01: el mapa del módulo</a>
+        <a href="../reference/rutas-de-aprobacion.html">Referencia: rutas de aprobación →</a>
+      </div>
+    </div>
+
+  </main>
+  <script src="../assets/quiz.js"></script>
+</body>
+</html>

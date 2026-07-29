@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lección 1 · const y let</title>
+  <link rel="stylesheet" href="../assets/course.css">
+  <style>
+    /* Tabla comparativa Python ↔ JavaScript, propia de este taller */
+    .puente { width: 100%; border-collapse: collapse; margin: 1.4rem 0; font-size: .9rem; }
+    .puente th, .puente td { text-align: left; padding: .6rem .7rem; border-bottom: 1px solid var(--regla); vertical-align: top; }
+    .puente th { font-family: var(--sans); font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; color: var(--tinta-suave); }
+    .puente td:first-child { font-family: var(--sans); font-size: .85rem; width: 34%; }
+    .puente code { font-size: .8em; }
+    /* Etiqueta de frecuencia: núcleo del 80% o periferia */
+    .frec {
+      font-family: var(--sans); font-size: .68rem; text-transform: uppercase;
+      letter-spacing: .05em; font-weight: 700; padding: .12rem .45rem;
+      border-radius: 4px; vertical-align: .15em; white-space: nowrap;
+    }
+    .frec.nucleo { background: var(--verde-suave); color: var(--verde); }
+    .frec.perif { background: var(--papel-hueso); color: var(--tinta-suave); }
+  </style>
+</head>
+<body>
+<a class="online-link" href="https://ernestomafl.github.io/aprendizaje/" title="Ir al índice de mis cursos en línea">🌐 Mis cursos</a>
+  <main class="lienzo">
+
+    <p class="leccion-kicker">Lección 01 · JavaScript del 80%</p>
+    <h1>Guardar un valor: <code>const</code> y <code>let</code></h1>
+    <p class="lede">
+      Es la primera línea de casi todos los archivos <code>.js</code> del mundo y no se puede
+      leer nada sin ella. Vienes de Python, donde guardar un valor es <code>x = 5</code> y ya
+      está; JavaScript te obliga a elegir <strong>una palabra</strong> antes del nombre, y esa
+      elección dice algo que Python no puede decir. Al terminar sabrás cuál va, por qué, y
+      —lo importante— qué es exactamente lo que <em>no</em> puede cambiar.
+    </p>
+
+    <p class="leyenda-tokens">
+      <span>Colores del código en este curso:</span>
+      <b class="t-kw">palabra clave</b>
+      <b class="t-var">nombre</b>
+      <b class="t-str">"texto"</b>
+      <b class="t-num">número</b>
+      <b class="t-fn">función</b>
+      <b class="t-com">// comentario</b>
+    </p>
+
+    <!-- ================= PRETEST ================= -->
+    <div class="nota acento">
+      <p class="nota-titulo">Antes de leer: arriésgate (fallar aquí es parte del método)</p>
+      <p style="margin:0 0 .6rem">
+        Dos líneas casi idénticas. Las llaves <code>{ }</code> con pares
+        <code>nombre: valor</code> son un <strong>objeto</strong>: el equivalente al
+        <code>dict</code> de Python. Y <code>const</code> significa «constante».
+      </p>
+<pre style="margin:0 0 .8rem"><code><span class="t-kw">const</span> <span class="t-var">total</span> <span class="t-punt">=</span> <span class="t-num">5</span><span class="t-punt">;</span>
+<span class="t-var">total</span> <span class="t-punt">=</span> <span class="t-num">6</span><span class="t-punt">;</span>                        <span class="t-com">// (a) ¿funciona o revienta?</span>
+
+<span class="t-kw">const</span> <span class="t-var">cliente</span> <span class="t-punt">=</span> <span class="t-punt">{</span> <span class="t-prop">nombre</span><span class="t-punt">:</span> <span class="t-str">"Ana"</span> <span class="t-punt">};</span>
+<span class="t-var">cliente</span><span class="t-punt">.</span><span class="t-prop">nombre</span> <span class="t-punt">=</span> <span class="t-str">"Luis"</span><span class="t-punt">;</span>       <span class="t-com">// (b) ¿funciona o revienta?</span></code></pre>
+      <p style="margin:0">
+        Apuesta: ¿cuál de las dos da error? ¿Las dos? ¿Ninguna? No lo mires en ningún sitio —
+        arriésgate y escribe <em>por qué</em>. Lo comprobarás tú mismo dentro de un momento.
+      </p>
+      <label class="pregunta-abierta" style="margin:.9rem 0 0">
+        <span class="pa-titulo">✍️ Tu apuesta, antes de seguir (queda en tu hoja de respuestas):</span>
+        <textarea class="abierta" data-label="Apuesta (pretest): ¿(a) y/o (b) dan error?" rows="2" placeholder="(a) … (b) … porque…"></textarea>
+      </label>
+    </div>
+
+    <!-- ================= HERRAMIENTA ================= -->
+    <h2>Primero, cómo ver algo</h2>
+    <p>
+      En Python usas <code>print()</code>. En JavaScript la orden equivalente es
+      <code>console.log()</code>: imprime en la <strong>consola</strong> —el panel de texto de
+      las herramientas del navegador, o la terminal si usas Node. Lee esta línea como una frase:
+      «del objeto <code>console</code>, usa <code>log</code> con este valor».
+    </p>
+
+    <div class="anatomia">
+      <span class="t-kw">const</span>
+      <span class="t-var">precio</span>
+      <span class="t-punt">=</span>
+      <span class="t-num">19.99</span><span class="t-punt">;</span>
+      <div style="margin-top:1.4rem;font-family:var(--sans);font-size:.8rem;line-height:2">
+        <span class="etiqueta" style="background:var(--acento-suave);color:#7c3aed">const → <b>cómo</b> se guarda</span>
+        &nbsp;
+        <span class="etiqueta" style="background:var(--papel-hueso);color:var(--tinta)">precio → <b>el nombre</b></span>
+        &nbsp;
+        <span class="etiqueta" style="background:var(--verde-suave);color:var(--verde)">19.99 → <b>el valor</b></span>
+      </div>
+    </div>
+
+    <p>
+      Esa es toda la anatomía de una declaración: <strong>palabra clave · nombre · igual ·
+      valor</strong>. La única pieza que Python no tiene es la primera. El punto y coma final
+      es la costumbre; JavaScript casi siempre lo perdona, pero verás que casi todo el código
+      real lo lleva.
+    </p>
+
+    <p>Pruébalo de verdad — es una consola JavaScript real, empotrada aquí:</p>
+
+    <div class="repl" data-titulo="Tu primera consola" data-pista="Pulsa Ejecutar (o Ctrl+Enter). Cambia los valores y vuelve a ejecutar.">
+<textarea class="repl-codigo" rows="5">const precio = 19.99;
+const cliente = "Ana";
+
+console.log(precio);
+console.log(cliente);</textarea>
+    </div>
+
+    <p>
+      Fíjate en un detalle de la salida: <code>19.99</code> sale en un color y
+      <code>Ana</code> en otro. La consola te está diciendo el <strong>tipo</strong> de cada
+      valor: uno es un número, el otro un texto. Volveremos a eso en una lección propia.
+    </p>
+
+    <!-- ================= EL CONTENIDO ================= -->
+    <h2>Las dos palabras que se usan</h2>
+
+    <p>
+      JavaScript moderno tiene exactamente dos formas de declarar, y la diferencia entre ellas
+      es una sola pregunta: <strong>¿este nombre va a apuntar a otro valor más adelante?</strong>
+    </p>
+
+    <table class="puente">
+      <thead><tr><th>Palabra</th><th>Qué promete</th><th>Cuándo se usa</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><code>const</code> <span class="frec nucleo">núcleo</span></td>
+          <td>Este nombre apuntará <strong>siempre</strong> a este mismo valor.</td>
+          <td><strong>Por defecto.</strong> La gran mayoría de las declaraciones del código real.</td>
+        </tr>
+        <tr>
+          <td><code>let</code> <span class="frec nucleo">núcleo</span></td>
+          <td>Este nombre <strong>va a cambiar</strong> de valor más adelante.</td>
+          <td>Contadores, acumuladores, algo que se recalcula. Es la excepción.</td>
+        </tr>
+        <tr>
+          <td><code>var</code> <span class="frec perif">solo leer</span></td>
+          <td>La forma antigua, anterior a 2015. Se comporta de manera más confusa.</td>
+          <td><strong>No la escribas.</strong> Recónócela en código viejo y tradúcela mentalmente a <code>let</code>.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="nota">
+      <p class="nota-titulo">La regla práctica que sigue todo el mundo</p>
+      <p style="margin:0">
+        Empieza <strong>siempre</strong> con <code>const</code>. Si más adelante necesitas
+        reasignar ese nombre, el propio JavaScript te lo dirá con un error, y entonces —y solo
+        entonces— lo cambias a <code>let</code>. Esto no es manía de estilo: leer
+        <code>const</code> te garantiza de un vistazo que ese nombre <em>no</em> te va a cambiar
+        bajo los pies 40 líneas más abajo. Es información gratis cada vez que lees código ajeno.
+      </p>
+    </div>
+
+    <h3>Qué es exactamente lo constante</h3>
+    <p>
+      Aquí está el punto que hace tropezar a casi todo el mundo, y la respuesta a tu apuesta.
+      <code>const</code> <strong>no congela el valor</strong>. Congela el <em>vínculo</em>
+      entre el nombre y el valor.
+    </p>
+    <p>
+      Piensa en el nombre como una <strong>etiqueta pegada a una caja</strong>.
+      <code>const</code> significa: «esta etiqueta no se despega de esta caja». No dice nada
+      sobre lo que hay <em>dentro</em> de la caja. Si la caja es un objeto, puedes entrar y
+      cambiar su contenido todo lo que quieras: la etiqueta sigue pegada a la misma caja.
+    </p>
+
+    <div class="repl" data-titulo="Compruébalo tú: ¿cuál de las dos revienta?" data-pista="Ejecuta tal cual. Luego borra o comenta la línea que falle y vuelve a ejecutar.">
+<textarea class="repl-codigo" rows="10">const cliente = { nombre: "Ana" };
+cliente.nombre = "Luis";        // cambiar DENTRO de la caja
+console.log(cliente);
+
+const total = 5;
+total = 6;                      // cambiar la caja ENTERA
+console.log(total);</textarea>
+    </div>
+
+    <details class="revelar">
+      <summary>Ver la respuesta del pretest (ábrela solo después de ejecutar)</summary>
+      <div class="revelar-cuerpo">
+        <p style="margin:0 0 .5rem">
+          <strong>(b) funciona</strong> y <strong>(a) revienta</strong> con
+          <code>TypeError: Assignment to constant variable</code>.
+        </p>
+        <p style="margin:0 0 .5rem">
+          En <strong>(b)</strong> no tocas la etiqueta <code>cliente</code>: sigue apuntando al
+          mismo objeto. Solo cambias algo de dentro. En <strong>(a)</strong> intentas despegar
+          la etiqueta <code>total</code> del 5 y pegarla al 6 — eso es justo lo que
+          <code>const</code> prohíbe.
+        </p>
+        <p style="margin:0">
+          Y fíjate en el orden de la salida: el <code>console.log(cliente)</code> sí llegó a
+          imprimirse; el error paró el programa después. Los errores de JavaScript detienen la
+          ejecución en el punto exacto donde ocurren.
+        </p>
+      </div>
+    </details>
+
+    <div class="nota acento">
+      <p class="nota-titulo">Puente desde Python — dónde te va a traicionar la intuición</p>
+      <table class="puente" style="margin:.4rem 0 0">
+        <thead><tr><th>En Python</th><th>En JavaScript</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><code>total = 5</code> — sin palabra clave</td>
+            <td><code>const total = 5;</code> — la palabra clave es obligatoria la primera vez</td>
+          </tr>
+          <tr>
+            <td>No existen las constantes. <code>TOTAL</code> en mayúsculas es solo un acuerdo entre humanos</td>
+            <td><code>const</code> lo <strong>impone el lenguaje</strong>: reasignar es un error real</td>
+          </tr>
+          <tr>
+            <td>Un <code>dict</code> se puede modificar aunque el nombre esté en mayúsculas</td>
+            <td>Un objeto bajo <code>const</code> también se puede modificar. <strong>Aquí sí coincide tu intuición</strong></td>
+          </tr>
+          <tr>
+            <td><code>snake_case</code> para los nombres</td>
+            <td><code>camelCase</code>: <code>precioTotal</code>, <code>nombreCliente</code>. Es la convención universal</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Cuándo sí necesitas <code>let</code></h3>
+    <p>
+      Cuando el nombre tiene que apuntar a un valor <em>nuevo</em>. El caso típico es un
+      acumulador o un contador:
+    </p>
+<pre><code><span class="t-kw">let</span> <span class="t-var">totalCarrito</span> <span class="t-punt">=</span> <span class="t-num">0</span><span class="t-punt">;</span>
+<span class="t-var">totalCarrito</span> <span class="t-punt">=</span> <span class="t-var">totalCarrito</span> <span class="t-punt">+</span> <span class="t-num">19.99</span><span class="t-punt">;</span>   <span class="t-com">// ahora vale 19.99</span>
+<span class="t-var">totalCarrito</span> <span class="t-punt">=</span> <span class="t-var">totalCarrito</span> <span class="t-punt">+</span> <span class="t-num">4.50</span><span class="t-punt">;</span>    <span class="t-com">// ahora vale 24.49</span></code></pre>
+    <p>
+      Ojo a la segunda línea: no lleva <code>let</code> delante. La palabra clave va
+      <strong>solo la primera vez</strong>, cuando el nombre nace. Después se reasigna a secas.
+      Repetir <code>let totalCarrito</code> sería declararlo otra vez — y eso también es un error.
+    </p>
+
+    <div class="nota">
+      <p class="nota-titulo"><span class="frec perif">solo reconocer</span> &nbsp;Qué hacer cuando veas <code>var</code></p>
+      <p style="margin:0">
+        Muchísimo código publicado antes de 2015 —y aún hoy el 74% de las páginas web, que
+        siguen cargando jQuery— usa <code>var</code>
+        (<a href="https://almanac.httparchive.org/en/2024/javascript">Web Almanac 2024</a>).
+        Para <em>leer</em>, tradúcelo mentalmente a <code>let</code> y sigue: casi siempre
+        significa lo mismo. Las diferencias finas (dónde vive la variable exactamente) las
+        veremos cuando toque el tema de ámbito. Para <em>escribir</em>: no la uses nunca.
+      </p>
+    </div>
+
+    <!-- ================= QUIZ ================= -->
+    <h2>Compruébalo — recuerda sin releer</h2>
+
+    <div class="quiz" data-correcta="1" data-num="1">
+      <p class="quiz-pregunta"><span class="quiz-num">Pregunta 1</span><br>
+        ¿Qué ocurre al ejecutar estas dos líneas?
+<pre style="margin:.7rem 0 0"><code><span class="t-kw">const</span> <span class="t-var">colores</span> <span class="t-punt">=</span> <span class="t-punt">{</span> <span class="t-prop">fondo</span><span class="t-punt">:</span> <span class="t-str">"azul"</span> <span class="t-punt">};</span>
+<span class="t-var">colores</span><span class="t-punt">.</span><span class="t-prop">fondo</span> <span class="t-punt">=</span> <span class="t-str">"rojo"</span><span class="t-punt">;</span></code></pre></p>
+      <div class="opciones">
+        <button class="opcion">Da error, porque el objeto es constante</button>
+        <button class="opcion">Funciona, porque cambia dentro del objeto</button>
+        <button class="opcion">Funciona, pero crea otro objeto distinto</button>
+      </div>
+      <div class="feedback ok" data-para="ok">Correcto. La etiqueta <code>colores</code> sigue pegada al mismo objeto; solo cambió su contenido. <code>const</code> protege el vínculo, no el interior. Es exactamente el mismo objeto de antes, con otro valor dentro.</div>
+      <div class="feedback no" data-para="no">Recuerda la caja y la etiqueta: <code>const</code> impide <strong>despegar la etiqueta</strong> (<code>colores = otraCosa</code>), no impide abrir la caja y cambiar lo de dentro. Como no se reasigna <code>colores</code>, no hay error, y el objeto sigue siendo el mismo — no se crea otro.</div>
+    </div>
+
+    <div class="quiz" data-correcta="2" data-num="2">
+      <p class="quiz-pregunta"><span class="quiz-num">Pregunta 2</span><br>
+        Necesitas un contador que empieza en 0 y va sumando. ¿Cómo lo declaras?</p>
+      <div class="opciones">
+        <button class="opcion">Con <code>const</code>, y luego se reasigna</button>
+        <button class="opcion">Con <code>var</code>, que es lo estándar</button>
+        <button class="opcion">Con <code>let</code>, porque va a cambiar</button>
+      </div>
+      <div class="feedback ok" data-para="ok">Correcto. Un contador apunta a un valor <strong>nuevo</strong> cada vez, así que necesita <code>let</code>. Es justo la excepción que justifica no usar <code>const</code>: la regla es empezar por <code>const</code> y bajar a <code>let</code> solo cuando haga falta reasignar.</div>
+      <div class="feedback no" data-para="no">Un contador se reasigna (<code>n = n + 1</code>), y eso con <code>const</code> lanza <code>TypeError</code>. Y <code>var</code> es la forma antigua: se reconoce al leer, no se escribe. Queda <code>let</code>, la palabra reservada precisamente para «este nombre va a cambiar».</div>
+    </div>
+
+    <div class="quiz quiz-corta" data-num="3" data-acepta="const|const.|se usa const">
+      <p class="quiz-pregunta"><span class="quiz-num">Pregunta 3 · escribe la respuesta</span><br>
+        Vas a declarar el nombre de un cliente, que no cambiará en todo el programa.
+        ¿Con qué palabra clave lo declaras? (una sola palabra)</p>
+      <div class="corta-fila">
+        <input class="corta-input" type="text" placeholder="Escribe la palabra…" autocomplete="off" spellcheck="false">
+        <button class="corta-comprobar" type="button">Comprobar</button>
+      </div>
+      <div class="feedback ok" data-para="ok">Correcto: <code>const</code>. Es la opción por defecto y con diferencia la más frecuente en código real. Solo se baja a <code>let</code> cuando el propio JavaScript se queja al reasignar.</div>
+      <div class="feedback no" data-para="no">La respuesta es <code>const</code>. Si el valor no va a cambiar, declararlo <code>const</code> es gratis y además avisa a quien lea el código —tú, dentro de dos meses— de que ese nombre es estable. <code>let</code> se reserva para lo que sí se reasigna.</div>
+    </div>
+
+    <div class="quiz" data-correcta="0" data-num="4">
+      <p class="quiz-pregunta"><span class="quiz-num">Pregunta 4</span><br>
+        Lees este fragmento en un proyecto ajeno. ¿Qué te dice de la línea 2?
+<pre style="margin:.7rem 0 0"><code><span class="t-kw">let</span> <span class="t-var">intentos</span> <span class="t-punt">=</span> <span class="t-num">0</span><span class="t-punt">;</span>
+<span class="t-var">intentos</span> <span class="t-punt">=</span> <span class="t-num">1</span><span class="t-punt">;</span></code></pre></p>
+      <div class="opciones">
+        <button class="opcion">Reasigna la variable que ya existía</button>
+        <button class="opcion">Declara una variable nueva llamada igual</button>
+        <button class="opcion">Da error por declararla por segunda vez</button>
+      </div>
+      <div class="feedback ok" data-para="ok">Correcto. La palabra clave aparece <strong>solo cuando el nombre nace</strong>. Sin ella, la línea reasigna el nombre que ya existe. Como se declaró con <code>let</code>, reasignar está permitido.</div>
+      <div class="feedback no" data-para="no">Sin palabra clave delante no hay declaración: es una <strong>reasignación</strong> del nombre existente. Declarar dos veces sí daría error, pero eso sería <code>let intentos = 1;</code>, con la palabra repetida — no es el caso.</div>
+    </div>
+
+    <label class="pregunta-abierta">
+      <span class="pa-titulo">🧠 Pregunta 5 · de memoria y con tus palabras (sin volver a subir): ¿por qué <code>const</code> permite cambiar lo de dentro de un objeto? Usa la imagen de la etiqueta y la caja.</span>
+      <textarea class="abierta" data-label="P5 (de memoria): ¿por qué const deja cambiar el interior de un objeto?" rows="3"></textarea>
+    </label>
+
+    <!-- ================= MISIÓN ================= -->
+    <h2>Tu misión de lectura (90 segundos)</h2>
+    <p>
+      Un fragmento como los que te vas a encontrar. Léelo y responde las tres preguntas de
+      debajo <strong>sin ejecutarlo</strong>:
+    </p>
+<pre><code><span class="t-kw">const</span> <span class="t-var">IVA</span> <span class="t-punt">=</span> <span class="t-num">0.21</span><span class="t-punt">;</span>
+<span class="t-kw">const</span> <span class="t-var">pedido</span> <span class="t-punt">=</span> <span class="t-punt">{</span> <span class="t-prop">producto</span><span class="t-punt">:</span> <span class="t-str">"Web corporativa"</span><span class="t-punt">,</span> <span class="t-prop">base</span><span class="t-punt">:</span> <span class="t-num">1200</span> <span class="t-punt">};</span>
+<span class="t-kw">let</span> <span class="t-var">totalFacturado</span> <span class="t-punt">=</span> <span class="t-num">0</span><span class="t-punt">;</span>
+
+<span class="t-var">pedido</span><span class="t-punt">.</span><span class="t-prop">base</span> <span class="t-punt">=</span> <span class="t-num">1500</span><span class="t-punt">;</span>
+<span class="t-var">totalFacturado</span> <span class="t-punt">=</span> <span class="t-var">pedido</span><span class="t-punt">.</span><span class="t-prop">base</span> <span class="t-punt">+</span> <span class="t-var">pedido</span><span class="t-punt">.</span><span class="t-prop">base</span> <span class="t-punt">*</span> <span class="t-var">IVA</span><span class="t-punt">;</span>
+<span class="t-var">IVA</span> <span class="t-punt">=</span> <span class="t-num">0.10</span><span class="t-punt">;</span></code></pre>
+    <p style="font-family:var(--sans);font-size:.95rem">
+      <strong>a)</strong> ¿Cuál de las tres últimas líneas da error, y qué tipo de error? &nbsp;
+      <strong>b)</strong> ¿Por qué <code>pedido.base = 1500</code> está permitido si <code>pedido</code> es <code>const</code>? &nbsp;
+      <strong>c)</strong> ¿Cuánto vale <code>totalFacturado</code> justo antes del error?
+    </p>
+
+    <details class="revelar pista">
+      <summary>Pista (si la necesitas)</summary>
+      <div class="revelar-cuerpo">
+        Para cada línea que empieza sin palabra clave, pregúntate: <strong>¿estoy despegando
+        la etiqueta, o abriendo la caja?</strong> Solo lo primero está prohibido. Y para
+        <strong>c)</strong>, recuerda que <code>pedido.base</code> ya cambió una línea antes.
+      </div>
+    </details>
+
+    <label class="pregunta-abierta">
+      <span class="pa-titulo">✍️ Escribe tus tres respuestas — <strong>antes</strong> de abrir la solución:</span>
+      <textarea class="abierta" data-label="Misión: a) línea que falla b) por qué pedido.base sí c) valor de totalFacturado" rows="4" placeholder="a) …   b) …   c) …"></textarea>
+    </label>
+
+    <details class="revelar">
+      <summary>Ver la solución (solo después de escribir la tuya)</summary>
+      <div class="revelar-cuerpo">
+        <p style="margin:0 0 .5rem">
+          <strong>a)</strong> La última: <code>IVA = 0.10</code>. Es una reasignación de un
+          nombre declarado <code>const</code> → <code>TypeError: Assignment to constant
+          variable</code>.<br>
+          <strong>b)</strong> Porque no se reasigna <code>pedido</code>: la etiqueta sigue
+          pegada al mismo objeto. Solo se cambia una propiedad de dentro, y eso
+          <code>const</code> no lo protege.<br>
+          <strong>c)</strong> <code>1500 + 1500 × 0.21 = 1815</code>. La base ya valía 1500
+          cuando se hizo la cuenta.
+        </p>
+        <p style="margin:0">
+          Si acertaste las tres, ya lees la parte de un archivo JavaScript que más se repite
+          en todo el código del mundo.
+        </p>
+      </div>
+    </details>
+
+    <div class="repl" data-titulo="Verifícalo tú mismo" data-pista="Ejecútalo y compara con lo que respondiste.">
+<textarea class="repl-codigo" rows="9">const IVA = 0.21;
+const pedido = { producto: "Web corporativa", base: 1200 };
+let totalFacturado = 0;
+
+pedido.base = 1500;
+totalFacturado = pedido.base + pedido.base * IVA;
+console.log(totalFacturado);
+IVA = 0.10;</textarea>
+    </div>
+
+    <div class="hoja-respuestas">
+      <p class="hr-intro">📋 <strong>Tu hoja de respuestas.</strong> Se rellena sola con tus quizzes (acierto/fallo y tu nivel de seguridad) y con lo que escribas arriba. Pulsa el botón y <strong>pégala en el chat</strong> — no reescribas nada.</p>
+      <textarea class="hr-salida" readonly rows="14"></textarea>
+      <br>
+      <button class="hr-copiar" type="button">Copiar para el chat</button>
+      <span class="hr-aviso"></span>
+    </div>
+
+    <!-- ================= PIE ================= -->
+    <div class="pie">
+      <div class="fuente-primaria">
+        <p class="nota-titulo">📖 Fuente primaria recomendada</p>
+        <p style="margin:0">
+          Lee <a href="https://es.javascript.info/variables">«Variables» en El Tutorial de
+          JavaScript Moderno</a> (javascript.info, en español, actualizado en 2026): el mismo
+          tema con más ejemplos, la convención de nombres y una sección sobre por qué nombrar
+          bien importa. Es el <strong>tronco de referencia de todo este curso</strong>; si algo
+          de una lección te sabe a poco, ahí está el capítulo largo.
+        </p>
+      </div>
+
+      <div class="recursos-practica">
+        <p class="nota-titulo">🎮 Recursos para practicar por tu cuenta</p>
+        <p style="font-family:var(--sans);font-size:.85rem;color:var(--tinta-suave);margin:0 0 .8rem">
+          Los dos son resolubles <strong>solo con lo de esta lección</strong>. Si algo te pide
+          sintaxis que no hemos visto, es un fallo mío: dímelo. El resto de recursos del curso
+          (Exercism, los quizzes de Lydia Hallie, Codewars, JavaScript30…) están en cola en el
+          <a href="../reference/banco-de-retos.html"><strong>Banco de retos</strong></a>, cada
+          uno con la lección que lo desbloquea.
+        </p>
+        <ul class="rp-lista">
+          <li>
+            <a href="https://es.javascript.info/variables#tareas">javascript.info — Tareas del capítulo «Variables»</a><span class="rp-etq">reto</span>
+            <span class="rp-nota">Tres tareas cortas al final del capítulo de la fuente primaria.
+            La tercera («¿const mayúsculas?») es de <strong>criterio</strong>, no de sintaxis:
+            decidir cuándo una constante merece ir en MAYÚSCULAS y cuándo no. Ese tipo de
+            decisión es lo que distingue a quien entiende de quien copia.
+            <br><em>Único detalle nuevo:</em> usan <code>alert(…)</code> en vez de
+            <code>console.log(…)</code>. Es lo mismo, pero mostrando una ventanita del navegador.</span>
+          </li>
+          <li>
+            <a href="https://developer.mozilla.org/es/docs/Learn_web_development/Core/Scripting/Test_your_skills/Variables">MDN — ¡Pon a prueba tus habilidades!: Variables</a><span class="rp-etq">reto</span>
+            <span class="rp-nota">Tres ejercicios con editor en vivo, en español. El tercero es el bueno:
+            te dan código <strong>con dos errores</strong> y tienes que encontrarlos y
+            arreglarlos — leer código roto y diagnosticarlo, que es justo tu misión.
+            <br><em>Único detalle nuevo:</em> ahí verás que <code>+</code> también junta textos:
+            <code>"Hola " + nombre</code> produce <code>"Hola Ana"</code>.</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="recordatorio-tutor">
+        💬 <strong>Soy tu tutor.</strong> ¿Te ha salido un error raro en la consola de arriba?
+        ¿Has visto una declaración que no encaja con nada de esto? Pégamela en el chat y te digo
+        si es núcleo del 80% o periferia que puedes ignorar. Y cuando termines, manda tu hoja de
+        respuestas: con ella programo tus repasos.
+      </div>
+
+      <div>
+        <p class="nota-titulo" style="color:var(--tinta-suave)">Siguiente</p>
+        <p style="margin:.2rem 0 0;font-family:var(--sans);font-size:.95rem">
+          <strong>Lección 02 — Funciones:</strong> la otra mitad del esqueleto. Qué es
+          <code>=&gt;</code> (la «función flecha» que verás por todas partes), en qué se
+          diferencia del <code>def</code> de Python, y por qué en JavaScript una función se
+          puede guardar en un <code>const</code>. Di «continuar» cuando quieras.
+        </p>
+      </div>
+
+      <div class="nav-lecciones">
+        <span></span>
+        <a href="#">Lección 02 · Funciones →</a>
+      </div>
+    </div>
+
+  </main>
+  <script src="../assets/quiz.js"></script>
+  <script src="../assets/repl.js"></script>
+</body>
+</html>

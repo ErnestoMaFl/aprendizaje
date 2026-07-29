@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lección 3 · Tipos y conversión</title>
+  <link rel="stylesheet" href="../assets/course.css">
+  <style>
+    .frec {
+      font-family: var(--sans); font-size: .68rem; text-transform: uppercase;
+      letter-spacing: .05em; font-weight: 700; padding: .12rem .45rem;
+      border-radius: 4px; vertical-align: .15em; white-space: nowrap;
+    }
+    .frec.nucleo { background: var(--verde-suave); color: var(--verde); }
+    .frec.perif { background: var(--papel-hueso); color: var(--tinta-suave); }
+    /* Bloque de calentamiento: repaso de sesiones anteriores, antes de tocar nada nuevo */
+    .calentamiento {
+      border: 1px dashed var(--acento);
+      border-radius: 10px;
+      padding: 1.2rem 1.4rem;
+      margin: 2rem 0 2.5rem;
+      background: #fffdf8;
+    }
+    .calentamiento > h2 { margin-top: 0; border-bottom: 0; font-size: 1.2rem; }
+    .calentamiento .quiz { box-shadow: none; }
+    /* Tabla de conversiones: valor original -> a texto / a número */
+    .conv { width: 100%; border-collapse: collapse; font-family: var(--sans); font-size: .9rem; margin: 1.2rem 0; }
+    .conv th, .conv td { text-align: left; padding: .5rem .7rem; border-bottom: 1px solid var(--regla); }
+    .conv th { font-size: .7rem; text-transform: uppercase; letter-spacing: .06em; color: var(--tinta-suave); }
+    .conv td:first-child { font-family: var(--mono); font-size: .82rem; }
+    .conv .peligro td { background: var(--rojo-suave); }
+    .linea-num { color: var(--tinta-suave); user-select: none; }
+  </style>
+</head>
+<body>
+<a class="online-link" href="https://ernestomafl.github.io/aprendizaje/" title="Ir al índice de mis cursos en línea">🌐 Mis cursos</a>
+  <main class="lienzo">
+
+    <p class="leccion-kicker">Lección 03 · JavaScript del 80%</p>
+    <h1>Cuando JavaScript convierte por su cuenta</h1>
+    <p class="lede">
+      Al corregir el Reto 01 hiciste la pregunta que abre esta lección: sabías que
+      <code>"Ana"</code> caía en el primer parámetro, pero no entendías por qué el resultado
+      era el texto <code>"Ana, undefined"</code> y no un <code>undefined</code> a secas.
+      La respuesta es que <strong>JavaScript convierte valores de un tipo a otro sin avisar</strong>,
+      y hay que saber exactamente cuándo. Al terminar podrás predecir el resultado de
+      cualquier operación entre tipos distintos — que es de dónde sale la mitad de los bugs
+      raros que verás en código ajeno.
+    </p>
+
+    <!-- ====================== CALENTAMIENTO ====================== -->
+    <div class="calentamiento">
+      <h2>Antes de empezar: tres de memoria</h2>
+      <p style="font-family:var(--sans);font-size:.92rem;color:var(--tinta-suave);margin:0 0 1rem">
+        De sesiones anteriores, y <strong>sin volver atrás a mirarlo</strong>. Recordar cuesta
+        más que releer, y ese esfuerzo es justo lo que hace que se te quede. Si alguna no sale,
+        no pasa nada: sirve igual.
+      </p>
+
+      <div class="quiz quiz-corta" data-num="C1" data-acepta="1210|1210.0">
+        <p class="quiz-pregunta"><span class="quiz-num">Calentamiento 1</span><br>
+          Con <code>base</code> valiendo <code>1000</code>, ¿cuánto vale esta expresión?
+<pre style="margin:.7rem 0 0"><code><span class="t-var">base</span> <span class="t-punt">+</span> <span class="t-var">base</span> <span class="t-punt">*</span> <span class="t-num">0.21</span></code></pre></p>
+        <div class="corta-fila">
+          <input class="corta-input" type="text" placeholder="El número…" autocomplete="off" spellcheck="false">
+          <button class="corta-comprobar" type="button">Comprobar</button>
+        </div>
+        <div class="feedback ok" data-para="ok">Correcto: <code>1210</code>. La multiplicación va primero (<code>1000 × 0.21 = 210</code>) y luego la suma. Cerrado el tema.</div>
+        <div class="feedback no" data-para="no">Es <code>1210</code>. <code>*</code> se resuelve antes que <code>+</code>: primero <code>1000 * 0.21 = 210</code>, después <code>1000 + 210</code>. Si hubiera paréntesis —<code>(base + base) * 0.21</code>— sería <code>420</code>.</div>
+      </div>
+
+      <div class="quiz quiz-corta" data-num="C2" data-acepta="4|linea 4|línea 4|la 4|la linea 4|la línea 4">
+        <p class="quiz-pregunta"><span class="quiz-num">Calentamiento 2</span><br>
+          Una de estas líneas revienta. <strong>¿Cuál? Responde con su número.</strong>
+<pre style="margin:.7rem 0 0"><code><span class="linea-num">1  </span><span class="t-kw">const</span> <span class="t-var">tarifa</span> <span class="t-punt">= {</span> <span class="t-prop">hora</span><span class="t-punt">:</span> <span class="t-num">40</span> <span class="t-punt">};</span>
+<span class="linea-num">2  </span><span class="t-kw">let</span> <span class="t-var">horas</span> <span class="t-punt">=</span> <span class="t-num">10</span><span class="t-punt">;</span>
+<span class="linea-num">3  </span><span class="t-var">tarifa</span><span class="t-punt">.</span><span class="t-prop">hora</span> <span class="t-punt">=</span> <span class="t-num">50</span><span class="t-punt">;</span>
+<span class="linea-num">4  </span><span class="t-var">tarifa</span> <span class="t-punt">= {</span> <span class="t-prop">hora</span><span class="t-punt">:</span> <span class="t-num">60</span> <span class="t-punt">};</span>
+<span class="linea-num">5  </span><span class="t-var">horas</span> <span class="t-punt">=</span> <span class="t-num">12</span><span class="t-punt">;</span></code></pre></p>
+        <div class="corta-fila">
+          <input class="corta-input" type="text" placeholder="El número de línea…" autocomplete="off" spellcheck="false">
+          <button class="corta-comprobar" type="button">Comprobar</button>
+        </div>
+        <div class="feedback ok" data-para="ok">Correcto: la <strong>4</strong>. La 3 <em>abre la caja</em> y cambia algo de dentro — permitido. La 4 <em>despega la etiqueta</em> <code>tarifa</code> para pegarla a otra caja — eso es reasignar, y <code>const</code> lo prohíbe: <code>TypeError</code>. La 5 va bien porque <code>horas</code> es <code>let</code>.</div>
+        <div class="feedback no" data-para="no">Es la <strong>4</strong>. Distingue los dos gestos: la línea 3 <strong>abre la caja</strong> y cambia una propiedad de dentro (<code>const</code> lo permite), mientras que la 4 <strong>despega la etiqueta</strong> para pegarla a un objeto nuevo (<code>const</code> lo prohíbe → <code>TypeError</code>). La 5 no falla: <code>horas</code> se declaró con <code>let</code>.</div>
+      </div>
+
+      <div class="quiz quiz-corta" data-num="C3" data-acepta="undefined">
+        <p class="quiz-pregunta"><span class="quiz-num">Calentamiento 3</span><br>
+          ¿Qué devuelve <code>tercio(9)</code>?
+<pre style="margin:.7rem 0 0"><code><span class="t-kw">const</span> <span class="t-fn">tercio</span> <span class="t-punt">= (</span><span class="t-var">x</span><span class="t-punt">) =&gt; {</span> <span class="t-var">x</span> <span class="t-punt">/</span> <span class="t-num">3</span><span class="t-punt">; };</span></code></pre></p>
+        <div class="corta-fila">
+          <input class="corta-input" type="text" placeholder="El valor exacto…" autocomplete="off" spellcheck="false">
+          <button class="corta-comprobar" type="button">Comprobar</button>
+        </div>
+        <div class="feedback ok" data-para="ok">Correcto: <code>undefined</code>. Hay llaves ⇒ es un bloque ⇒ hace falta <code>return</code>, y no está. Calcula el 3 y lo tira. <strong>Este es el que fallaste en el Reto 01</strong>: ahora sale solo.</div>
+        <div class="feedback no" data-para="no">Es <code>undefined</code>, y es el tercer encuentro con este mismo fragmento (Lección 02 y Reto 01). La regla completa: <strong>llaves después de la flecha ⇒ bloque ⇒ hace falta <code>return</code></strong>. Sin <code>return</code>, la función termina y devuelve <code>undefined</code> en silencio. Para que devolviera 3: <code>(x) =&gt; x / 3</code>.</div>
+      </div>
+    </div>
+
+    <!-- ====================== PRETEST ====================== -->
+    <div class="nota acento">
+      <p class="nota-titulo">La apuesta: predice antes de leer nada</p>
+      <p style="margin:0 0 .6rem">
+        Cinco expresiones. Todas son legales, ninguna da error, y <strong>ninguna hace lo que
+        parece</strong>. Escribe lo que crees que sale. Fallar aquí es parte del método: la
+        apuesta abre el hueco que luego rellena la explicación.
+      </p>
+<pre style="margin:0 0 .8rem"><code><span class="t-str">"Ana, "</span> <span class="t-punt">+</span> <span class="t-var">undefined</span>
+<span class="t-str">"5"</span> <span class="t-punt">+</span> <span class="t-num">3</span>
+<span class="t-str">"5"</span> <span class="t-punt">-</span> <span class="t-num">3</span>
+<span class="t-num">1</span> <span class="t-punt">+</span> <span class="t-num">2</span> <span class="t-punt">+</span> <span class="t-str">"3"</span>
+<span class="t-str">"5"</span> <span class="t-punt">==</span> <span class="t-num">5</span></code></pre>
+      <label class="pregunta-abierta" style="margin:.9rem 0 0">
+        <span class="pa-titulo">✍️ Tu apuesta, antes de seguir leyendo:</span>
+        <textarea class="abierta" data-label="Apuesta (pretest): las cinco expresiones" rows="3" placeholder="1) …  2) …  3) …  4) …  5) …"></textarea>
+      </label>
+    </div>
+
+    <!-- ====================== §1 LOS TIPOS ====================== -->
+    <h2>1. Los tipos que existen</h2>
+    <p>
+      Todo valor en JavaScript tiene un tipo. Son pocos, y con seis ya lees el 99% del código.
+      <code>typeof</code> te dice el de cualquier valor:
+    </p>
+
+    <table class="conv">
+      <thead><tr><th>Tipo</th><th>Ejemplos</th><th><code>typeof</code> devuelve</th></tr></thead>
+      <tbody>
+        <tr><td>número <span class="frec nucleo">núcleo</span></td><td><code>42</code> · <code>0.21</code> · <code>-7</code></td><td><code>"number"</code></td></tr>
+        <tr><td>texto <span class="frec nucleo">núcleo</span></td><td><code>"Ana"</code> · <code>""</code> · <code>"42"</code></td><td><code>"string"</code></td></tr>
+        <tr><td>booleano <span class="frec nucleo">núcleo</span></td><td><code>true</code> · <code>false</code></td><td><code>"boolean"</code></td></tr>
+        <tr><td>undefined <span class="frec nucleo">núcleo</span></td><td><code>undefined</code></td><td><code>"undefined"</code></td></tr>
+        <tr><td>null <span class="frec nucleo">núcleo</span></td><td><code>null</code></td><td><code>"object"</code> ⚠</td></tr>
+        <tr><td>objeto <span class="frec nucleo">núcleo</span></td><td><code>{ hora: 40 }</code></td><td><code>"object"</code></td></tr>
+        <tr><td>función <span class="frec nucleo">núcleo</span></td><td><code>x =&gt; x + 1</code></td><td><code>"function"</code></td></tr>
+        <tr><td>symbol, bigint <span class="frec perif">periferia</span></td><td>—</td><td>Reconócelos y sigue.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="nota">
+      <p class="nota-titulo">Los dos vacíos: <code>undefined</code> y <code>null</code></p>
+      <p style="margin:0 0 .5rem">
+        Ya conoces <code>undefined</code>: es el vacío que pone <strong>JavaScript</strong>
+        —una función sin <code>return</code>, un argumento que no pasaste—.
+        <code>null</code> es el vacío que escribe <strong>una persona</strong> a propósito, para
+        decir «aquí no hay nada, y lo sé». Mismo significado práctico, distinto origen.
+      </p>
+      <p style="margin:0">
+        Y ese <code>typeof null === "object"</code> de la tabla es un <strong>bug de 1995</strong>
+        que nunca se arregló porque rompería media web. No lo entiendas: reconócelo. Es la
+        primera pieza de periferia que te encuentras.
+        <span class="frec perif">reconocer</span>
+      </p>
+    </div>
+
+    <!-- ====================== §2 EL + ====================== -->
+    <h2>2. El <code>+</code> son dos operadores disfrazados de uno</h2>
+    <p>
+      Aquí está la respuesta a tu pregunta. El <code>+</code> mira sus dos lados y decide:
+    </p>
+
+    <div class="nota acento">
+      <p class="nota-titulo">La regla del <code>+</code></p>
+      <p style="margin:0">
+        <strong>Si alguno de los dos lados es texto, el <code>+</code> pega</strong> (y convierte
+        el otro lado a texto para poder pegarlo). <strong>Si ninguno lo es, suma.</strong>
+      </p>
+    </div>
+
+<pre><code><span class="t-str">"Ana, "</span> <span class="t-punt">+</span> <span class="t-var">undefined</span>   <span class="t-com">// "Ana, undefined"  ← hay texto: pega</span>
+<span class="t-str">"5"</span> <span class="t-punt">+</span> <span class="t-num">3</span>              <span class="t-com">// "53"             ← hay texto: pega</span>
+<span class="t-num">5</span> <span class="t-punt">+</span> <span class="t-num">3</span>                <span class="t-com">// 8                ← no hay texto: suma</span></code></pre>
+
+    <p>
+      Por eso <code>saludar("Ana")</code> devolvía <code>"Ana, undefined"</code>: el
+      <code>undefined</code> no «contamina» la expresión entera, sino que se
+      <strong>convierte al texto <code>"undefined"</code></strong> —cinco letras y ya— y se pega
+      como cualquier otra palabra. JavaScript no distingue entre «un texto que quiero mostrar» y
+      «un agujero»: para él ambos son cosas que se pegan.
+    </p>
+    <p>
+      Y ese es exactamente el motivo de que sea peligroso, que era tu propia conclusión en el
+      reto: si <code>undefined</code> reventara, lo verías en el momento. Como se convierte en
+      texto, llega hasta la pantalla del cliente convertido en <code>"Total: undefined €"</code>.
+    </p>
+
+    <h3>El orden importa: se resuelve de izquierda a derecha</h3>
+    <p>
+      Cuando hay varios <code>+</code> seguidos, se aplican <strong>por parejas, empezando por
+      la izquierda</strong>. Cambia el orden y cambia el resultado:
+    </p>
+<pre><code><span class="t-num">1</span> <span class="t-punt">+</span> <span class="t-num">2</span> <span class="t-punt">+</span> <span class="t-str">"3"</span>     <span class="t-com">// (1 + 2) = 3, luego 3 + "3" → "33"</span>
+<span class="t-str">"3"</span> <span class="t-punt">+</span> <span class="t-num">1</span> <span class="t-punt">+</span> <span class="t-num">2</span>     <span class="t-com">// ("3" + 1) = "31", luego "31" + 2 → "312"</span></code></pre>
+
+    <div class="repl" data-titulo="Compruébalo" data-pista="Cambia el orden de los operandos y mira cómo salta de número a texto.">
+<textarea class="repl-codigo" rows="7">console.log("Ana, " + undefined);
+console.log("5" + 3);
+console.log(1 + 2 + "3");
+console.log("3" + 1 + 2);
+
+// Prueba tú: ¿qué da  "" + 1 + 0 ?
+</textarea>
+    </div>
+
+    <!-- ====================== §3 LOS DEMÁS OPERADORES ====================== -->
+    <h2>3. Los demás operadores solo saben de números</h2>
+    <p>
+      <code>-</code>, <code>*</code>, <code>/</code> y <code>%</code> no tienen doble
+      personalidad: <strong>convierten los dos lados a número y operan</strong>, pase lo que pase.
+      Por eso <code>"5" - 3</code> da <code>2</code> mientras que <code>"5" + 3</code> daba
+      <code>"53"</code>. Es la asimetría que más desconcierta al principio.
+    </p>
+    <p>Esta es la tabla completa de «convertir a número». Es la que hay que tener en la cabeza:</p>
+
+    <table class="conv">
+      <thead><tr><th>Valor</th><th>Convertido a número</th><th>Por qué</th></tr></thead>
+      <tbody>
+        <tr><td>"42"</td><td><code>42</code></td><td>Un texto que es un número se lee como número.</td></tr>
+        <tr><td>"  -9  "</td><td><code>-9</code></td><td>Los espacios de los bordes se ignoran.</td></tr>
+        <tr><td>""</td><td><code>0</code></td><td>Texto vacío = cero. Sorprendente, pero constante.</td></tr>
+        <tr><td>"   "</td><td><code>0</code></td><td>Solo espacios = también cero.</td></tr>
+        <tr class="peligro"><td>"4px"</td><td><code>NaN</code></td><td>Si sobra <em>cualquier</em> carácter, no es número.</td></tr>
+        <tr><td>true</td><td><code>1</code></td><td>Verdadero es uno.</td></tr>
+        <tr><td>false</td><td><code>0</code></td><td>Falso es cero.</td></tr>
+        <tr><td>null</td><td><code>0</code></td><td>El vacío intencionado cuenta como cero.</td></tr>
+        <tr class="peligro"><td>undefined</td><td><code>NaN</code></td><td>El vacío accidental no es ningún número.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="nota">
+      <p class="nota-titulo">Dos caracteres invisibles que verás escritos</p>
+      <p style="margin:0">
+        Dentro de un texto, <code>\n</code> significa <strong>salto de línea</strong> y
+        <code>\t</code> un <strong>tabulador</strong>. Se escriben con dos caracteres pero valen
+        uno solo. Cuentan como espacio en blanco, así que <code>" \t \n"</code> convertido a
+        número da <code>0</code>, igual que <code>"   "</code>.
+      </p>
+    </div>
+
+    <p>
+      Fíjate en las dos filas rojas: son las dos únicas que producen <code>NaN</code>, y entre
+      ellas está la que ya te mordió en el Reto 01. <code>suma(7)</code> dejaba
+      <code>b</code> valiendo <code>undefined</code>, y <code>7 + undefined</code> no tiene ningún
+      texto por medio ⇒ el <code>+</code> suma ⇒ convierte <code>undefined</code> a número ⇒
+      <code>NaN</code>. Las dos reglas encajan.
+    </p>
+
+    <h3><code>NaN</code>: el número que no es un número</h3>
+    <p>
+      <code>NaN</code> («Not a Number») es de tipo <code>"number"</code> —sí, en serio— y es
+      <strong>contagioso</strong>: cualquier cuenta que lo toque devuelve <code>NaN</code>.
+      Un solo dato mal convertido al principio de un cálculo lo envenena entero.
+    </p>
+<pre><code><span class="t-str">"4px"</span> <span class="t-punt">-</span> <span class="t-num">2</span>          <span class="t-com">// NaN</span>
+<span class="t-punt">(</span><span class="t-str">"4px"</span> <span class="t-punt">-</span> <span class="t-num">2</span><span class="t-punt">) *</span> <span class="t-num">100</span>  <span class="t-com">// NaN — el veneno se propaga</span></code></pre>
+    <p>
+      Rareza que conviene conocer: <strong><code>NaN</code> no es igual ni a sí mismo</strong>.
+      <code>NaN === NaN</code> es <code>false</code>. Para detectarlo existe
+      <code>Number.isNaN(valor)</code>, que devuelve <code>true</code> o <code>false</code>.
+      <span class="frec nucleo">núcleo</span>
+    </p>
+
+    <!-- ====================== §4 CONVERSIÓN EXPLÍCITA ====================== -->
+    <h2>4. Convertir a propósito</h2>
+    <p>
+      Todo lo anterior es JavaScript convirtiendo <em>solo</em>. Lo que se escribe en código real
+      es la conversión <strong>explícita</strong>, porque se ve y no sorprende a nadie:
+    </p>
+<pre><code><span class="t-fn">Number</span><span class="t-punt">(</span><span class="t-str">"42"</span><span class="t-punt">)</span>    <span class="t-com">// 42     — texto a número</span>
+<span class="t-fn">String</span><span class="t-punt">(</span><span class="t-num">42</span><span class="t-punt">)</span>      <span class="t-com">// "42"   — número a texto</span>
+<span class="t-punt">+</span><span class="t-str">"42"</span>            <span class="t-com">// 42     — atajo: un + delante convierte a número</span></code></pre>
+    <p>
+      Ese <code>+</code> solitario delante de un valor se llama <strong><code>+</code>
+      unario</strong> y es el mismo <code>Number()</code> escrito corto. Lo verás mucho.
+      Ojo con no confundirlo: <code>+"42"</code> (un solo operando) convierte;
+      <code>"4" + "2"</code> (dos operandos) pega.
+    </p>
+
+    <div class="nota acento">
+      <p class="nota-titulo">Por qué esto te importa en las webs que entregas</p>
+      <p style="margin:0">
+        Todo lo que escribe un usuario en un formulario llega a tu JavaScript como
+        <strong>texto</strong>, siempre — aunque el campo sea de tipo número. Si un cliente teclea
+        <code>1200</code> y tú haces <code>precio + 100</code>, obtienes <code>"1200100"</code> y
+        no <code>1300</code>. Este es literalmente el bug número uno de quien empieza con
+        formularios, y se arregla con un <code>Number(...)</code> en el sitio correcto.
+      </p>
+    </div>
+
+    <!-- ====================== §5 COMPARAR ====================== -->
+    <h2>5. Comparar: <code>===</code> siempre</h2>
+    <p>
+      JavaScript tiene dos operadores de igualdad, y la diferencia es exactamente la conversión
+      automática:
+    </p>
+    <table class="conv">
+      <thead><tr><th>Operador</th><th>Qué hace</th><th>Ejemplo</th></tr></thead>
+      <tbody>
+        <tr><td>=== <span class="frec nucleo">núcleo</span></td><td>Compara valor <strong>y</strong> tipo. No convierte nada.</td><td><code>"5" === 5</code> → <code>false</code></td></tr>
+        <tr><td>== <span class="frec perif">solo leer</span></td><td>Convierte primero, compara después.</td><td><code>"5" == 5</code> → <code>true</code></td></tr>
+        <tr><td>!== <span class="frec nucleo">núcleo</span></td><td>El contrario de <code>===</code>.</td><td><code>"5" !== 5</code> → <code>true</code></td></tr>
+      </tbody>
+    </table>
+    <p>
+      <strong>La regla práctica cabe en una línea: usa <code>===</code> siempre.</strong> No es
+      una preferencia de estilo — las reglas de conversión de <code>==</code> son tantas y tan
+      arbitrarias que ni la gente que lleva años escribiendo JavaScript se las sabe de memoria.
+      Escribiendo <code>===</code> no tienes que saberlas.
+    </p>
+
+    <div class="nota">
+      <p class="nota-titulo">La única excepción que se usa de verdad</p>
+      <p style="margin:0 0 .5rem">
+        <code>null == undefined</code> es <code>true</code>: es una regla especial, y son los
+        <strong>únicos</strong> dos valores que <code>==</code> considera iguales entre sí.
+        Ningún otro valor es <code>==</code> a <code>null</code> — ni el <code>0</code>, ni el
+        texto vacío.
+      </p>
+      <p style="margin:0">
+        Por eso <code>x == null</code> se escribe a propósito: pregunta «¿está vacío, de
+        cualquiera de las dos formas?» en un solo gesto. Con <code>===</code> harían falta dos
+        comparaciones. Es la excepción, no la norma.
+      </p>
+    </div>
+
+    <h3>Comparar textos con <code>&lt;</code> y <code>&gt;</code></h3>
+    <p>
+      Dos textos <strong>no</strong> se comparan por longitud, ni por lo que valdrían como
+      número. Se comparan <strong>como en un diccionario</strong>: carácter a carácter, de
+      izquierda a derecha, y <strong>el primero que difiere lo decide todo</strong>. A partir de
+      ahí ya no se mira nada más.
+    </p>
+<pre><code><span class="t-str">"2"</span> <span class="t-punt">&gt;</span> <span class="t-str">"12"</span>
+
+  <span class="t-com">posición 1:  "2"  contra  "1"</span>
+  <span class="t-com">             ¿cuál va después en el orden? El "2".</span>
+  <span class="t-com">             Decidido: "2" es mayor.  →  true</span>
+
+  <span class="t-com">             El "2" que queda en "12" ni se llega a mirar.</span></code></pre>
+    <p>
+      Es la lógica del diccionario de toda la vida: <strong>«zapato» va después de
+      «abecedario»</strong> aunque «abecedario» tenga el triple de letras. Nadie cuenta letras;
+      se mira la primera que difiere —<code>z</code> contra <code>a</code>— y se acabó.
+    </p>
+    <p>Con textos que parecen números, eso da resultados que parecen absurdos y son consistentes:</p>
+<pre><code><span class="t-str">"9"</span> <span class="t-punt">&gt;</span> <span class="t-str">"100"</span>   <span class="t-com">// true  — mira "9" contra "1"</span>
+<span class="t-str">"10"</span> <span class="t-punt">&lt;</span> <span class="t-str">"9"</span>    <span class="t-com">// true  — mira "1" contra "9"</span>
+
+<span class="t-str">"2"</span> <span class="t-punt">&gt;</span> <span class="t-num">12</span>       <span class="t-com">// false — aquí NO son dos textos: hay un número,</span>
+                <span class="t-com">//         así que convierte y compara 2 &gt; 12</span></code></pre>
+    <p>
+      Por eso una lista de precios o de fechas guardados como texto sale desordenada, y por eso
+      se convierte a número <strong>antes</strong> de comparar. Misma moraleja que el resto de la
+      lección.
+    </p>
+
+    <div class="repl" data-titulo="Juega con las comparaciones" data-pista="Añade tus propias líneas. Ctrl+Enter ejecuta.">
+<textarea class="repl-codigo" rows="8">console.log("5" === 5, "5" == 5);
+console.log(null == undefined, null === undefined);
+console.log("2" > "12", "2" > 12);
+console.log(NaN === NaN, Number.isNaN(NaN));
+
+// Prueba tú: ¿es  null == 0  verdadero o falso?
+</textarea>
+    </div>
+
+    <!-- ====================== QUIZZES ====================== -->
+    <h2>Compruébalo — recuerda sin releer</h2>
+
+    <div class="quiz quiz-corta" data-num="1" data-acepta="&quot;110&quot;|110|'110'">
+      <p class="quiz-pregunta"><span class="quiz-num">Pregunta 1 · escribe la respuesta</span><br>
+        ¿Qué imprime? (el valor exacto)
+<pre style="margin:.7rem 0 0"><code><span class="t-fn">console</span><span class="t-punt">.</span><span class="t-fn">log</span><span class="t-punt">(</span><span class="t-str">"1"</span> <span class="t-punt">+</span> <span class="t-num">1</span> <span class="t-punt">+</span> <span class="t-num">0</span><span class="t-punt">);</span></code></pre></p>
+      <div class="corta-fila">
+        <input class="corta-input" type="text" placeholder="El valor exacto…" autocomplete="off" spellcheck="false">
+        <button class="corta-comprobar" type="button">Comprobar</button>
+      </div>
+      <div class="feedback ok" data-para="ok">Correcto: el texto <code>"110"</code>. De izquierda a derecha: <code>"1" + 1</code> encuentra un texto ⇒ pega ⇒ <code>"11"</code>; luego <code>"11" + 0</code> ⇒ <code>"110"</code>. Una vez que la cadena se vuelve texto, ya no vuelve a ser número.</div>
+      <div class="feedback no" data-para="no">Es <code>"110"</code>, un texto. Resuélvelo por parejas desde la izquierda: <code>"1" + 1</code> → hay texto, así que pega → <code>"11"</code>. Después <code>"11" + 0</code> → <code>"110"</code>. El error típico es sumar primero <code>1 + 0</code>: los <code>+</code> no se saltan el orden.</div>
+    </div>
+
+    <div class="quiz quiz-corta" data-num="2" data-acepta="2|el numero 2|el número 2">
+      <p class="quiz-pregunta"><span class="quiz-num">Pregunta 2 · escribe la respuesta</span><br>
+        ¿Y este? (el valor exacto)
+<pre style="margin:.7rem 0 0"><code><span class="t-fn">console</span><span class="t-punt">.</span><span class="t-fn">log</span><span class="t-punt">(</span><span class="t-str">"  6  "</span> <span class="t-punt">/</span> <span class="t-str">"3"</span><span class="t-punt">);</span></code></pre></p>
+      <div class="corta-fila">
+        <input class="corta-input" type="text" placeholder="El valor exacto…" autocomplete="off" spellcheck="false">
+        <button class="corta-comprobar" type="button">Comprobar</button>
+      </div>
+      <div class="feedback ok" data-para="ok">Correcto: el número <code>2</code>. La división no tiene doble personalidad: convierte los dos lados a número. Los espacios de los bordes se ignoran, así que <code>"  6  "</code> → <code>6</code> y <code>"3"</code> → <code>3</code>.</div>
+      <div class="feedback no" data-para="no">Es <code>2</code>, y además un número de verdad, no un texto. Solo el <code>+</code> tiene doble comportamiento; <code>-</code>, <code>*</code>, <code>/</code> y <code>%</code> convierten <strong>siempre</strong> a número. Los espacios de los extremos no estorban: <code>"  6  "</code> vale <code>6</code>.</div>
+    </div>
+
+    <div class="quiz" data-correcta="1" data-num="3">
+      <p class="quiz-pregunta"><span class="quiz-num">Pregunta 3</span><br>
+        Un campo de formulario vacío llega a tu código como texto vacío <code>""</code>.
+        ¿Qué imprime esto?
+<pre style="margin:.7rem 0 0"><code><span class="t-kw">const</span> <span class="t-var">horas</span> <span class="t-punt">=</span> <span class="t-str">""</span><span class="t-punt">;</span>
+<span class="t-fn">console</span><span class="t-punt">.</span><span class="t-fn">log</span><span class="t-punt">(</span><span class="t-var">horas</span> <span class="t-punt">*</span> <span class="t-num">40</span><span class="t-punt">);</span></code></pre></p>
+      <div class="opciones">
+        <button class="opcion">Imprime el valor NaN</button>
+        <button class="opcion">Imprime el número cero</button>
+        <button class="opcion">Imprime un texto vacío</button>
+      </div>
+      <div class="feedback ok" data-para="ok">Correcto: <code>0</code>. El texto vacío convertido a número es <code>0</code>, y <code>0 * 40 = 0</code>. Y ahí está el peligro real: un campo sin rellenar no te avisa con un error, te factura <strong>0 €</strong> con total naturalidad.</div>
+      <div class="feedback no" data-para="no">Da <code>0</code>. Repasa la tabla: el texto vacío <code>""</code> convertido a número es <code>0</code> (no <code>NaN</code> — para eso haría falta un carácter que no encaje, como en <code>"4px"</code>). Así que <code>0 * 40 = 0</code>. Un formulario a medio rellenar produce un presupuesto de cero euros sin quejarse.</div>
+    </div>
+
+    <div class="quiz" data-correcta="2" data-num="4">
+      <p class="quiz-pregunta"><span class="quiz-num">Pregunta 4</span><br>
+        ¿Cuál de estas tres comparaciones es <code>true</code>?</p>
+      <div class="opciones">
+        <button class="opcion"><code>null === undefined</code></button>
+        <button class="opcion"><code>NaN === NaN</code></button>
+        <button class="opcion"><code>null == undefined</code></button>
+      </div>
+      <div class="feedback ok" data-para="ok">Correcto. <code>null == undefined</code> es la regla especial: con <code>==</code>, los dos vacíos se consideran iguales. Con <code>===</code> no, porque son de tipos distintos. Y <code>NaN</code> no es igual ni a sí mismo, con ningún operador.</div>
+      <div class="feedback no" data-para="no">La verdadera es <code>null == undefined</code>. Con <code>===</code> son distintos (tipos distintos), y <code>NaN === NaN</code> es <code>false</code> siempre — <code>NaN</code> es el único valor de JavaScript que no es igual a sí mismo; por eso existe <code>Number.isNaN()</code>.</div>
+    </div>
+
+    <div class="quiz quiz-corta" data-num="5" data-acepta="nan">
+      <p class="quiz-pregunta"><span class="quiz-num">Pregunta 5 · escribe la respuesta</span><br>
+        Una función devuelve <code>undefined</code> por olvidar el <code>return</code>, y su
+        resultado se usa en una cuenta. ¿Qué imprime?
+<pre style="margin:.7rem 0 0"><code><span class="t-kw">const</span> <span class="t-fn">base</span> <span class="t-punt">= (</span><span class="t-var">n</span><span class="t-punt">) =&gt; {</span> <span class="t-var">n</span> <span class="t-punt">*</span> <span class="t-num">2</span><span class="t-punt">; };</span>
+<span class="t-fn">console</span><span class="t-punt">.</span><span class="t-fn">log</span><span class="t-punt">(</span><span class="t-fn">base</span><span class="t-punt">(</span><span class="t-num">10</span><span class="t-punt">)</span> <span class="t-punt">-</span> <span class="t-num">5</span><span class="t-punt">);</span></code></pre></p>
+      <div class="corta-fila">
+        <input class="corta-input" type="text" placeholder="El valor exacto…" autocomplete="off" spellcheck="false">
+        <button class="corta-comprobar" type="button">Comprobar</button>
+      </div>
+      <div class="feedback ok" data-para="ok">Correcto: <code>NaN</code>. Dos lecciones encadenadas: el bloque sin <code>return</code> devuelve <code>undefined</code>, y <code>undefined</code> convertido a número es <code>NaN</code>. Así es como un <code>return</code> olvidado aparece disfrazado de <code>NaN</code> tres funciones más allá.</div>
+      <div class="feedback no" data-para="no">Es <code>NaN</code>. Encadena las dos reglas: <code>base(10)</code> tiene llaves sin <code>return</code> ⇒ devuelve <code>undefined</code>. Luego <code>undefined - 5</code> usa el guion, que convierte a número ⇒ <code>undefined</code> es <code>NaN</code> ⇒ el resultado es <code>NaN</code>. Este encadenado es exactamente cómo se ven estos bugs en la vida real.</div>
+    </div>
+
+    <div class="quiz quiz-corta" data-num="6" data-acepta="===|=== siempre|el ===|triple igual|igualdad estricta">
+      <p class="quiz-pregunta"><span class="quiz-num">Pregunta 6 · escribe la respuesta</span><br>
+        ¿Qué operador de igualdad debes escribir tú, por defecto, en todo tu código?</p>
+      <div class="corta-fila">
+        <input class="corta-input" type="text" placeholder="Escríbelo…" autocomplete="off" spellcheck="false">
+        <button class="corta-comprobar" type="button">Comprobar</button>
+      </div>
+      <div class="feedback ok" data-para="ok">Correcto: <code>===</code>. Compara valor y tipo sin convertir nada, así que no tienes que memorizar ninguna tabla de conversiones. <code>==</code> se aprende solo para <em>leer</em> código ajeno.</div>
+      <div class="feedback no" data-para="no">La respuesta es <code>===</code> (y su contrario <code>!==</code>). No convierte nada, así que es predecible sin memorizar reglas. <code>==</code> queda para leer código de otros — y para el caso especial <code>x == null</code>.</div>
+    </div>
+
+    <label class="pregunta-abierta">
+      <span class="pa-titulo">🧠 Pregunta 7 · con tus palabras y sin mirar arriba: <strong>¿por qué <code>"5" + 3</code> y <code>"5" - 3</code> dan resultados de tipos distintos?</strong> Explicarlo es lo que lo fija.</span>
+      <textarea class="abierta" data-label="P7 (de memoria): por qué + y - se comportan distinto" rows="3"></textarea>
+    </label>
+
+    <!-- ====================== MISIÓN ====================== -->
+    <h2>Tu misión de lectura</h2>
+    <p>
+      Calculadora de presupuesto de una web de cliente. Los tres primeros valores son
+      <strong>lo que llega de un formulario</strong> — y de un formulario siempre llega texto,
+      aunque el campo sea numérico. Léelo <strong>sin ejecutarlo</strong>.
+    </p>
+<pre><code><span class="t-com">// Lo que el cliente escribió en el formulario (siempre texto):</span>
+<span class="t-kw">const</span> <span class="t-var">horas</span> <span class="t-punt">=</span> <span class="t-str">"20"</span><span class="t-punt">;</span>
+<span class="t-kw">const</span> <span class="t-var">tarifa</span> <span class="t-punt">=</span> <span class="t-str">"45"</span><span class="t-punt">;</span>
+<span class="t-kw">const</span> <span class="t-var">extra</span> <span class="t-punt">=</span> <span class="t-str">""</span><span class="t-punt">;</span>          <span class="t-com">// campo que dejó vacío</span>
+
+<span class="t-kw">const</span> <span class="t-fn">subtotal</span> <span class="t-punt">= (</span><span class="t-var">h</span><span class="t-punt">,</span> <span class="t-var">t</span><span class="t-punt">) =&gt;</span> <span class="t-var">h</span> <span class="t-punt">*</span> <span class="t-var">t</span><span class="t-punt">;</span>
+<span class="t-kw">const</span> <span class="t-fn">conExtra</span> <span class="t-punt">= (</span><span class="t-var">s</span><span class="t-punt">,</span> <span class="t-var">e</span><span class="t-punt">) =&gt;</span> <span class="t-var">s</span> <span class="t-punt">+</span> <span class="t-var">e</span><span class="t-punt">;</span>
+
+<span class="t-fn">console</span><span class="t-punt">.</span><span class="t-fn">log</span><span class="t-punt">(</span><span class="t-fn">subtotal</span><span class="t-punt">(</span><span class="t-var">horas</span><span class="t-punt">,</span> <span class="t-var">tarifa</span><span class="t-punt">));</span>            <span class="t-com">// a)</span>
+<span class="t-fn">console</span><span class="t-punt">.</span><span class="t-fn">log</span><span class="t-punt">(</span><span class="t-fn">conExtra</span><span class="t-punt">(</span><span class="t-num">900</span><span class="t-punt">,</span> <span class="t-var">extra</span><span class="t-punt">));</span>              <span class="t-com">// b)</span>
+<span class="t-fn">console</span><span class="t-punt">.</span><span class="t-fn">log</span><span class="t-punt">(</span><span class="t-fn">conExtra</span><span class="t-punt">(</span><span class="t-num">900</span><span class="t-punt">,</span> <span class="t-str">"150"</span><span class="t-punt">));</span>             <span class="t-com">// c)</span>
+<span class="t-fn">console</span><span class="t-punt">.</span><span class="t-fn">log</span><span class="t-punt">(</span><span class="t-fn">subtotal</span><span class="t-punt">(</span><span class="t-var">horas</span><span class="t-punt">,</span> <span class="t-var">tarifa</span><span class="t-punt">)</span> <span class="t-punt">===</span> <span class="t-num">900</span><span class="t-punt">);</span>  <span class="t-com">// d)</span></code></pre>
+    <p style="font-family:var(--sans);font-size:.95rem">
+      <strong>a)</strong> ¿Qué imprime, y de qué tipo es? &nbsp;
+      <strong>b)</strong> ¿Y esta? &nbsp;
+      <strong>c)</strong> Esta es la que factura mal de verdad. ¿Qué sale y por qué es grave? &nbsp;
+      <strong>d)</strong> ¿<code>true</code> o <code>false</code>? &nbsp;
+      <strong>e)</strong> Arregla <code>conExtra</code> para que sume siempre, escriba lo que
+      escriba el cliente.
+    </p>
+
+    <details class="revelar pista">
+      <summary>Pista (si la necesitas)</summary>
+      <div class="revelar-cuerpo">
+        Ve valor por valor preguntándote solo dos cosas: <strong>¿alguno de los dos lados es
+        texto?</strong> y <strong>¿qué operador es?</strong> Recuerda que <code>*</code> siempre
+        convierte a número, y que <code>+</code> solo suma si <em>ninguno</em> de los dos lados
+        es texto. Para <strong>e)</strong>, mira la sección «Convertir a propósito».
+      </div>
+    </details>
+
+    <label class="pregunta-abierta">
+      <span class="pa-titulo">✍️ Escribe tus cinco respuestas — <strong>antes</strong> de abrir la solución:</span>
+      <textarea class="abierta" data-label="Misión: a) b) c) d) e) del presupuesto" rows="6" placeholder="a) …  b) …  c) …  d) …  e) …"></textarea>
+    </label>
+
+    <details class="revelar">
+      <summary>Ver la solución (solo después de escribir la tuya)</summary>
+      <div class="revelar-cuerpo">
+        <p style="margin:0 0 .6rem">
+          <strong>a)</strong> <code>900</code>, y es un <strong>número</strong>. <code>*</code>
+          convierte los dos textos a número: <code>20 * 45</code>. La multiplicación se salva
+          sola.<br>
+          <strong>b)</strong> <code>"900"</code>, un <strong>texto</strong>. <code>extra</code> es
+          <code>""</code>, que es texto ⇒ el <code>+</code> pega en vez de sumar. Parece correcto
+          en pantalla y ya no es un número.<br>
+          <strong>c)</strong> <code>"900150"</code>. Un extra de 150 € convierte un presupuesto de
+          900 en uno de novecientos mil ciento cincuenta. Es grave porque
+          <strong>no da ningún error</strong>: sale a pantalla, o al PDF, o al correo del
+          cliente.<br>
+          <strong>d)</strong> <code>true</code>. <code>subtotal</code> devuelve el número
+          <code>900</code>, mismo valor y mismo tipo que <code>900</code>. (Si hubiera devuelto
+          <code>"900"</code>, sería <code>false</code>.)<br>
+          <strong>e)</strong> <code>const conExtra = (s, e) =&gt; Number(s) + Number(e);</code> —
+          o con el atajo: <code>(s, e) =&gt; +s + +e;</code>. Convertir <strong>antes</strong> de
+          operar es la solución a toda esta lección.
+        </p>
+        <p style="margin:0">
+          Lo importante de a) frente a b): el mismo par de textos da un número o un texto según
+          el operador. Por eso el error se cuela — la mitad del código funciona.
+        </p>
+      </div>
+    </details>
+
+    <div class="repl" data-titulo="Verifícalo tú mismo" data-pista="Ejecuta, compara con tus respuestas, y arregla conExtra aquí mismo.">
+<textarea class="repl-codigo" rows="14">const horas = "20";
+const tarifa = "45";
+const extra = "";
+
+const subtotal = (h, t) => h * t;
+const conExtra = (s, e) => s + e;
+
+console.log(subtotal(horas, tarifa));
+console.log(conExtra(900, extra));
+console.log(conExtra(900, "150"));
+console.log(subtotal(horas, tarifa) === 900);
+
+// Arregla conExtra aquí y vuelve a probar:
+</textarea>
+    </div>
+
+    <div class="hoja-respuestas">
+      <p class="hr-intro">📋 <strong>Tu hoja de respuestas.</strong> Se rellena sola con tus quizzes (acierto/fallo y tu nivel de seguridad) y con lo que escribas arriba. Pulsa el botón y <strong>pégala en el chat</strong> — no reescribas nada.</p>
+      <textarea class="hr-salida" readonly rows="16"></textarea>
+      <br>
+      <button class="hr-copiar" type="button">Copiar para el chat</button>
+      <span class="hr-aviso"></span>
+    </div>
+
+    <!-- ====================== PIE ====================== -->
+    <div class="pie">
+      <div class="fuente-primaria">
+        <p class="nota-titulo">📖 Fuente primaria recomendada</p>
+        <p style="margin:0">
+          Lee <a href="https://es.javascript.info/type-conversions">«Conversiones de tipo»</a> y
+          <a href="https://es.javascript.info/comparison">«Comparaciones»</a> en El Tutorial de
+          JavaScript Moderno (javascript.info, en español). Son dos capítulos cortos que cubren
+          exactamente esto, con las tablas completas. Para la referencia oficial de por qué
+          <code>+</code> se comporta así, MDN:
+          <a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Operators/Addition">Operador de adición</a>.
+        </p>
+      </div>
+
+      <div class="recursos-practica">
+        <p class="nota-titulo">🎮 Recursos para practicar por tu cuenta</p>
+        <p style="font-family:var(--sans);font-size:.85rem;color:var(--tinta-suave);margin:0 0 .8rem">
+          Comprobados uno a uno: todo lo que piden está en esta lección o en las anteriores.
+          Lo que exige más sigue en cola en el
+          <a href="../reference/banco-de-retos.html"><strong>Banco de retos</strong></a>.
+        </p>
+        <ul class="rp-lista">
+          <li>
+            <a href="https://es.javascript.info/operators#tasks">javascript.info — Tarea «Conversiones de tipos»</a><span class="rp-etq">reto</span>
+            <span class="rp-nota">Catorce expresiones para evaluar mentalmente:
+            <code>"" - 1 + 0</code>, <code>true + false</code>, <code>"4px" - 2</code>,
+            <code>null + 1</code>, <code>" \t \n" - 2</code>… Cada una es una fila de la tabla de
+            esta lección. Es el mejor entrenamiento que existe para este tema, y trae solución
+            oculta para autocorregirte. <strong>Baja hasta «Tareas» y abre la tercera</strong>
+            (las dos primeras usan <code>++</code>, que aún no hemos visto — sáltatelas).</span>
+          </li>
+          <li>
+            <a href="https://es.javascript.info/comparison#tasks">javascript.info — Tarea «Comparaciones»</a><span class="rp-etq">reto</span>
+            <span class="rp-nota">Siete comparaciones, incluidas <code>"2" &gt; "12"</code>,
+            <code>undefined == null</code>, <code>undefined === null</code> y una con
+            <code>+</code> unario delante de un texto. Todas salen de la sección 5 de hoy.
+            Es corta y va directa a lo que más se confunde.</span>
+          </li>
+          <li>
+            <a href="https://dorey.github.io/JavaScript-Equality-Table/">Tabla de igualdad de JavaScript</a><span class="rp-etq suave">consulta</span>
+            <span class="rp-nota">No es un reto: es la tabla completa de qué es igual a qué con
+            <code>==</code> y con <code>===</code>. Míralas una al lado de otra treinta segundos.
+            El desorden del panel <code>==</code> frente a la diagonal limpia del panel
+            <code>===</code> es el argumento visual de por qué la regla es «usa
+            <code>===</code>».</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="recordatorio-tutor">
+        💬 <strong>Soy tu tutor.</strong> Si te encuentras una conversión que no cuadre —o si
+        alguno de los retos de arriba te pide algo que no te haya enseñado— pégamelo en el chat.
+        Y manda tu hoja de respuestas al terminar.
+      </div>
+
+      <div>
+        <p class="nota-titulo" style="color:var(--tinta-suave)">Referencia de consulta</p>
+        <p style="margin:.2rem 0 1.2rem;font-family:var(--sans);font-size:.95rem">
+          Todas las tablas de hoy, en una sola hoja para imprimir y tener al lado:
+          <a href="../reference/tipos-y-conversion.html"><strong>Tipos y conversión — hoja de consulta</strong></a>.
+        </p>
+        <p class="nota-titulo" style="color:var(--tinta-suave)">Siguiente</p>
+        <p style="margin:.2rem 0 0;font-family:var(--sans);font-size:.95rem">
+          <strong>Lección 04 — Decidir: <code>if</code> y valores «verdaderos»:</strong> qué
+          significa que <code>""</code>, <code>0</code> y <code>undefined</code> se consideren
+          falsos sin ser <code>false</code>, y cómo se escribe una condición en JavaScript. Es la
+          continuación directa de hoy. Di «continuar» cuando quieras.
+        </p>
+      </div>
+
+      <div class="nav-lecciones">
+        <a href="0002-funciones-y-flechas.html">← Lección 02 · Funciones y flechas</a>
+        <a href="../reference/tipos-y-conversion.html">Hoja de consulta →</a>
+      </div>
+    </div>
+
+  </main>
+  <script src="../assets/quiz.js"></script>
+  <script src="../assets/repl.js"></script>
+</body>
+</html>

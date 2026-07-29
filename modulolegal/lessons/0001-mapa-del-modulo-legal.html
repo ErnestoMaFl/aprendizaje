@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lección 1 · El mapa del Módulo Legal</title>
+  <link rel="stylesheet" href="../assets/course.css">
+  <style>
+    .apuesta {
+      border: 1px dashed var(--acento);
+      border-radius: 10px;
+      padding: 1.2rem 1.4rem;
+      margin: 2rem 0;
+      background: var(--acento-suave);
+    }
+    .apuesta .nota-titulo { color: var(--acento); }
+    .apuesta .pregunta-abierta { margin-bottom: .6rem; }
+
+    /* Cadena de tres eslabones: catálogo → ticket → expediente */
+    .cadena {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr auto 1fr;
+      align-items: stretch;
+      gap: .5rem;
+      margin: 1.8rem 0;
+      font-family: var(--sans);
+    }
+    .cadena .eslabon {
+      background: #fff;
+      border: 1.5px solid var(--regla);
+      border-top: 4px solid var(--acento);
+      border-radius: 10px;
+      padding: .9rem .8rem;
+      text-align: center;
+      box-shadow: var(--sombra);
+    }
+    .cadena .eslabon b { display: block; font-size: 1.02rem; margin-bottom: .3rem; }
+    .cadena .eslabon span { font-size: .8rem; color: var(--tinta-suave); line-height: 1.4; display: block; }
+    .cadena .flecha {
+      align-self: center;
+      color: var(--acento);
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+    .cadena .flecha small {
+      display: block;
+      font-size: .62rem;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      color: var(--tinta-suave);
+      font-weight: 700;
+    }
+    @media (max-width:600px){
+      .cadena { grid-template-columns: 1fr; }
+      .cadena .flecha { transform: rotate(90deg); margin: .1rem 0; }
+      .cadena .flecha small { transform: rotate(-90deg); }
+    }
+
+    /* Familias de historias de usuario */
+    .familias { margin: 1.6rem 0; }
+    .familia {
+      border-left: 4px solid var(--acento);
+      background: var(--papel-hueso);
+      border-radius: 0 8px 8px 0;
+      padding: .8rem 1.1rem;
+      margin-bottom: .8rem;
+      font-family: var(--sans);
+      font-size: .92rem;
+    }
+    .familia b { display: block; font-size: .98rem; margin-bottom: .15rem; }
+    .familia .hus { font-family: var(--mono); font-size: .78rem; color: var(--acento); display: block; margin-top: .35rem; }
+    .familia.op { border-left-color: var(--verde); }
+    .familia.op .hus { color: var(--verde); }
+  </style>
+</head>
+<body>
+<a class="online-link" href="https://ernestomafl.github.io/aprendizaje/" title="Ir al índice de mis cursos en línea">🌐 Mis cursos</a>
+  <main class="lienzo">
+
+    <p class="leccion-kicker">Lección 01 · Módulo Legal KIVA</p>
+    <h1>El mapa: cómo encaja todo el módulo</h1>
+    <p class="lede">Antes de meterte en ninguna historia, el terreno completo. Al terminar esta
+      lección sabrás dónde vive cada una de las 24 historias de usuario y por qué el módulo está
+      construido sobre una cadena de tres eslabones.</p>
+
+    <div class="nota">
+      <p class="nota-titulo">Por qué el mapa va primero</p>
+      <p style="margin:0">Tu misión es <strong>explicar cualquier HU sin leerla</strong>. Una HU
+        suelta no se sostiene en la memoria: se sostiene colgada de un flujo. Si sabes que la
+        <code>HU06-009</code> es «el paso 7 de doce» sabrás reconstruirla; si la memorizas aislada,
+        se te cae en dos días. Hoy montamos la percha.</p>
+    </div>
+
+    <!-- ================= APUESTA ================= -->
+    <div class="apuesta">
+      <p class="nota-titulo">Apuesta antes de leer</p>
+      <p>Todavía no te he explicado nada del módulo. <strong>Adivina</strong>: arriesgar una
+        respuesta antes de conocerla hace que la explicación se pegue mucho mejor. Equivocarte aquí
+        no cuenta como error.</p>
+      <p>El área de Comercial de KIVA necesita que Legal le redacte un contrato de arrendamiento.
+        Entra al sistema para pedirlo.</p>
+      <label class="pregunta-abierta">
+        <span class="pa-titulo">¿Qué crees que tiene que existir ya en el sistema para que Comercial pueda siquiera levantar esa solicitud?</span>
+        <textarea class="abierta" data-label="Apuesta (pretest)" rows="3" placeholder="Tu apuesta, sin buscarlo…"></textarea>
+      </label>
+      <details class="revelar">
+        <summary>Ver la respuesta (sólo después de apostar)</summary>
+        <div class="revelar-cuerpo">
+          <p><strong>Un servicio activo en el Catálogo de Servicios Legales</strong> —«Elaboración
+            de contrato de arrendamiento»— que además tenga a Comercial entre las áreas autorizadas
+            a solicitarlo.</p>
+          <p style="margin:0">Sin eso, no hay nada que pedir. Es una regla dura del proyecto:
+            <em>ningún ticket ni expediente puede existir sin referenciar un servicio activo del
+            catálogo</em> <span class="rn fuente">§1.4 · decisión 2</span>. El bloque 1 explica por
+            qué el módulo entero se apoya en esa idea.</p>
+        </div>
+      </details>
+    </div>
+
+    <!-- ================= BLOQUE 1 ================= -->
+    <h2>1. La cadena de tres eslabones</h2>
+
+    <p>Toda la arquitectura del módulo gira alrededor de tres entidades encadenadas
+      <span class="rn fuente">§1.2</span>. Ésta es la frase que tienes que poder decir de memoria,
+      y de la que cuelga el resto del curso:</p>
+
+    <div class="cadena">
+      <div class="eslabon">
+        <b>Catálogo</b>
+        <span>Qué servicios sabe prestar el Área Legal</span>
+      </div>
+      <div class="flecha">→<small>se solicita</small></div>
+      <div class="eslabon">
+        <b>Ticket</b>
+        <span>Alguien pide uno de esos servicios</span>
+      </div>
+      <div class="flecha">→<small>se confirma</small></div>
+      <div class="eslabon">
+        <b>Expediente</b>
+        <span>El trabajo real, con su ejecución y sus entregables</span>
+      </div>
+    </div>
+
+    <p>Míralas una a una, porque cada eslabón responde a una pregunta distinta:</p>
+
+    <table class="tabla-peso">
+      <thead><tr><th>Eslabón</th><th>Qué es</th><th>Cuándo nace</th></tr></thead>
+      <tbody>
+        <tr class="nucleo">
+          <td><strong>Catálogo de servicios</strong></td>
+          <td>La <strong>entidad maestra</strong>. Cada ficha define un servicio que el área puede
+            prestar: prioridad, áreas autorizadas a pedirlo, requisitos de entrada, SLA, responsable
+            sugerido, costos estándar, entregables, ruta de aprobación y flujos financieros.</td>
+          <td>Se configura antes de operar (<code>HU06-005</code>).</td>
+        </tr>
+        <tr class="nucleo">
+          <td><strong>Ticket</strong></td>
+          <td>La <strong>solicitud</strong>. Al elegir el servicio, <strong>hereda toda su
+            configuración</strong>. Todavía no hay trabajo: hay una petición esperando decisión.</td>
+          <td>Lo levanta un área solicitante (<code>HU06-006</code>) o lo genera otro módulo
+            automáticamente (<code>HU06-016</code>).</td>
+        </tr>
+        <tr class="nucleo">
+          <td><strong>Expediente</strong></td>
+          <td>El <strong>trabajo</strong>. Concentra la ejecución del caso: bitácora de actividades,
+            costos y entregables. Queda ligado permanentemente a su ticket.</td>
+          <td>Nace cuando la Gerencia Jurídica <strong>confirma</strong> el ticket
+            (<code>HU06-008</code>).</td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="font-size:.86rem;color:var(--tinta-suave);font-family:var(--sans);margin-top:-.6rem">
+      El punto verde marca lo que es <strong>núcleo</strong>: esto lo dirás en toda reunión sobre
+      el módulo.</p>
+
+    <div class="nota acento">
+      <p class="nota-titulo">La frontera que más se confunde</p>
+      <p style="margin:0"><strong>Ticket ≠ expediente.</strong> Lo que los separa es un acto humano
+        con nombre: la <strong>confirmación</strong> por parte de la Gerencia Jurídica. Antes de
+        confirmar hay una solicitud que puede rechazarse o devolverse; después hay trabajo abierto
+        con un abogado responsable asignado. Si alguna vez dudas de en qué eslabón estás,
+        pregúntate: <em>¿ya confirmó la Gerencia?</em></p>
+    </div>
+
+    <p>Y una consecuencia que ya vale la pena que retengas: <strong>toda prestación nace de un
+      servicio del catálogo</strong>; no existe trabajo legal sin un servicio activo que lo
+      respalde <span class="rn fuente">§1.2</span>. Por eso los catálogos se configuran primero:
+      son prerequisito de la operación, no un accesorio.</p>
+
+    <!-- ================= BLOQUE 2 ================= -->
+    <h2>2. El recorrido de punta a punta</h2>
+
+    <p>El documento de arquitectura describe la secuencia completa en doce pasos
+      <span class="rn fuente">§1.3</span>. Te la doy comprimida en los <strong>siete hitos</strong>
+      que de verdad cambian el estado de las cosas, cada uno con la historia que lo gobierna:</p>
+
+    <ol class="ruta-flujo">
+      <li class="paso">
+        <span class="paso-tipo">Se configura el catálogo</span>
+        <span class="paso-quien">Administrador Legal</span>
+        <span class="paso-tiempo">HU06-005</span>
+      </li>
+      <li class="paso">
+        <span class="paso-tipo">Se levanta el ticket</span>
+        <span class="paso-quien">Área solicitante · o un módulo externo</span>
+        <span class="paso-tiempo">HU06-006 · 016</span>
+      </li>
+      <li class="paso">
+        <span class="paso-tipo">Llega a la bandeja y se decide</span>
+        <span class="paso-quien">Gerencia Jurídica: confirma, rechaza o devuelve</span>
+        <span class="paso-tiempo">HU06-007</span>
+      </li>
+      <li class="paso">
+        <span class="paso-tipo">Se ejecuta el expediente</span>
+        <span class="paso-quien">Abogado responsable: bitácora, costos y entregables</span>
+        <span class="paso-tiempo">HU06-008</span>
+      </li>
+      <li class="paso">
+        <span class="paso-tipo">Se revisa</span>
+        <span class="paso-quien">Según la ruta de aprobación del servicio</span>
+        <span class="paso-tiempo">HU06-009 · 010</span>
+      </li>
+      <li class="paso">
+        <span class="paso-tipo">Se firma lo que lo requiera</span>
+        <span class="paso-quien">Mediante Odoo Sign</span>
+        <span class="paso-tiempo">HU06-011</span>
+      </li>
+      <li class="paso">
+        <span class="paso-tipo">Se cierra y se entrega</span>
+        <span class="paso-quien">Los entregables se remiten al solicitante</span>
+        <span class="paso-tiempo">HU06-012</span>
+      </li>
+    </ol>
+
+    <p>Fíjate en el reparto de papeles, porque también se repite: el <strong>Administrador
+      Legal</strong> configura pero no opera; el <strong>área solicitante</strong> pide y recibe,
+      sin ver la cocina; la <strong>Gerencia Jurídica</strong> decide y da seguimiento; el
+      <strong>abogado</strong> ejecuta; el <strong>Director</strong> mira todo y aprueba lo
+      gordo.</p>
+
+    <div class="nota acento">
+      <p class="nota-titulo">Siete verbos para llevarte el recorrido en la cabeza</p>
+      <p style="margin:0;font-size:1.05rem;text-align:center;font-family:var(--sans);font-weight:700;letter-spacing:.01em">
+        Configurar → Pedir → Decidir → Ejecutar → Revisar → Firmar → Cerrar</p>
+      <p style="margin:.7rem 0 0">Siete verbos se retienen; siete frases no. Si en una reunión te
+        preguntan cómo funciona el módulo, empieza recitando esto y luego rellena cada verbo con su
+        historia. <strong>Cuidado con la confusión más fácil:</strong> esto es el <em>recorrido</em>
+        de una solicitud en el tiempo, no la clasificación de las historias. Las familias del
+        bloque 3 son otra cosa: agrupan las HU por naturaleza, no por orden de ejecución.</p>
+    </div>
+
+    <div class="nota">
+      <p class="nota-titulo">Dónde encaja lo que ya viste</p>
+      <p style="margin:0">Si hiciste la lección de rutas de aprobación, ya conoces el hito 5 por
+        dentro. Y ahora puedes ubicarlo: la ruta se configura en el hito 1, se copia dentro del
+        expediente en el hito 3 —al confirmar— y se ejecuta en el hito 5.</p>
+    </div>
+
+    <!-- ================= BLOQUE 3 ================= -->
+    <h2>3. Las 24 historias, en cuatro familias</h2>
+
+    <p>Veinticuatro historias sueltas no se memorizan. Cuatro familias, sí. Cada historia del
+      proyecto cae en una de éstas:</p>
+
+    <div class="familias">
+      <div class="familia">
+        <b>A · Fundación y seguridad <span class="peso periferia">4 historias</span></b>
+        Que el módulo exista, que sólo entre quien debe, y que se pueda auditar quién puede qué.
+        <span class="hus">HU06-001 · 002 · 003 · 004</span>
+      </div>
+      <div class="familia">
+        <b>B · Catálogos: la configuración maestra <span class="peso periferia">6 historias</span></b>
+        Todo lo que hay que configurar <em>antes</em> de poder operar: categorías, unidades
+        organizacionales, tipos de documento, servicios, sus flujos financieros y las rutas de
+        aprobación.
+        <span class="hus">HU06-004a · 004b · 004c · 005 · 005a · 010</span>
+      </div>
+      <div class="familia op">
+        <b>C · El ciclo operativo <span class="peso nucleo">7 historias · el corazón</span></b>
+        El recorrido del bloque 2, historia por historia: solicitar, decidir, ejecutar, revisar,
+        firmar, cerrar y —si hace falta— cancelar.
+        <span class="hus">HU06-006 · 007 · 008 · 009 · 011 · 012 · 013</span>
+      </div>
+      <div class="familia">
+        <b>D · Casos especiales y capacidades transversales <span class="peso periferia">7 historias</span></b>
+        Lo que se monta <em>encima</em> del flujo base: escrituración, generación automática de
+        tickets, encadenamiento entre áreas, tickets recurrentes, gestor documental, documentación
+        por partner y el tablero de indicadores.
+        <span class="hus">HU06-014 · 015 · 016 · 017 · 018 · 019 · 020</span>
+      </div>
+    </div>
+
+    <p>La tabla completa —las 24 con su nombre y su familia— está en la
+      <a href="../reference/mapa-del-modulo.html">ficha de referencia del mapa</a>, para consultar
+      sin tener que abrir el CSV.</p>
+
+    <div class="nota acento">
+      <p class="nota-titulo">La regla de oro del proyecto <span class="peso nucleo">te sirve en reunión</span></p>
+      <p style="margin:0"><strong>Aquí nunca se elimina nada.</strong> La baja se hace por
+        inactivación (<code>active = False</code>) y la anulación por cambio de estado
+        (<code>state = cancelled</code>). Los registros operativos se conservan íntegros
+        <span class="rn fuente">§1.4 · decisión 7</span>. Vale para usuarios, catálogos,
+        expedientes y documentos: si en cualquier historia dudas de qué pasa al «borrar» algo, la
+        respuesta por defecto es <em>no se borra, se inactiva</em>.</p>
+    </div>
+
+    <!-- ================= QUIZ ================= -->
+    <h2>Comprueba que lo puedes producir</h2>
+    <p>Reconocer una respuesta es fácil; producirla desde cero es lo que te hace falta para
+      explicar el módulo sin leerlo. Responde sin volver a subir.</p>
+
+    <div class="quiz" data-correcta="1" data-num="1">
+      <p class="quiz-pregunta"><span class="quiz-num">Pregunta 1</span><br>
+        ¿Qué separa exactamente a un ticket de un expediente?</p>
+      <div class="opciones">
+        <button class="opcion">Que el área solicitante haya adjuntado todos los requisitos de entrada</button>
+        <button class="opcion">Que la Gerencia Jurídica haya confirmado la solicitud recibida</button>
+        <button class="opcion">Que el sistema haya asignado un folio único y una fecha límite</button>
+        <button class="opcion">Que el servicio elegido tenga una ruta de aprobación vinculada</button>
+      </div>
+      <div class="feedback ok" data-para="ok">Exacto. La confirmación es el acto que convierte una
+        petición en trabajo: antes puede rechazarse o devolverse, después hay expediente con abogado
+        responsable. El folio y la fecha son consecuencia de haber confirmado, no la causa.</div>
+      <div class="feedback no" data-para="no">No. La frontera es la <strong>confirmación por parte
+        de la Gerencia Jurídica</strong>: al confirmar se genera el expediente. Los requisitos, el
+        folio y la ruta acompañan al proceso, pero ninguno de los tres decide el salto de un
+        eslabón al siguiente.</div>
+    </div>
+
+    <div class="quiz" data-correcta="3" data-num="2">
+      <p class="quiz-pregunta"><span class="quiz-num">Pregunta 2</span><br>
+        Un área pide un servicio jurídico que el catálogo no tiene dado de alta. ¿Qué ocurre?</p>
+      <div class="opciones">
+        <button class="opcion">Se crea el ticket como «otros servicios» y luego se clasifica</button>
+        <button class="opcion">Se crea el ticket, y el catálogo se completa al confirmarlo</button>
+        <button class="opcion">Se crea el expediente directamente, saltando el paso del ticket</button>
+        <button class="opcion">No se puede pedir: primero hay que dar de alta ese servicio</button>
+      </div>
+      <div class="feedback ok" data-para="ok">Correcto. El catálogo es la entidad maestra: ningún
+        ticket ni expediente puede existir sin referenciar un servicio activo. Por eso los catálogos
+        son la familia B y se configuran antes de que el módulo pueda operar. Ojo con esto en
+        reunión: es la respuesta a la pregunta «¿y si nos piden algo raro?».</div>
+      <div class="feedback no" data-para="no">No. Ningún ticket ni expediente puede existir sin
+        referenciar un <strong>servicio activo del catálogo</strong>. No hay vía de escape, ni
+        categoría «otros», ni completar después: hay que dar de alta el servicio primero. Y saltarse
+        el ticket es imposible, porque el expediente sólo nace al confirmar uno.</div>
+    </div>
+
+    <div class="quiz quiz-corta" data-num="3" data-acepta="expediente|el expediente|legal.expediente">
+      <p class="quiz-pregunta"><span class="quiz-num">Pregunta 3</span><br>
+        ¿Cómo se llama el tercer eslabón de la cadena, el que nace al confirmarse la solicitud?
+        Escribe sólo el nombre.</p>
+      <div class="corta-fila">
+        <input class="corta-input" type="text" placeholder="Tu respuesta…">
+        <button class="corta-comprobar" type="button">Comprobar</button>
+      </div>
+      <div class="feedback ok" data-para="ok">Correcto: el <strong>expediente</strong>. Es donde
+        vive el trabajo real —bitácora, costos y entregables— y donde se ejecuta la revisión. Queda
+        ligado permanentemente al ticket que lo originó.</div>
+      <div class="feedback no" data-para="no">Es el <strong>expediente</strong>. La cadena completa
+        es <strong>catálogo → ticket → expediente</strong>: el catálogo define qué se puede pedir,
+        el ticket es la petición, y el expediente es el trabajo que nace al confirmarla.</div>
+    </div>
+
+    <label class="pregunta-abierta">
+      <span class="pa-titulo">Pregunta 4 · De memoria, sin subir: escribe los siete hitos del recorrido de punta a punta, en orden.</span>
+      <textarea class="abierta" data-label="P4 · Los siete hitos" rows="4" placeholder="1… 2… 3…"></textarea>
+    </label>
+
+    <label class="pregunta-abierta">
+      <span class="pa-titulo">Pregunta 5 · El porqué: ¿por qué crees que el proyecto exige que nada exista sin un servicio del catálogo detrás? Piensa en qué se rompería si se permitieran solicitudes libres.</span>
+      <textarea class="abierta" data-label="P5 · Por qué el catálogo manda" rows="3" placeholder="Porque…"></textarea>
+    </label>
+
+    <!-- ================= PRÁCTICA SOBRE LA ESPECIFICACIÓN ================= -->
+    <h2>Para practicar por tu cuenta</h2>
+    <p>Dos misiones opcionales, las dos sobre <strong>la especificación del proyecto</strong>. Nada
+      que no vayas a usar en KIVA.</p>
+
+    <div class="recursos-practica">
+      <p class="nota-titulo">Retos para resolver tú</p>
+      <ul class="rp-lista">
+        <li>
+          <strong>Clasifica a ciegas</strong>
+          <span class="rp-etq">reto</span>
+          <span class="rp-nota">Abre <code>HUS_LEGAL.csv</code> y tapa la columna de descripción.
+            Leyendo <em>sólo el nombre corto</em> de cada historia, asigna cada una a su familia
+            (A, B, C o D) antes de mirar la ficha de referencia. Las que falles son exactamente las
+            que hay que trabajar primero.</span>
+        </li>
+        <li>
+          <strong>Sesenta segundos en voz alta</strong>
+          <span class="rp-etq">reto</span>
+          <span class="rp-nota">Ésta es la que entrena tu misión de verdad. Sin mirar nada,
+            explícale a alguien —o a la pared— <strong>el recorrido completo de una solicitud
+            legal, de punta a punta</strong>, en menos de un minuto. Si te trabas en un hito, ya
+            sabes cuál repasar.</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="fuente-primaria">
+      <p class="nota-titulo">Fuente primaria de esta lección</p>
+      <p style="margin:0">Capítulo 1 del documento <em>06 Arqui Diseño Módulo Legal v01</em>
+        (Ana Guzmán): <span class="rn fuente">§1.2</span> modelo conceptual,
+        <span class="rn fuente">§1.3</span> secuencia extremo a extremo y
+        <span class="rn fuente">§1.4</span> decisiones arquitectónicas. Más el índice de historias
+        de <code>HUS_LEGAL.csv</code>. Son la especificación del proyecto: mandan sobre cualquier
+        cosa que diga esta lección o yo.</p>
+    </div>
+
+    <!-- ================= HOJA DE RESPUESTAS ================= -->
+    <div class="hoja-respuestas">
+      <p class="hr-intro">Cuando termines, pulsa el botón y pega esto en el chat. Se ha ido
+        rellenando solo con tus respuestas.</p>
+      <textarea class="hr-salida" readonly rows="12"></textarea>
+      <button class="hr-copiar" type="button">Copiar para el chat</button>
+      <span class="hr-aviso"></span>
+    </div>
+
+    <div class="pie">
+      <p><strong>A partir de aquí</strong> recorremos el módulo historia por historia, siguiendo el
+        orden del flujo. Y si prefieres atacar antes una familia concreta —los catálogos, o el
+        ciclo operativo entero— dímelo y reordeno el plan.</p>
+
+      <div class="recordatorio-tutor">
+        Soy tu profesor en este taller: pregúntame lo que sea. Si una regla te suena contradictoria,
+        si quieres ver cómo se implementaría en Odoo 19, o si algo del mapa no te cuadra con lo que
+        has visto en el proyecto, dímelo.
+      </div>
+
+      <div class="nav-lecciones">
+        <a href="../reference/mapa-del-modulo.html">Ficha: el mapa del módulo</a>
+        <a href="0007-ruta-plantilla-e-instancia.html">Lección 07: las rutas de aprobación →</a>
+      </div>
+    </div>
+
+  </main>
+  <script src="../assets/quiz.js"></script>
+</body>
+</html>

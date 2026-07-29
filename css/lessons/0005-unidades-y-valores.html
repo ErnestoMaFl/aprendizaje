@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lección 5 · Unidades y valores</title>
+  <link rel="stylesheet" href="../assets/course.css">
+  <style>
+    /* Chip de color: muestra el color real junto a su código */
+    .chip {
+      display: inline-block;
+      width: .95em;
+      height: .95em;
+      border-radius: 3px;
+      border: 1px solid rgba(43,39,35,.25);
+      vertical-align: -.12em;
+      margin-right: .3em;
+    }
+    /* Desglose visual de un color hexadecimal en sus tres pares */
+    .hex-desglose {
+      font-family: var(--mono);
+      font-size: 1.5rem;
+      text-align: center;
+      background: var(--papel-hueso);
+      border-radius: 10px;
+      padding: 1.6rem 1rem 1.2rem;
+      margin: 1.4rem 0;
+      box-shadow: var(--sombra);
+    }
+    .hex-par { padding: .1em .15em; border-radius: 4px; font-weight: 700; }
+    .hex-par.r { background: var(--rojo-suave); color: var(--rojo); }
+    .hex-par.g { background: var(--verde-suave); color: var(--verde); }
+    .hex-par.b { background: #dbeafe; color: var(--azul); }
+    .hex-leyenda { font-family: var(--sans); font-size: .75rem; color: var(--tinta-suave); margin-top: .7rem; }
+    @media (max-width:600px){ .hex-desglose { font-size: 1.1rem; } }
+  </style>
+</head>
+<body>
+<a class="online-link" href="https://ernestomafl.github.io/aprendizaje/" title="Ir al índice de mis cursos en línea">🌐 Mis cursos</a>
+  <main class="lienzo">
+
+    <p class="leccion-kicker">Lección 05 · Leer CSS</p>
+    <h1>Unidades y valores</h1>
+    <p class="lede">
+      Ya dominas la mitad izquierda de una declaración: sabes <em>a qué</em> apunta una regla y <em>qué</em>
+      propiedad toca. Hoy toca la mitad derecha — lo que va después de los dos puntos. Hasta ahora leías
+      <code>16px</code> o <code>1.5rem</code> «por encima»; al final de esta lección sabrás decir exactamente
+      <strong>cuánto mide algo, relativo a qué, y de qué color es</strong>.
+    </p>
+
+    <!-- PRETEST -->
+    <div class="nota acento">
+      <p class="nota-titulo">Antes de leer: arriésgate (fallar aquí es parte del método)</p>
+      <p style="margin:0 0 .6rem">
+        El mismo número, <code>1.5</code>, dos veces — pero con unidades distintas:
+      </p>
+<pre style="margin:0 0 .8rem"><code><span class="t-sel">html</span> <span class="t-punt">{</span> <span class="t-prop">font-size</span><span class="t-punt">:</span> <span class="t-val">16px</span><span class="t-punt">;</span> <span class="t-punt">}</span>
+
+<span class="t-sel">.tarjeta</span> <span class="t-punt">{</span>
+  <span class="t-prop">font-size</span><span class="t-punt">:</span> <span class="t-val">20px</span><span class="t-punt">;</span>
+  <span class="t-prop">padding</span><span class="t-punt">:</span> <span class="t-val">1.5em</span><span class="t-punt">;</span>
+  <span class="t-prop">margin</span><span class="t-punt">:</span> <span class="t-val">1.5rem</span><span class="t-punt">;</span>
+<span class="t-punt">}</span></code></pre>
+      <p style="margin:0">
+        ¿Cuántos píxeles de <code>padding</code> y cuántos de <code>margin</code> tiene la tarjeta?
+        Apuesta dos números — ¿salen iguales o distintos? — y sigue leyendo.
+      </p>
+      <label class="pregunta-abierta" style="margin:.9rem 0 0">
+        <span class="pa-titulo">✍️ Tu apuesta, antes de seguir (queda en tu hoja de respuestas):</span>
+        <textarea class="abierta" data-label="Apuesta (pretest): padding y margin en px" rows="2" placeholder="padding: … px · margin: … px — porque…"></textarea>
+      </label>
+    </div>
+
+    <h2>La pregunta clave: ¿relativo a qué?</h2>
+    <p>
+      Solo hay una unidad que significa lo mismo en todas partes: <code>px</code>, el píxel. Es
+      <strong>absoluta</strong> — <code>200px</code> mide 200px aquí, en un móvil y dentro de cualquier caja.
+      Todas las demás unidades del código real son <strong>relativas</strong>: son un multiplicador de
+      <em>otra</em> medida. Por eso, cada vez que veas una, tu lectura es siempre la misma pregunta:
+      <strong>«¿relativo a qué?»</strong>. Esta tabla es la respuesta:
+    </p>
+
+    <table class="tabla-peso">
+      <thead><tr><th>Unidad</th><th>Relativa a…</th><th>Ejemplo leído en voz alta</th></tr></thead>
+      <tbody>
+        <tr class="nucleo"><td><code>px</code></td><td>nada — es fija</td><td><code>width: 200px</code> → «200 píxeles, siempre»</td></tr>
+        <tr class="nucleo"><td><code>%</code></td><td>el elemento <strong>padre</strong></td><td><code>width: 50%</code> → «la mitad del ancho de mi padre»</td></tr>
+        <tr class="nucleo"><td><code>em</code></td><td>el <strong>font-size del propio elemento</strong></td><td><code>padding: 1.5em</code> con letra de 20px → «30px»</td></tr>
+        <tr class="nucleo"><td><code>rem</code></td><td>el font-size de la <strong>raíz</strong> <code>&lt;html&gt;</code> (r de <em>root</em>; 16px por defecto)</td><td><code>margin: 1.5rem</code> → «1.5 × 16 = 24px»</td></tr>
+        <tr><td><code>vw</code> · <code>vh</code></td><td>la <strong>ventana</strong> (viewport): 1vw = 1% de su ancho, 1vh = 1% de su alto</td><td><code>height: 100vh</code> → «tan alto como la pantalla»</td></tr>
+      </tbody>
+    </table>
+    <p style="color:var(--tinta-suave);font-size:.95rem">
+      ● = núcleo-80%. <code>vw</code>/<code>vh</code> quedan justo en la frontera: cada vez más comunes,
+      sobre todo <code>100vh</code> en portadas a pantalla completa. Reconócelas y ya.
+    </p>
+
+    <div class="nota">
+      <p class="nota-titulo">La trampa que separa em de rem</p>
+      <p style="margin:0">
+        <code>em</code> mira el font-size <strong>del elemento donde está escrita</strong> — si la letra de la
+        caja crece, sus <code>em</code> crecen con ella. <code>rem</code> ignora todo eso y mira siempre la
+        <strong>raíz</strong> del documento. Mismo número, varas de medir distintas. (Detalle fino, por si lo
+        ves: cuando <code>em</code> se usa <em>en la propia</em> <code>font-size</code>, se mide contra la del
+        <strong>padre</strong> — la suya propia aún no existe.)
+      </p>
+    </div>
+
+    <p>Con la tabla ya puedes resolver la apuesta del principio. Calcula tus dos números antes de abrir esto:</p>
+
+    <details class="revelar">
+      <summary>Ver la respuesta del pretest</summary>
+      <div class="revelar-cuerpo">
+        <p style="margin:0 0 .5rem">
+          <code>padding: 1.5em</code> → 1.5 × <strong>20px</strong> (el font-size de la propia tarjeta) =
+          <strong>30px</strong>.<br>
+          <code>margin: 1.5rem</code> → 1.5 × <strong>16px</strong> (el font-size de la raíz <code>html</code>) =
+          <strong>24px</strong>.
+        </p>
+        <p style="margin:0">El mismo <code>1.5</code> produce <strong>dos medidas distintas</strong>, porque cada
+          unidad responde a un «¿relativo a qué?» diferente. Esa es toda la lección en una línea.</p>
+      </div>
+    </details>
+
+    <div class="nota acento">
+      <p class="nota-titulo">Por qué el código real prefiere rem a px (lectura de intenciones)</p>
+      <p style="margin:0">
+        Cuando un usuario sube el tamaño de letra en los ajustes de su navegador, lo que cambia es el font-size
+        de la raíz. Todo lo escrito en <code>rem</code> <strong>escala con él</strong>; lo escrito en
+        <code>px</code> se queda clavado. Por eso, cuando leas <code>font-size: 1.25rem</code>, no pienses «qué
+        manera rara de escribir 20px»: el autor está diciendo <em>«respeta la configuración del usuario»</em>.
+        Leer unidades también es leer intenciones.
+      </p>
+    </div>
+
+    <h3>Números sin unidad</h3>
+    <p>
+      Dos casos que verás constantemente y no son errores: el <strong>cero va desnudo</strong>
+      (<code>margin: 0</code> — el cero mide lo mismo en cualquier unidad), y
+      <strong><code>line-height</code> suele ir sin unidad</strong>: <code>line-height: 1.5</code> significa
+      «el alto de cada línea de texto es 1.5 veces el font-size del elemento». Un multiplicador puro.
+    </p>
+
+    <h2>Colores: cuatro formas de escribir lo mismo</h2>
+    <p>
+      El otro gran habitante del lado derecho de los dos puntos. Un mismo rojo oscuro puede aparecer escrito de
+      cuatro maneras — y las cuatro salen en código real:
+    </p>
+
+    <table class="tabla-peso">
+      <thead><tr><th>Forma</th><th>Cómo leerla</th><th>Ejemplo</th></tr></thead>
+      <tbody>
+        <tr class="nucleo"><td><strong>Palabra clave</strong></td><td>un nombre en inglés; hay ~148</td><td><span class="chip" style="background:firebrick"></span><code>color: firebrick</code></td></tr>
+        <tr class="nucleo"><td><strong>Hexadecimal</strong></td><td>3 pares tras <code>#</code>: rojo · verde · azul, de <code>00</code> (nada) a <code>ff</code> (máximo)</td><td><span class="chip" style="background:#b22222"></span><code>color: #b22222</code></td></tr>
+        <tr class="nucleo"><td><strong>rgb()</strong></td><td>lo mismo, en decimal: 0 a 255 por canal</td><td><span class="chip" style="background:rgb(178,34,34)"></span><code>rgb(178, 34, 34)</code></td></tr>
+        <tr><td><strong>hsl()</strong></td><td>tono (0–360°), saturación, luminosidad</td><td><span class="chip" style="background:hsl(0,68%,42%)"></span><code>hsl(0, 68%, 42%)</code></td></tr>
+      </tbody>
+    </table>
+
+    <p>
+      La forma que más te vas a cruzar es la hexadecimal. No hay que «calcularla» — basta con saber
+      <strong>desarmarla</strong> en sus tres pares:
+    </p>
+
+    <div class="hex-desglose">
+      <span class="t-punt">#</span><span class="hex-par r">9a</span><span class="hex-par g">34</span><span class="hex-par b">12</span>
+      <div class="hex-leyenda">
+        <span style="color:var(--rojo);font-weight:700">rojo 9a</span> (alto) ·
+        <span style="color:var(--verde);font-weight:700">verde 34</span> (bajo) ·
+        <span style="color:var(--azul);font-weight:700">azul 12</span> (casi nada)
+        → mucho rojo, poco de lo demás: <span class="chip" style="background:#9a3412;margin:0 .1em 0 .3em"></span> un naranja terracota
+      </div>
+    </div>
+
+    <p>
+      Cada par usa cifras hexadecimales — del 0 al 9 y luego de la <code>a</code> a la <code>f</code> — así que
+      <code>00</code> es «nada de este canal» y <code>ff</code> es «este canal a tope». Para <em>leer</em> basta
+      el brochazo: <code>#ff0000</code> es rojo puro, <code>#000000</code> es negro (todo apagado),
+      <code>#ffffff</code> es blanco (todo encendido). Y si los tres pares repiten cifra
+      (<code>#ffffff</code>, <code>#333333</code>) verás el atajo de 3 cifras: <code>#fff</code>,
+      <code>#333</code> — grises y colores «redondos».
+    </p>
+
+    <div class="nota">
+      <p class="nota-titulo">El cuarto número: transparencia (alpha)</p>
+      <p style="margin:0 0 .6rem">
+        Cualquiera de estas formas puede llevar un valor extra de <strong>opacidad</strong>, de 0 (invisible) a
+        1 (sólido). Lo verás escrito de dos maneras — la vieja con comas y <code>rgba</code>, y la moderna con
+        una barra <code>/</code>:
+      </p>
+<pre style="margin:0"><code><span class="t-prop">background</span><span class="t-punt">:</span> <span class="t-val">rgba(0, 0, 0, 0.5)</span><span class="t-punt">;</span>      <span class="t-com">/* negro al 50% — sintaxis vieja  */</span>
+<span class="t-prop">background</span><span class="t-punt">:</span> <span class="t-val">rgb(0 0 0 / 0.5)</span><span class="t-punt">;</span>       <span class="t-com">/* negro al 50% — sintaxis moderna */</span></code></pre>
+    </div>
+
+    <h2>Periferia: valores que se calculan solos</h2>
+    <p>
+      Dos funciones aparecen muchísimo en CSS moderno. No necesitas dominarlas — solo que no te frenen
+      al leer:
+    </p>
+<pre><code><span class="t-prop">width</span><span class="t-punt">:</span> <span class="t-val">calc(100% - 40px)</span><span class="t-punt">;</span>   <span class="t-com">/* calc() = «haz la cuenta»: todo el ancho menos 40px */</span>
+<span class="t-prop">color</span><span class="t-punt">:</span> <span class="t-val">var(--acento)</span><span class="t-punt">;</span>       <span class="t-com">/* var() = «usa el valor guardado bajo ese nombre»    */</span></code></pre>
+    <p style="color:var(--tinta-suave);font-size:.95rem">
+      <code>var(--nombre)</code> lee una <strong>variable</strong>: un valor que el autor definió una sola vez
+      (algo como <code>--acento: #9a3412;</code>) para reutilizarlo por toda la hoja. De hecho, la hoja de
+      estilos de <em>este curso</em> lo hace — si abres <code>course.css</code> verás <code>var(--tinta)</code>,
+      <code>var(--papel)</code>… Ya puedes leerla. <em>(Reconócelas y sigue; están en la frontera del 80%.)</em>
+    </p>
+
+    <h2>Compruébalo — recuerda sin releer</h2>
+
+    <div class="quiz" data-correcta="2" data-num="1">
+      <p class="quiz-pregunta"><span class="quiz-num">Pregunta 1</span><br>
+        Un elemento tiene <code>font-size: 20px</code> y <code>padding: 2em</code>.
+        ¿Cuánto relleno tiene en píxeles?</p>
+      <div class="opciones">
+        <button class="opcion">Serían 20 píxeles de relleno</button>
+        <button class="opcion">Serían 32 píxeles de relleno</button>
+        <button class="opcion">Serían 40 píxeles de relleno</button>
+      </div>
+      <div class="feedback ok" data-para="ok">Correcto. <code>em</code> multiplica el font-size <strong>del propio elemento</strong>: 2 × 20px = 40px. Si la letra creciera a 25px, el relleno pasaría solo a 50px — esa elasticidad es justo lo que busca quien escribe <code>em</code>.</div>
+      <div class="feedback no" data-para="no">La pregunta de siempre: ¿relativo a qué? <code>em</code> se mide contra el font-size <strong>del propio elemento</strong> (20px, no los 16px de la raíz — eso sería <code>rem</code>): 2 × 20 = <strong>40px</strong>.</div>
+    </div>
+
+    <div class="quiz" data-correcta="0" data-num="2">
+      <p class="quiz-pregunta"><span class="quiz-num">Pregunta 2</span><br>
+        Lees <code>margin: 1.5rem</code>. ¿Relativo a qué se mide?</p>
+      <div class="opciones">
+        <button class="opcion">Al font-size del elemento raíz</button>
+        <button class="opcion">Al font-size del elemento padre</button>
+        <button class="opcion">Al ancho de la ventana</button>
+      </div>
+      <div class="feedback ok" data-para="ok">Correcto. La <strong>r</strong> de <code>rem</code> es de <em>root</em>: siempre mira el font-size de <code>&lt;html&gt;</code> (16px por defecto), ignorando el del elemento y el de su padre. Por eso es predecible: 1.5rem = 24px en cualquier rincón de la página.</div>
+      <div class="feedback no" data-para="no">La <strong>r</strong> de <code>rem</code> te lo chiva: <em>root</em>, la raíz. Se mide contra el font-size de <code>&lt;html&gt;</code> (16px por defecto), esté donde esté el elemento. La unidad que mira al propio elemento es <code>em</code>, sin r.</div>
+    </div>
+
+    <div class="quiz" data-correcta="1" data-num="3">
+      <p class="quiz-pregunta"><span class="quiz-num">Pregunta 3</span><br>
+        Sin mirar la tabla: ¿qué color es <code>#ff0000</code>?</p>
+      <div class="opciones">
+        <button class="opcion">Azul puro, sin rojo ni verde</button>
+        <button class="opcion">Rojo puro, sin verde ni azul</button>
+        <button class="opcion">Verde puro, sin rojo ni azul</button>
+      </div>
+      <div class="feedback ok" data-para="ok">Correcto. Desarma los pares: <code>ff</code>-<code>00</code>-<code>00</code> = rojo a tope, verde apagado, azul apagado. El orden es siempre <strong>R · G · B</strong>, de izquierda a derecha.</div>
+      <div class="feedback no" data-para="no">Desarma los tres pares en orden <strong>R · G · B</strong>: <code>ff</code> (rojo a tope), <code>00</code> (nada de verde), <code>00</code> (nada de azul) → rojo puro. El primer par siempre es el rojo.</div>
+    </div>
+
+    <div class="quiz" data-correcta="2" data-num="4">
+      <p class="quiz-pregunta"><span class="quiz-num">Pregunta 4</span><br>
+        Una <code>.foto</code> dentro de un <code>&lt;article&gt;</code> tiene <code>width: 50%</code>.
+        ¿La mitad de qué?</p>
+      <div class="opciones">
+        <button class="opcion">Del ancho de la ventana entera</button>
+        <button class="opcion">Del ancho del propio contenido</button>
+        <button class="opcion">Del ancho del elemento padre</button>
+      </div>
+      <div class="feedback ok" data-para="ok">Correcto. El <code>%</code> mira al <strong>padre</strong>: la foto ocupa la mitad del <code>article</code> que la contiene, mida lo que mida este. La unidad que mira a la ventana es <code>vw</code> — <code>50vw</code> sí sería media pantalla.</div>
+      <div class="feedback no" data-para="no">El <code>%</code> siempre pregunta al <strong>padre</strong> — aquí, el <code>article</code> que contiene la foto. Para medir contra la ventana existe otra unidad: <code>vw</code> (<code>50vw</code> = media pantalla de ancho).</div>
+    </div>
+
+    <div class="quiz" data-correcta="0" data-num="5">
+      <p class="quiz-pregunta"><span class="quiz-num">Pregunta 5 · repaso</span><br>
+        <code>padding: 10px 20px;</code> — ¿cómo se reparten esos dos valores?
+        <span style="font-weight:400;color:var(--tinta-suave)">(de la Lección 03)</span></p>
+      <div class="opciones">
+        <button class="opcion">10px arriba y abajo; 20px a los lados</button>
+        <button class="opcion">10px a los lados; 20px arriba y abajo</button>
+        <button class="opcion">10px el lado superior; 20px los otros tres</button>
+      </div>
+      <div class="feedback ok" data-para="ok">Correcto. Con <strong>dos</strong> valores, el primero es vertical (arriba/abajo) y el segundo horizontal (izquierda/derecha). Con cuatro, giran como el reloj: arriba, derecha, abajo, izquierda.</div>
+      <div class="feedback no" data-para="no">El atajo de dos valores va <strong>vertical primero</strong>: 10px arriba/abajo, 20px izquierda/derecha. Truco: el reparto empieza siempre a las 12 del reloj (arriba) y gira a la derecha.</div>
+    </div>
+
+    <h2>Tu misión de lectura (90 segundos)</h2>
+    <p>
+      Un aviso real, con de todo. Tradúcelo <strong>a números y colores concretos</strong> — las cuatro
+      preguntas están debajo del código:
+    </p>
+<pre><code><span class="t-sel">html</span> <span class="t-punt">{</span> <span class="t-prop">font-size</span><span class="t-punt">:</span> <span class="t-val">16px</span><span class="t-punt">;</span> <span class="t-punt">}</span>
+
+<span class="t-sel">.alerta</span> <span class="t-punt">{</span>
+  <span class="t-prop">font-size</span><span class="t-punt">:</span> <span class="t-val">1.25rem</span><span class="t-punt">;</span>
+  <span class="t-prop">padding</span><span class="t-punt">:</span> <span class="t-val">1em</span><span class="t-punt">;</span>
+  <span class="t-prop">max-width</span><span class="t-punt">:</span> <span class="t-val">50%</span><span class="t-punt">;</span>
+  <span class="t-prop">background</span><span class="t-punt">:</span> <span class="t-val">#fee2e2</span><span class="t-punt">;</span>
+  <span class="t-prop">border</span><span class="t-punt">:</span> <span class="t-val">1px solid rgb(185 28 28 / 0.4)</span><span class="t-punt">;</span>
+<span class="t-punt">}</span></code></pre>
+    <p style="font-family:var(--sans);font-size:.95rem">
+      <strong>a)</strong> ¿Cuántos px mide la letra de <code>.alerta</code>? &nbsp;
+      <strong>b)</strong> ¿Cuántos px de <code>padding</code>? (ojo con el «¿relativo a qué?») &nbsp;
+      <strong>c)</strong> ¿50% de qué? &nbsp;
+      <strong>d)</strong> En el borde, ¿qué significa el <code>/ 0.4</code> y, a ojo, qué tono trae ese
+      <code>rgb(185 28 28 …)</code>?
+    </p>
+
+    <details class="revelar pista">
+      <summary>Pista (si la necesitas)</summary>
+      <div class="revelar-cuerpo">
+        Para <strong>b)</strong>: primero resuelve <strong>a)</strong>. El <code>em</code> del padding se mide
+        contra el font-size <em>del propio elemento</em> — que acaba de cambiar en la línea de arriba. Para
+        <strong>d)</strong>: compara los tres números de rgb entre sí — ¿cuál domina?
+      </div>
+    </details>
+
+    <label class="pregunta-abierta">
+      <span class="pa-titulo">✍️ Escribe tus cuatro respuestas — <strong>antes</strong> de abrir la solución:</span>
+      <textarea class="abierta" data-label="Misión: a) letra b) padding c) 50% de qué d) el / 0.4 y el tono" rows="4" placeholder="a) … px   b) … px   c) …   d) …"></textarea>
+    </label>
+
+    <details class="revelar">
+      <summary>Ver la solución (solo después de escribir la tuya)</summary>
+      <div class="revelar-cuerpo">
+        <p style="margin:0 0 .5rem">
+          <strong>a)</strong> <code>1.25rem</code> = 1.25 × 16px (raíz) = <strong>20px</strong>.<br>
+          <strong>b)</strong> <code>1em</code> = 1 × el font-size <em>propio</em>, que ahora es 20px →
+          <strong>20px</strong> (no 16: la línea de arriba cambió la vara de medir).<br>
+          <strong>c)</strong> La mitad del ancho de su elemento <strong>padre</strong> — no de la ventana.<br>
+          <strong>d)</strong> <code>/ 0.4</code> = opacidad del 40% (translúcido). Y <code>185-28-28</code>:
+          domina el primer canal, el rojo → un <strong>rojo oscuro</strong>
+          <span class="chip" style="background:rgb(185 28 28 / 0.4);margin-left:.2em"></span>.
+        </p>
+        <p style="margin:0">Si acertaste b), ya lees unidades mejor que mucha gente que escribe CSS.</p>
+      </div>
+    </details>
+
+    <label class="pregunta-abierta">
+      <span class="pa-titulo">🧠 En una frase y con tus palabras: ¿por qué <code>1.5em</code> puede medir distinto en dos sitios de la misma página, y <code>1.5rem</code> no? (explicarlo lo fija)</span>
+      <textarea class="abierta" data-label="¿Por qué em varía entre sitios y rem no?" rows="2"></textarea>
+    </label>
+
+    <div class="hoja-respuestas">
+      <p class="hr-intro">📋 <strong>Tu hoja de respuestas.</strong> Se rellena sola con tus quizzes (acierto/fallo y tu nivel de seguridad) y con lo que escribas arriba. Pulsa el botón y <strong>pégala en el chat</strong> — no reescribas nada.</p>
+      <textarea class="hr-salida" readonly rows="14"></textarea>
+      <br>
+      <button class="hr-copiar" type="button">Copiar para el chat</button>
+      <span class="hr-aviso"></span>
+    </div>
+
+    <!-- PIE -->
+    <div class="pie">
+      <div class="fuente-primaria">
+        <p class="nota-titulo">📖 Fuente primaria recomendada</p>
+        <p style="margin:0">
+          Lee <a href="https://developer.mozilla.org/es/docs/Learn_web_development/Core/Styling_basics/Values_and_units">
+          «Valores y unidades CSS» en MDN Web Docs</a> (Mozilla, en español): el mismo tema con la lista
+          completa de unidades y colores. Verás muchas unidades que no salieron hoy (<code>ch</code>,
+          <code>ex</code>, <code>pt</code>…) — todas están fuera del 80%; con reconocer que <em>son</em>
+          unidades te basta.
+        </p>
+      </div>
+
+      <div class="recursos-practica">
+        <p class="nota-titulo">🎮 Recursos para practicar por tu cuenta</p>
+        <ul class="rp-lista">
+          <li>
+            <a href="https://hexcodle.com">Hexcodle</a><span class="rp-etq">reto</span>
+            <span class="rp-nota">Wordle de colores: te enseñan un color y adivinas su código hexadecimal en
+            varios intentos. Perfecto para interiorizar el desglose R·G·B — empieza por la versión «Mini»
+            (3 cifras). Un puzle nuevo cada día.</span>
+          </li>
+          <li>
+            <a href="https://www.guess-css.app">Guess CSS!</a><span class="rp-etq">reto</span>
+            <span class="rp-nota">Te enseñan un resultado ya renderizado y varios fragmentos de CSS casi
+            idénticos: tienes que <strong>leer</strong> cuál de ellos lo produce. Es exactamente tu misión
+            (interpretar, no escribir) con unidades, cajas y selectores mezclados. Sin registro.</span>
+          </li>
+          <li>
+            <a href="https://web.dev/learn/css/sizing">web.dev — Learn CSS: Sizing</a><span class="rp-etq suave">lectura + quiz</span>
+            <span class="rp-nota">El módulo de Google sobre unidades, con demos en vivo y una autoevaluación
+            («Check your understanding»). Buena segunda lectura si MDN te sabe a poco.</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="recordatorio-tutor">
+        💬 <strong>Soy tu tutor.</strong> ¿Viste un valor que no encaja en nada de esto — un
+        <code>clamp()</code>, un <code>min-content</code>, un color rarísimo? Pégamelo en el chat y te digo si
+        es periferia o si merece lección.
+      </div>
+
+      <p style="font-family:var(--sans);font-size:.9rem;color:var(--tinta-suave)">
+        Consulta rápida: el <a href="../reference/glosario.html#unidades">glosario</a> — sección «Unidades y
+        valores», con la tabla del «¿relativo a qué?» y las cuatro formas de color.
+      </p>
+
+      <div>
+        <p class="nota-titulo" style="color:var(--tinta-suave)">Siguiente</p>
+        <p style="margin:.2rem 0 0;font-family:var(--sans);font-size:.95rem">
+          <strong>Lección 06 — display y el flujo normal:</strong> por qué unas cajas se apilan y otras se ponen
+          en fila, y qué hacen <code>display: block</code> e <code>inline</code>. La puerta de entrada a los
+          layouts. Di «continuar» cuando quieras.
+        </p>
+      </div>
+
+      <div class="nav-lecciones">
+        <a href="0004-cascada-especificidad-herencia.html">← Lección 04 · Cascada y especificidad</a>
+        <a href="#">Lección 06 · display y flujo →</a>
+      </div>
+    </div>
+
+  </main>
+  <script src="../assets/quiz.js"></script>
+</body>
+</html>

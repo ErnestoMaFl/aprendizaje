@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Glosario · Módulo Legal KIVA</title>
+  <link rel="stylesheet" href="../assets/course.css">
+  <style>
+    .glosario { margin: 2rem 0; }
+    .glosario dt {
+      font-family: var(--sans);
+      font-weight: 700;
+      font-size: 1rem;
+      margin-top: 1.4rem;
+      color: var(--tinta);
+    }
+    .glosario dt .modelo {
+      font-family: var(--mono);
+      font-size: .78rem;
+      font-weight: 400;
+      color: var(--acento);
+      background: var(--codigo-fondo);
+      padding: .1em .4em;
+      border-radius: 4px;
+      margin-left: .4rem;
+    }
+    .glosario dd {
+      margin: .25rem 0 0;
+      font-size: .95rem;
+      line-height: 1.55;
+    }
+    .grupo {
+      font-family: var(--sans);
+      font-size: .72rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--acento);
+      border-bottom: 1px solid var(--regla);
+      padding-bottom: .3rem;
+      margin: 2.6rem 0 .4rem;
+    }
+  </style>
+</head>
+<body>
+<a class="online-link" href="https://ernestomafl.github.io/aprendizaje/" title="Ir al índice de mis cursos en línea">🌐 Mis cursos</a>
+  <main class="lienzo">
+
+    <p class="leccion-kicker">Referencia · Módulo Legal KIVA</p>
+    <h1>Glosario del módulo</h1>
+    <p class="lede">El vocabulario del proyecto, con el modelo de Odoo que lo materializa cuando
+      lo hay. Crece cada sesión: aquí sólo están los términos ya enseñados.</p>
+
+    <div class="nota">
+      <p class="nota-titulo">Cómo leer este glosario</p>
+      <p style="margin:0">Cada entrada trae, cuando aplica, el <strong>modelo de Odoo</strong> que
+        la implementa (según el capítulo 5 del documento de arquitectura) y el
+        <strong>identificador de la regla</strong> que la define en las historias de usuario.
+        <span class="rn">RN3.1</span> significa «regla de negocio 3.1 de la historia que se está tratando»;
+        <span class="rn fuente">§7.17</span> significa «sección 7.17 del PDF de arquitectura».</p>
+    </div>
+
+    <p class="grupo">Instrumentos de la especificación</p>
+    <dl class="glosario">
+      <dt>Historia de usuario (HU)</dt>
+      <dd>Unidad de especificación del proyecto. Se identifica <code>HU06-0NN</code>: el
+        <code>06</code> es el macroproceso del Área Legal. Cada una trae descripción, detonador,
+        actores RACI, datos de entrada, reglas de negocio y observaciones. Son 24 en
+        <code>HUS_LEGAL.csv</code>, de <code>HU06-001</code> a <code>HU06-020</code>.</dd>
+
+      <dt>Regla de negocio (RN)</dt>
+      <dd>Cada afirmación numerada dentro de una HU que define cómo debe comportarse el sistema.
+        Se cita por su número: <span class="rn">RN3.1</span>. Es la unidad que un desarrollador
+        implementa y un auditor verifica.</dd>
+
+      <dt>RACI</dt>
+      <dd>Reparto de responsabilidades sobre la historia en cuatro papeles:
+        <strong>R</strong>esponsable de ejecutar, <strong>A</strong>prueba,
+        <strong>C</strong>onsultado, <strong>I</strong>nformado. En el CSV son las cuatro
+        columnas bajo «ACTORES (RACI)».</dd>
+
+      <dt>Criterio de aceptación</dt>
+      <dd>La última regla de cada HU: la lista concreta de cosas que un usuario debe poder hacer
+        para dar la historia por terminada. Es el guion de la demo de entrega.</dd>
+    </dl>
+
+    <p class="grupo">El ciclo operativo</p>
+    <dl class="glosario">
+      <dt>Ticket legal <span class="modelo">legal.ticket</span></dt>
+      <dd>La solicitud de un servicio legal, antes de que exista trabajo. Nace manualmente
+        (<code>HU06-006</code>) o automáticamente desde otro módulo (<code>HU06-016</code>).
+        Hereda de <code>helpdesk.ticket</code>. Estados: Borrador, Enviado, Confirmado,
+        Rechazado, Devuelto, Cancelado.</dd>
+
+      <dt>Expediente legal <span class="modelo">legal.expediente</span></dt>
+      <dd>El trabajo en sí, que se crea cuando el ticket se <strong>confirma</strong>. Tiene folio
+        único, abogado responsable, bitácora, costos y entregables. Estados: En proceso, Detenido,
+        En revisión, Observaciones, Finalizado, Cancelado. Es sobre el expediente donde se ejecuta
+        una ruta de revisión.</dd>
+
+      <dt>Servicio del catálogo <span class="modelo">legal.service</span></dt>
+      <dd>La ficha que define un tipo de prestación legal: requisitos, SLA, costos estándar,
+        entregables y <strong>la ruta de aprobación que le aplica</strong> (<code>HU06-005</code>).
+        Toda prestación nace de un servicio del catálogo.</dd>
+
+      <dt>Entregable <span class="modelo">legal.expediente.deliverable</span></dt>
+      <dd>Cada producto concreto que el expediente debe producir (un contrato, un dictamen, una
+        escritura). Puede tener su propia ruta de aprobación, distinta de la del expediente
+        completo, y puede requerir firma.</dd>
+
+      <dt>Tipo de documento <span class="modelo">legal.document.type</span></dt>
+      <dd>Catálogo que clasifica los documentos del módulo (<code>HU06-004c</code>). Define su
+        vigencia, su periodo de <strong>retención legal</strong> y la ruta de archivado que se
+        dispara al concluirlo.</dd>
+    </dl>
+
+    <p class="grupo">Términos del negocio que aparecen en las historias</p>
+    <dl class="glosario">
+      <dt>SLA</dt>
+      <dd><em>Service Level Agreement</em>, <strong>acuerdo de nivel de servicio</strong>: el plazo
+        comprometido para resolver un servicio, medido en <strong>días hábiles</strong>. En este
+        módulo funciona así:
+        <ul style="margin:.5rem 0 0;padding-left:1.2rem">
+          <li>Se define <strong>por servicio, en el catálogo</strong> (<code>HU06-005</code>), junto
+            con una alerta temprana.</li>
+          <li>El ticket muestra el <strong>SLA estimado</strong> al elegir el servicio, para que el
+            solicitante tenga contexto (<code>HU06-006</code>).</li>
+          <li>Ojo con la confusión clásica: la <strong>fecha deseada</strong> que captura el
+            solicitante <em>no</em> es el SLA. El <strong>SLA formal lo fija la Gerencia Jurídica
+            al confirmar el ticket</strong> (<code>HU06-006</code> RN3.3).</li>
+          <li>El estado <strong>Detenido</strong> congela el cómputo del SLA, siempre que la
+            Gerencia confirme la detención (<code>HU06-008</code> RN7.2).</li>
+          <li>El sistema alerta cuando un expediente está próximo a vencer o ya superó su SLA
+            (<code>HU06-001</code> RN7).</li>
+        </ul>
+      </dd>
+
+      <dt>Bitácora <span class="modelo">legal.expediente.log</span></dt>
+      <dd>El registro cronológico de actividades que el abogado va anotando en el expediente: qué
+        hizo, cuándo y de qué tipo. Es una de las tres cosas que se registran durante la ejecución,
+        junto con los costos y los entregables.</dd>
+
+      <dt>Prioridad</dt>
+      <dd>Urgente, Alta, Media o Baja. Se define por servicio en el catálogo, el ticket la hereda, y
+        la Gerencia Jurídica puede ajustarla antes de confirmar.</dd>
+
+      <dt>Requisitos de entrada</dt>
+      <dd>La documentación e información que el solicitante debe aportar para que un servicio pueda
+        tramitarse. El catálogo los define por servicio, distinguiendo obligatorios de opcionales.</dd>
+
+      <dt>Partner</dt>
+      <dd>Término de Odoo (<code>res.partner</code>) para cualquier tercero: cliente, proveedor,
+        persona o empresa. Un mismo partner puede aparecer en varios expedientes con papeles
+        distintos — de ahí la <code>HU06-015</code>.</dd>
+
+      <dt>Odoo Sign</dt>
+      <dd>La aplicación nativa de Odoo para firma electrónica de documentos. El módulo Legal se
+        apoya en ella para el paso de firma en lugar de construir un mecanismo propio
+        (<code>HU06-011</code>). Admite firmantes internos (usuarios de Odoo) y externos (por
+        correo electrónico).</dd>
+    </dl>
+
+    <p class="grupo">El motor de rutas · HU06-010</p>
+    <dl class="glosario">
+      <dt>Ruta de aprobación <span class="modelo">legal.approval.route</span></dt>
+      <dd><strong>Plantilla reutilizable</strong> de pasos ordenados que hay que recorrer para dar
+        el visto bueno a algo. Se configura sin programar. Su cabecera tiene cuatro datos:
+        nombre, propósito, nivel de aplicación y estado.</dd>
+
+      <dt>Propósito de la ruta <span class="modelo">purpose</span></dt>
+      <dd>Para qué sirve la ruta. Dos valores: <strong>revisión de expediente</strong> (aprobar
+        expedientes y entregables según el servicio) o <strong>archivado documental</strong>
+        (autorizar archivar u obsoletizar un documento al concluir su retención). El propósito
+        decide también qué condiciones puede usar cada paso.</dd>
+
+      <dt>Nivel de aplicación <span class="modelo">application_level</span></dt>
+      <dd>Sobre qué objeto se ejecuta la ruta: <strong>expediente</strong>,
+        <strong>entregable</strong> o <strong>documento</strong>.</dd>
+
+      <dt>Paso de la ruta <span class="modelo">legal.approval.route.line</span></dt>
+      <dd>Cada eslabón ordenado de la ruta. Lleva orden, tipo (revisión, aprobación, firma o
+        informativo), aprobador y sustituto, tiempo máximo de respuesta, tipo de decisión y una
+        condición opcional.</dd>
+
+      <dt>Aprobador</dt>
+      <dd>Quien resuelve un paso. Puede configurarse de tres formas: un <strong>usuario</strong>
+        nominado, un <strong>rol</strong> del módulo («cualquier Abogado Senior») o un
+        <strong>pool</strong> de usuarios del que se elige al disponible.</dd>
+
+      <dt>Ruta maestra</dt>
+      <dd>La ruta tal como vive en la configuración del módulo: la plantilla que la Gerencia
+        Jurídica crea y mantiene, y que se vincula a servicios o a tipos de documento.</dd>
+
+      <dt>Ruta instanciada</dt>
+      <dd>La <strong>copia independiente</strong> de la ruta maestra que se crea dentro de un
+        expediente concreto al confirmarse su ticket. Ejecuta sus propios pasos, con su propio
+        estado, y ya no depende de la maestra <span class="rn">RN3.1</span>.</dd>
+
+      <dt>Instanciar</dt>
+      <dd>El acto de copiar la ruta maestra dentro del expediente. Es una <em>copia profunda</em>:
+        los pasos copiados son registros nuevos e independientes, no referencias a los pasos de
+        la maestra.</dd>
+    </dl>
+
+    <p class="grupo">Términos de Odoo que aparecen en las reglas</p>
+    <dl class="glosario">
+      <dt>Chatter</dt>
+      <dd>El panel de mensajes, notas y registro de cambios que Odoo adjunta a un registro. Cuando
+        una regla dice «queda registrado en el chatter», significa que la acción deja rastro
+        permanente y consultable en la ficha del expediente.</dd>
+
+      <dt>Acción planificada (cron)</dt>
+      <dd>Tarea que Odoo ejecuta sola cada cierto tiempo, sin que nadie pulse nada. El módulo
+        Legal usa un cron horario para vigilar plazos vencidos y retenciones cumplidas.</dd>
+
+      <dt>Copia profunda (<em>deep copy</em>)</dt>
+      <dd>Duplicar un registro <em>y todos sus registros hijos</em>, de modo que la copia no
+        comparte nada con el original. Es el patrón que usa el módulo tanto al instanciar una
+        ruta como al copiar la ficha de servicio en el expediente.</dd>
+    </dl>
+
+    <div class="pie">
+      <p><strong>Lecciones que alimentan este glosario:</strong>
+        <a href="../lessons/0007-ruta-plantilla-e-instancia.html">Lección 07 — La ruta es una plantilla</a>.</p>
+      <div class="recordatorio-tutor">
+        ¿Falta un término o alguna definición te parece imprecisa? Dímelo en el chat y lo
+        corregimos: este glosario manda sobre las lecciones.
+      </div>
+      <div class="nav-lecciones">
+        <a href="../lessons/0007-ruta-plantilla-e-instancia.html">← Lección 07</a>
+        <a href="rutas-de-aprobacion.html">Referencia: rutas de aprobación →</a>
+      </div>
+    </div>
+
+  </main>
+</body>
+</html>

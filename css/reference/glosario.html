@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Glosario CSS · Referencia</title>
+  <link rel="stylesheet" href="../assets/course.css">
+  <style>
+    .termino {
+      display: grid;
+      grid-template-columns: 190px 1fr;
+      gap: 1rem;
+      padding: .9rem 0;
+      border-bottom: 1px solid var(--regla);
+      align-items: start;
+    }
+    .termino dt {
+      font-family: var(--mono);
+      font-size: .95rem;
+      color: var(--acento);
+      font-weight: 600;
+    }
+    .termino dd { margin: 0; font-size: .98rem; }
+    .termino dd .ej { font-family: var(--mono); font-size: .82rem; color: var(--tinta-suave); display:block; margin-top:.2rem; }
+    dl { margin: 0; }
+    @media (max-width:600px){ .termino{ grid-template-columns:1fr; gap:.2rem; } }
+  </style>
+</head>
+<body>
+<a class="online-link" href="https://ernestomafl.github.io/aprendizaje/" title="Ir al índice de mis cursos en línea">🌐 Mis cursos</a>
+  <main class="lienzo">
+    <p class="leccion-kicker">Referencia · Consulta rápida</p>
+    <h1>Glosario de CSS</h1>
+    <p class="lede">
+      El vocabulario compartido del curso. Cuando una lección use un término, aquí está su
+      definición corta. Consúltalo siempre que dudes.
+    </p>
+
+    <h2>Estructura de una regla <span style="font-size:.8rem;color:var(--tinta-suave);font-family:var(--sans)">(Lección 01)</span></h2>
+    <dl>
+      <div class="termino">
+        <dt>regla (rule)</dt>
+        <dd>Una unidad completa de CSS: un selector seguido de su bloque de declaraciones.
+          <span class="ej">h1 { color: red; }</span></dd>
+      </div>
+      <div class="termino">
+        <dt>selector</dt>
+        <dd><strong>A qué</strong> apunta la regla. Va antes de la llave <code>{</code>.
+          <span class="ej">h1, &nbsp; .card, &nbsp; #menu</span></dd>
+      </div>
+      <div class="termino">
+        <dt>bloque de declaraciones</dt>
+        <dd>Todo lo que va entre llaves <code>{ }</code>. Contiene una o más declaraciones.</dd>
+      </div>
+      <div class="termino">
+        <dt>declaración</dt>
+        <dd>Una pareja <code>propiedad: valor;</code>. La unidad mínima de "un cambio".
+          <span class="ej">color: red;</span></dd>
+      </div>
+      <div class="termino">
+        <dt>propiedad</dt>
+        <dd>El <strong>qué</strong> se cambia. A la izquierda de los dos puntos.
+          <span class="ej">color, font-size, margin</span></dd>
+      </div>
+      <div class="termino">
+        <dt>valor</dt>
+        <dd>El <strong>cómo</strong> queda. A la derecha de los dos puntos, termina en <code>;</code>.
+          <span class="ej">red, 32px, blue</span></dd>
+      </div>
+      <div class="termino">
+        <dt>comentario</dt>
+        <dd>Texto entre <code>/* */</code> que el navegador ignora. Notas para humanos.
+          <span class="ej">/* esto es un comentario */</span></dd>
+      </div>
+    </dl>
+
+    <h2>Selectores <span style="font-size:.8rem;color:var(--tinta-suave);font-family:var(--sans)">(Lección 02)</span></h2>
+    <dl>
+      <div class="termino">
+        <dt>h1 &nbsp;(tipo)</dt>
+        <dd>Sin símbolo = una <strong>etiqueta</strong> HTML. Apunta a todas.
+          <span class="ej">p { }  → todos los párrafos</span></dd>
+      </div>
+      <div class="termino">
+        <dt>.clase</dt>
+        <dd>Punto <code>.</code> = <strong>clase</strong>. Los elementos con ese <code>class="…"</code>. Puede repetirse en muchos.
+          <span class="ej">.card { }  → class="card"</span></dd>
+      </div>
+      <div class="termino">
+        <dt>#id</dt>
+        <dd>Almohadilla <code>#</code> = <strong>id</strong>. El elemento con ese <code>id="…"</code>. Único en la página.
+          <span class="ej">#menu { }  → id="menu"</span></dd>
+      </div>
+      <div class="termino">
+        <dt>a b &nbsp;(espacio)</dt>
+        <dd><strong>Descendiente</strong>: "b que esté dentro de a". Léelo de derecha a izquierda.
+          <span class="ej">nav a  → los a dentro de un nav</span></dd>
+      </div>
+      <div class="termino">
+        <dt>a, b &nbsp;(coma)</dt>
+        <dd><strong>Agrupación</strong>: "a y también b". Mismo estilo a varios selectores.
+          <span class="ej">h1, h2 { }  → a los dos</span></dd>
+      </div>
+      <div class="termino">
+        <dt>a &gt; b</dt>
+        <dd><strong>Hijo directo</strong>: b un nivel dentro de a (no anidado hondo).
+          <span class="ej">.card &gt; p</span></dd>
+      </div>
+      <div class="termino">
+        <dt>:pseudo-clase</dt>
+        <dd>Dos puntos = un <strong>estado</strong> del elemento.
+          <span class="ej">a:hover  → al pasar el ratón</span></dd>
+      </div>
+      <div class="termino">
+        <dt>[atributo]</dt>
+        <dd>Corchetes = filtro por <strong>atributo</strong> HTML.
+          <span class="ej">input[type="text"]</span></dd>
+      </div>
+    </dl>
+
+    <h2>Modelo de caja <span style="font-size:.8rem;color:var(--tinta-suave);font-family:var(--sans)">(Lección 03)</span></h2>
+    <dl>
+      <div class="termino">
+        <dt>content</dt>
+        <dd>El contenido real de la caja: el texto o la imagen. La capa más interior.</dd>
+      </div>
+      <div class="termino">
+        <dt>padding</dt>
+        <dd>Espacio <strong>DENTRO</strong> del borde. Aleja el contenido de su propio borde (relleno interior).
+          <span class="ej">padding: 12px;</span></dd>
+      </div>
+      <div class="termino">
+        <dt>border</dt>
+        <dd>La línea del borde. Atajo de 3 piezas: <strong>grosor · estilo · color</strong> (orden libre).
+          <span class="ej">border: 1px solid navy;</span></dd>
+      </div>
+      <div class="termino">
+        <dt>margin</dt>
+        <dd>Espacio <strong>FUERA</strong> del borde. Separa la caja de sus vecinas.
+          <span class="ej">margin: 16px;</span></dd>
+      </div>
+      <div class="termino">
+        <dt>atajo (shorthand)</dt>
+        <dd>Cuenta los valores de <code>margin</code>/<code>padding</code>: <strong>1</strong> = los 4 lados;
+          <strong>2</strong> = arriba/abajo, izq/der; <strong>4</strong> = arriba, derecha, abajo, izquierda (reloj).
+          <span class="ej">padding: 10px 20px;</span></dd>
+      </div>
+      <div class="termino">
+        <dt>box-sizing</dt>
+        <dd>Decide qué mide <code>width</code>. <code>border-box</code> = la caja entera (padding y border caben dentro);
+          <code>content-box</code> = solo el contenido (se suman encima). El código moderno usa casi siempre <code>border-box</code>.
+          <span class="ej">box-sizing: border-box;</span></dd>
+      </div>
+    </dl>
+
+    <h2>Cascada, especificidad y herencia <span style="font-size:.8rem;color:var(--tinta-suave);font-family:var(--sans)">(Lección 04)</span></h2>
+    <dl>
+      <div class="termino">
+        <dt>cascada</dt>
+        <dd>El orden en que el navegador resuelve reglas que chocan, propiedad por propiedad:
+          <strong>1)</strong> ¿alguna regla apunta al elemento? &nbsp;<strong>2)</strong> si varias, gana la más
+          <strong>específica</strong>; &nbsp;<strong>3)</strong> si empatan, gana la escrita <strong>más abajo</strong>.</dd>
+      </div>
+      <div class="termino">
+        <dt>especificidad</dt>
+        <dd>El "peso" de un selector. Se anota como un <strong>marcador de 3 cifras</strong> y se compara de
+          izquierda a derecha: una cifra mayor a la izquierda decide y ya no se mira el resto.
+          <span class="ej">ids · clases · elementos</span></dd>
+      </div>
+      <div class="termino">
+        <dt>marcador (cómo contar)</dt>
+        <dd>Un <code>#id</code> suma a la <strong>1ª</strong> columna; una <code>.clase</code> o
+          <code>:pseudo-clase</code> a la <strong>2ª</strong>; un nombre de elemento a la <strong>3ª</strong>.
+          Los espacios no suman.
+          <span class="ej">p = 0-0-1 · .texto = 0-1-0 · #menu li = 1-0-1 · .card p.destacado = 0-2-1</span></dd>
+      </div>
+      <div class="termino">
+        <dt>orden (desempate)</dt>
+        <dd>Solo actúa con marcadores <strong>idénticos</strong>: la última regla escrita pisa a la anterior.
+          Una regla más específica gana aunque esté 500 líneas antes.</dd>
+      </div>
+      <div class="termino">
+        <dt>herencia</dt>
+        <dd>Si <strong>ninguna</strong> regla apunta al elemento, algunas propiedades caen del padre solas.
+          Se hereda a los <strong>elementos hijos</strong>, no "al texto": un valor heredado llega igual a una
+          <code>&lt;img&gt;</code>, que simplemente no lo usa si no le sirve.
+          <span class="ej">SÍ: color, font-family, font-size, line-height, text-align</span>
+          <span class="ej">NO: margin, padding, border, width, background</span></dd>
+      </div>
+      <div class="termino">
+        <dt>qué se hereda (la razón)</dt>
+        <dd>Atajo de lectura: <strong>el texto se hereda, la caja no</strong> — cubre el 80%, pero es una
+          correlación, no la ley. Lo que de verdad decide: <em>¿tiene sentido escribir esto una vez arriba y
+          que valga para todo lo de abajo?</em> Cada propiedad lo declara en su especificación
+          (<code>Inherited: yes/no</code> en MDN).
+          <span class="ej">Excepciones: image-rendering (heredable, solo afecta imágenes) ·</span>
+          <span class="ej">border-collapse (heredable, y es un borde) · cursor · visibility</span></dd>
+      </div>
+      <div class="termino">
+        <dt>!important</dt>
+        <dd><em>(periferia)</em> Pegado al final de un valor, se salta el marcador entero y gana. Cuando el
+          marcador no explique lo que ves, búscalo.
+          <span class="ej">color: blue !important;</span></dd>
+      </div>
+      <div class="termino">
+        <dt>estilo inline</dt>
+        <dd><em>(periferia)</em> Escrito en el HTML, no en la hoja. Gana a cualquier selector (salvo
+          <code>!important</code>).
+          <span class="ej">&lt;p style="color: green"&gt;</span></dd>
+      </div>
+    </dl>
+
+    <h2 id="unidades">Unidades y valores <span style="font-size:.8rem;color:var(--tinta-suave);font-family:var(--sans)">(Lección 05)</span></h2>
+    <dl>
+      <div class="termino">
+        <dt>px</dt>
+        <dd>La única unidad <strong>absoluta</strong> del código real: mide lo mismo en todas partes.
+          Todas las demás obligan a preguntar <strong>«¿relativo a qué?»</strong>.
+          <span class="ej">width: 200px;</span></dd>
+      </div>
+      <div class="termino">
+        <dt>%</dt>
+        <dd>Relativo al elemento <strong>padre</strong> (a su misma medida).
+          <span class="ej">width: 50%  → la mitad del ancho de mi padre</span></dd>
+      </div>
+      <div class="termino">
+        <dt>em</dt>
+        <dd>Relativo al <strong>font-size del propio elemento</strong> — si la letra de la caja cambia, sus
+          em cambian con ella. (En la propia <code>font-size</code>, se mide contra la del padre.)
+          <span class="ej">padding: 1.5em con letra de 20px → 30px</span></dd>
+      </div>
+      <div class="termino">
+        <dt>rem</dt>
+        <dd>Relativo al font-size de la <strong>raíz</strong> <code>&lt;html&gt;</code> (r de <em>root</em>),
+          16px por defecto. Predecible en toda la página, y escala si el usuario sube la letra en su navegador.
+          <span class="ej">margin: 1.5rem → 1.5 × 16 = 24px</span></dd>
+      </div>
+      <div class="termino">
+        <dt>vw · vh</dt>
+        <dd>Relativos a la <strong>ventana</strong> (viewport): 1vw = 1% de su ancho, 1vh = 1% de su alto.
+          En la frontera del 80% — reconócelas.
+          <span class="ej">height: 100vh → tan alto como la pantalla</span></dd>
+      </div>
+      <div class="termino">
+        <dt>sin unidad</dt>
+        <dd>El <strong>cero va desnudo</strong> (<code>margin: 0</code>), y <code>line-height</code> suele ser
+          un multiplicador puro del font-size.
+          <span class="ej">line-height: 1.5 → líneas de 1.5 × la letra</span></dd>
+      </div>
+      <div class="termino">
+        <dt>#rrggbb (hex)</dt>
+        <dd>Color en 3 pares — <strong>rojo · verde · azul</strong> — de <code>00</code> (nada) a
+          <code>ff</code> (máximo). Atajo de 3 cifras si los pares repiten: <code>#fff</code> = <code>#ffffff</code>.
+          <span class="ej">#ff0000 rojo puro · #000 negro · #9a3412 terracota</span></dd>
+      </div>
+      <div class="termino">
+        <dt>rgb() · alpha</dt>
+        <dd>Los mismos 3 canales en decimal (0–255). Un cuarto valor de 0 a 1 es la <strong>opacidad</strong>
+          (alpha): con comas y <code>rgba()</code> en la sintaxis vieja, con barra <code>/</code> en la moderna.
+          <span class="ej">rgba(0,0,0,0.5)  ·  rgb(0 0 0 / 0.5)  → negro al 50%</span></dd>
+      </div>
+      <div class="termino">
+        <dt>hsl()</dt>
+        <dd><em>(periferia)</em> Color por <strong>tono</strong> (0–360°), saturación y luminosidad.
+          <span class="ej">hsl(0, 68%, 42%)</span></dd>
+      </div>
+      <div class="termino">
+        <dt>calc() · var()</dt>
+        <dd><em>(periferia frecuente)</em> <code>calc()</code> = «haz la cuenta»; <code>var(--nombre)</code> =
+          «usa el valor guardado bajo ese nombre» (una variable definida una vez, p. ej.
+          <code>--acento: #9a3412;</code>).
+          <span class="ej">width: calc(100% - 40px) · color: var(--acento)</span></dd>
+      </div>
+    </dl>
+
+    <div class="nota" style="margin-top:2.5rem">
+      <p class="nota-titulo">Cómo leer los símbolos</p>
+      <p style="margin:0">
+        <code>:</code> "queda en" &nbsp;·&nbsp; <code>;</code> fin de declaración &nbsp;·&nbsp;
+        <code>{ }</code> agrupa lo que le pasa a un selector &nbsp;·&nbsp;
+        <code>.</code> antes de un nombre = clase &nbsp;·&nbsp;
+        <code>#</code> antes de un nombre = id
+      </p>
+    </div>
+
+    <p style="margin-top:2rem;font-family:var(--sans);font-size:.9rem;color:var(--tinta-suave)">
+      Este glosario crece con cada lección. Próxima incorporación: display y el flujo normal (block, inline).
+    </p>
+  </main>
+</body>
+</html>

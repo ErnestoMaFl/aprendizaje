@@ -1,0 +1,247 @@
+/* ============================================================
+   Curso de Contabilidad — Hoja de estilos compartida
+   Estética Tufte: serif, márgenes generosos, tinta sobre papel.
+   Usada por todas las lecciones y documentos de referencia.
+   ============================================================ */
+
+:root {
+  --ink:        #1a1a1a;
+  --ink-soft:   #45464a;
+  --paper:      #fdfcf9;
+  --rule:       #e3e0d8;
+  --accent:     #7a1f1f;   /* rojo contable (números en rojo) */
+  --accent-2:   #1f5130;   /* verde: saldo/positivo */
+  --blue:       #1f3a6e;
+  --highlight:  #fbf3d0;
+  --shadow:     rgba(30,25,15,.08);
+  --serif:      "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  --sans:       "Segoe UI", -apple-system, system-ui, Helvetica, Arial, sans-serif;
+  --mono:       "SFMono-Regular", "Consolas", "Liberation Mono", Menlo, monospace;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 19px;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+}
+
+.wrap {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 4rem 1.5rem 6rem;
+}
+
+/* ---- Encabezado de lección ---- */
+.eyebrow {
+  font-family: var(--sans);
+  font-size: .72rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 600;
+  margin: 0 0 .6rem;
+}
+h1 {
+  font-weight: 600;
+  font-size: 2.4rem;
+  line-height: 1.12;
+  letter-spacing: -.01em;
+  margin: 0 0 .6rem;
+}
+.dek {
+  font-size: 1.18rem;
+  color: var(--ink-soft);
+  font-style: italic;
+  margin: 0 0 2.4rem;
+}
+h2 {
+  font-weight: 600;
+  font-size: 1.5rem;
+  margin: 2.8rem 0 .8rem;
+  padding-bottom: .3rem;
+  border-bottom: 1px solid var(--rule);
+}
+h3 { font-weight: 600; font-size: 1.15rem; margin: 1.8rem 0 .5rem; }
+
+p { margin: 0 0 1.1rem; }
+strong { font-weight: 600; }
+a { color: var(--blue); text-decoration: none; border-bottom: 1px solid rgba(31,58,110,.3); }
+a:hover { border-bottom-color: var(--blue); }
+
+/* ---- Mission banner ---- */
+.mission {
+  font-family: var(--sans);
+  font-size: .82rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  background: #fff;
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--accent);
+  border-radius: 3px;
+  padding: .9rem 1.1rem;
+  margin: 0 0 2.4rem;
+}
+.mission b { color: var(--ink); }
+
+/* ---- Notas al margen (Tufte) ---- */
+.note {
+  font-family: var(--sans);
+  font-size: .85rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  background: #fbfaf6;
+  border-left: 3px solid var(--rule);
+  padding: .7rem 1rem;
+  margin: 1.4rem 0;
+  border-radius: 2px;
+}
+.note b { color: var(--accent); }
+
+/* ---- Bloque de la ecuación / fórmulas ---- */
+.equation {
+  font-family: var(--sans);
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: .01em;
+  background: #fff;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 1.6rem 1rem;
+  margin: 1.8rem 0;
+  box-shadow: 0 1px 3px var(--shadow);
+}
+.equation .activo   { color: var(--blue); }
+.equation .pasivo   { color: var(--accent); }
+.equation .patrim   { color: var(--accent-2); }
+.equation .op       { color: var(--ink-soft); margin: 0 .5rem; font-weight: 400; }
+
+/* ---- Tablas contables ---- */
+table.ledger {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--sans);
+  font-size: .92rem;
+  margin: 1.4rem 0;
+}
+table.ledger caption {
+  font-style: italic; color: var(--ink-soft);
+  text-align: left; margin-bottom: .5rem; font-size: .9rem;
+}
+table.ledger th {
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 2px solid var(--ink);
+  padding: .5rem .7rem;
+}
+table.ledger td {
+  padding: .45rem .7rem;
+  border-bottom: 1px solid var(--rule);
+}
+table.ledger .num { text-align: right; font-variant-numeric: tabular-nums; }
+table.ledger .debe  { color: var(--blue); }
+table.ledger .haber { color: var(--accent); }
+.scroll-x { overflow-x: auto; }
+
+/* ---- Quiz (widget compartido, ver quiz.js) ---- */
+.quiz {
+  font-family: var(--sans);
+  background: #fff;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  padding: 1.4rem 1.5rem 1.6rem;
+  margin: 2rem 0;
+  box-shadow: 0 1px 3px var(--shadow);
+}
+.quiz .q-num {
+  font-size: .7rem; letter-spacing: .15em; text-transform: uppercase;
+  color: var(--accent); font-weight: 700;
+}
+.quiz .q-text { font-size: 1.08rem; font-weight: 600; margin: .3rem 0 1rem; color: var(--ink); }
+.quiz .opt {
+  display: block; width: 100%; text-align: left;
+  font: inherit; font-size: .98rem;
+  background: var(--paper); color: var(--ink);
+  border: 1px solid var(--rule); border-radius: 6px;
+  padding: .7rem .9rem; margin: .5rem 0; cursor: pointer;
+  transition: background .12s, border-color .12s;
+}
+.quiz .opt:hover:not(:disabled) { border-color: var(--ink-soft); background: #fff; }
+.quiz .opt:disabled { cursor: default; opacity: 1; }
+.quiz .opt.correct   { border-color: var(--accent-2); background: #eef7f0; color: #123f24; font-weight: 600; }
+.quiz .opt.wrong     { border-color: var(--accent);  background: #fbeeee; color: #6a1616; }
+.quiz .feedback {
+  font-size: .9rem; margin-top: .9rem; padding: .7rem .9rem;
+  border-radius: 6px; display: none; line-height: 1.5;
+}
+.quiz .feedback.show { display: block; }
+.quiz .feedback.ok  { background: #eef7f0; color: #123f24; border: 1px solid #cfe6d5; }
+.quiz .feedback.no  { background: #fbeeee; color: #6a1616; border: 1px solid #eccccc; }
+
+/* ---- Botón de tarea interactiva ---- */
+.check-btn {
+  font-family: var(--sans); font-weight: 600; font-size: .95rem;
+  background: var(--ink); color: #fff; border: none; border-radius: 6px;
+  padding: .6rem 1.2rem; cursor: pointer;
+}
+.check-btn:hover { background: #000; }
+input.blank {
+  font-family: var(--mono); font-size: 1rem;
+  border: none; border-bottom: 2px solid var(--ink-soft);
+  background: transparent; width: 6.5rem; text-align: right;
+  padding: .1rem .3rem; color: var(--blue);
+}
+input.blank:focus { outline: none; border-bottom-color: var(--accent); }
+
+/* ---- Pie de lección: fuente primaria, siguiente paso, preguntar al tutor ---- */
+.primary-source {
+  background: #fff; border: 1px solid var(--rule); border-radius: 8px;
+  padding: 1.2rem 1.4rem; margin: 2.6rem 0 1.4rem;
+  font-family: var(--sans); font-size: .95rem;
+}
+.primary-source .label {
+  font-size: .68rem; letter-spacing: .15em; text-transform: uppercase;
+  color: var(--accent); font-weight: 700; display: block; margin-bottom: .3rem;
+}
+.ask-tutor {
+  font-family: var(--sans); font-size: .9rem; color: var(--ink-soft);
+  background: var(--highlight); border-radius: 6px;
+  padding: .9rem 1.1rem; margin: 1.4rem 0;
+}
+footer.lesson-nav {
+  display: flex; justify-content: space-between; gap: 1rem;
+  font-family: var(--sans); font-size: .85rem;
+  margin-top: 3rem; padding-top: 1.2rem; border-top: 1px solid var(--rule);
+  color: var(--ink-soft);
+}
+
+/* ---- Impresión ---- */
+@media print {
+  body { background: #fff; font-size: 12pt; }
+  .wrap { padding: 0; max-width: 100%; }
+  .quiz, .ask-tutor, footer.lesson-nav { break-inside: avoid; }
+  a { color: var(--ink); border: none; }
+}
+
+@media (max-width: 600px) {
+  body { font-size: 17px; }
+  h1 { font-size: 1.9rem; }
+  .equation { font-size: 1.15rem; }
+}
+
+/* Botón "Ver en línea": enlace a la ruta publicada del documento (GitHub Pages) */
+.online-link {
+  position: fixed; top: 12px; right: 12px; z-index: 999;
+  font: 14px/1 system-ui, sans-serif;
+  padding: 0.5em 0.9em; border-radius: 999px;
+  background: #2a6fbb; color: #fff; text-decoration: none;
+  opacity: 0.85; box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+}
+.online-link:hover { opacity: 1; }
+@media print { .online-link { display: none; } }

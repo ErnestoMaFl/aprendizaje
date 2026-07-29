@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lección 4 · Cascada, especificidad y herencia</title>
+  <link rel="stylesheet" href="../assets/course.css">
+  <style>
+    /* Marcador de especificidad: tres columnas id · clase · elemento */
+    .marcador {
+      display: flex;
+      justify-content: center;
+      gap: .5rem;
+      margin: 1.4rem 0;
+      font-family: var(--mono);
+    }
+    .marc-col {
+      background: var(--papel-hueso);
+      border: 1px solid var(--regla);
+      border-radius: 8px;
+      padding: .7rem .3rem .6rem;
+      text-align: center;
+      min-width: 5.6rem;
+    }
+    .marc-col.gana { border-color: var(--acento); background: var(--acento-suave); }
+    .marc-cifra { display: block; font-size: 1.8rem; font-weight: 700; line-height: 1; color: var(--tinta); }
+    .marc-etq {
+      display: block;
+      font-family: var(--sans);
+      font-size: .6rem;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      color: var(--tinta-suave);
+      margin-top: .35rem;
+    }
+    .marc-sim { font-family: var(--mono); font-weight: 700; color: var(--acento); }
+
+    /* Tabla de pesos / herencia */
+    .tabla-peso {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: var(--sans);
+      font-size: .92rem;
+      margin: 1.2rem 0;
+    }
+    .tabla-peso th, .tabla-peso td {
+      text-align: left;
+      padding: .55rem .7rem;
+      border-bottom: 1px solid var(--regla);
+      vertical-align: top;
+    }
+    .tabla-peso th {
+      font-size: .72rem;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--tinta-suave);
+    }
+    .tabla-peso td code { font-size: .82rem; }
+    .tabla-peso .nucleo td:first-child::after { content: " ●"; color: var(--verde); }
+
+    /* Duelo de reglas: dos reglas peleando por el mismo elemento */
+    .duelo {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin: 1.3rem 0;
+    }
+    .duelo pre { flex: 1 1 240px; margin: 0; }
+
+    /* Cadena de decisión */
+    .cadena {
+      counter-reset: paso;
+      list-style: none;
+      padding: 0;
+      margin: 1.3rem 0;
+      font-family: var(--sans);
+      font-size: .95rem;
+    }
+    .cadena li {
+      counter-increment: paso;
+      position: relative;
+      padding: .6rem 0 .6rem 2.6rem;
+      border-bottom: 1px solid var(--regla);
+    }
+    .cadena li::before {
+      content: counter(paso);
+      position: absolute;
+      left: 0;
+      top: .55rem;
+      width: 1.7rem;
+      height: 1.7rem;
+      border-radius: 50%;
+      background: var(--acento);
+      color: #fff;
+      font-weight: 700;
+      font-size: .85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    @media (max-width:600px){
+      .marcador { gap: .3rem; }
+      .marc-col { min-width: 0; flex: 1; padding: .6rem .15rem .5rem; }
+      .marc-cifra { font-size: 1.4rem; }
+      .tabla-peso { font-size: .82rem; }
+    }
+  </style>
+</head>
+<body>
+<a class="online-link" href="https://ernestomafl.github.io/aprendizaje/" title="Ir al índice de mis cursos en línea">🌐 Mis cursos</a>
+  <main class="lienzo">
+
+    <p class="leccion-kicker">Lección 04 · Leer CSS</p>
+    <h1>Cascada, especificidad y herencia</h1>
+    <p class="lede">
+      Ya lees <em>a qué</em> apunta una regla (<a href="0002-selectores.html">Lección 02</a>), <em>qué</em> le
+      cambia (<a href="0001-anatomia-de-una-regla.html">Lección 01</a>) y <em>cuánto espacio ocupa</em>
+      (<a href="0003-box-model.html">Lección 03</a>). Falta la pregunta que rompe la cabeza de todo el que
+      abre un CSS ajeno: <strong>dos reglas dicen cosas distintas sobre el mismo elemento. ¿Cuál gana?</strong>
+      Hoy sales con un método de tres pasos para responderlo <em>siempre</em>.
+    </p>
+
+    <!-- PRETEST: arriesga antes de que te lo explique -->
+    <div class="nota acento">
+      <p class="nota-titulo">Antes de leer: arriésgate (fallar aquí es parte del método)</p>
+      <p style="margin:0 0 .6rem">
+        Este <code>&lt;p id="aviso" class="texto"&gt;</code> recibe dos reglas que se contradicen:
+      </p>
+      <div class="duelo">
+<pre><code><span class="t-sel">#aviso</span> <span class="t-punt">{</span> <span class="t-prop">color</span><span class="t-punt">:</span> <span class="t-val">red</span><span class="t-punt">;</span> <span class="t-punt">}</span></code></pre>
+<pre><code><span class="t-sel">.texto</span> <span class="t-punt">{</span> <span class="t-prop">color</span><span class="t-punt">:</span> <span class="t-val">blue</span><span class="t-punt">;</span> <span class="t-punt">}</span></code></pre>
+      </div>
+      <p style="margin:0">
+        La regla azul está escrita <strong>después</strong>. ¿De qué color sale el texto?
+        Apuesta mentalmente — <em>rojo</em> o <em>azul</em> — y sigue leyendo.
+      </p>
+    </div>
+
+    <h2>El problema: la cascada</h2>
+    <p>
+      CSS significa <em>Cascading Style Sheets</em>: hojas de estilo <strong>en cascada</strong>. Ese nombre
+      describe justo el mecanismo que vas a aprender hoy. En una web real, decenas de reglas apuntan al mismo
+      elemento. El navegador no se confunde: aplica un <strong>orden de desempate</strong>, siempre el mismo.
+      Leerlo es lo que te deja decir «este texto sale azul <em>porque…</em>» en vez de encogerte de hombros.
+    </p>
+    <p>
+      La cadena de decisión, para cada propiedad por separado:
+    </p>
+
+    <ol class="cadena">
+      <li><strong>¿Alguna regla apunta a este elemento?</strong> Si ninguna lo hace → puede que
+        <strong>herede</strong> el valor de su padre (paso 3).</li>
+      <li><strong>Si varias apuntan → gana la más <em>específica</em>.</strong> Aquí es donde importa si usaste
+        <code>#</code>, <code>.</code> o un nombre de elemento. Es el paso decisivo.</li>
+      <li><strong>¿Empate exacto en especificidad? → gana la que está escrita <em>más abajo</em>.</strong>
+        La última palabra, literalmente.</li>
+    </ol>
+
+    <div class="nota">
+      <p class="nota-titulo">Léelo en este orden — no al revés</p>
+      <p style="margin:0">
+        El error típico es mirar primero cuál está escrita al final. <strong>El orden solo desempata cuando la
+        especificidad es idéntica.</strong> Una regla más específica gana aunque esté escrita 500 líneas antes.
+      </p>
+    </div>
+
+    <h2>Especificidad: el marcador de tres cifras</h2>
+    <p>
+      Para saber cuál es «más específica», cuenta las piezas del selector y anótalas en un marcador de tres
+      columnas. Se comparan <strong>de izquierda a derecha</strong>, como un podio: la columna de la izquierda
+      manda sobre todo lo demás.
+    </p>
+
+    <div class="marcador">
+      <div class="marc-col gana">
+        <span class="marc-cifra">0</span>
+        <span class="marc-etq"><span class="marc-sim">#</span> ids</span>
+      </div>
+      <div class="marc-col">
+        <span class="marc-cifra">0</span>
+        <span class="marc-etq"><span class="marc-sim">.</span> clases</span>
+      </div>
+      <div class="marc-col">
+        <span class="marc-cifra">0</span>
+        <span class="marc-etq">elementos</span>
+      </div>
+    </div>
+
+    <table class="tabla-peso">
+      <thead><tr><th>Pieza del selector</th><th>Suma en la columna…</th><th>Ejemplo</th></tr></thead>
+      <tbody>
+        <tr class="nucleo"><td>Un <strong>id</strong></td><td>ids (la de la izquierda)</td><td><code>#aviso</code></td></tr>
+        <tr class="nucleo"><td>Una <strong>clase</strong></td><td>clases (la de en medio)</td><td><code>.texto</code></td></tr>
+        <tr class="nucleo"><td>Un <strong>nombre de elemento</strong></td><td>elementos (la de la derecha)</td><td><code>p</code>, <code>h2</code>, <code>a</code></td></tr>
+        <tr><td>Una <strong>pseudo-clase</strong></td><td>clases — cuenta igual que una clase</td><td><code>:hover</code></td></tr>
+      </tbody>
+    </table>
+
+    <p>
+      Con eso ya puedes resolver el duelo del pretest tú mismo. Cuenta los dos marcadores antes de abrir esto:
+    </p>
+
+    <details class="revelar">
+      <summary>Ver cómo se resuelve el duelo del principio</summary>
+      <div class="revelar-cuerpo">
+<pre style="margin:0"><code><span class="t-sel">#aviso</span> <span class="t-punt">{</span> <span class="t-prop">color</span><span class="t-punt">:</span> <span class="t-val">red</span><span class="t-punt">;</span> <span class="t-punt">}</span>    <span class="t-com">/* marcador 1-0-0  ← un id     */</span>
+<span class="t-sel">.texto</span> <span class="t-punt">{</span> <span class="t-prop">color</span><span class="t-punt">:</span> <span class="t-val">blue</span><span class="t-punt">;</span> <span class="t-punt">}</span>    <span class="t-com">/* marcador 0-1-0  ← una clase */</span>
+<span class="t-com">/* Gana 1-0-0: sale ROJO, aunque el azul esté escrito después. */</span></code></pre>
+      </div>
+    </details>
+
+    <div class="nota acento">
+      <p class="nota-titulo">Un id pesa más que cualquier cantidad de clases</p>
+      <p style="margin:0 0 .6rem">
+        Como las columnas se comparan de izquierda a derecha, <code>#aviso</code> (1-0-0) le gana a
+        <code>.a.b.c.d.e</code> (0-5-0). <strong>Una sola cifra a la izquierda decide y ya no se mira el
+        resto</strong>: ninguna cantidad de clases «asciende» a la columna de los ids. Por eso <code>#</code> y
+        <code>.</code> no son intercambiables: apuntan distinto <em>y pesan distinto</em>.
+      </p>
+      <p style="margin:0">
+        <strong>Ojo, que esto confunde:</strong> dentro de <em>una misma</em> columna las piezas <strong>sí se
+        suman</strong> — por eso <code>.a.b.c.d.e</code> marca 0-<strong>5</strong>-0. Lo que no ocurre nunca es
+        que una columna se convierta en otra. Se acumula hacia arriba dentro de cada columna; nunca de una
+        columna a la de al lado.
+      </p>
+    </div>
+
+    <h3>Practica el conteo</h3>
+    <table class="tabla-peso">
+      <thead><tr><th>Selector</th><th>Marcador</th><th>Cómo se cuenta</th></tr></thead>
+      <tbody>
+        <tr><td><code>p</code></td><td><strong>0-0-1</strong></td><td>un elemento</td></tr>
+        <tr><td><code>.texto</code></td><td><strong>0-1-0</strong></td><td>una clase</td></tr>
+        <tr><td><code>nav a</code></td><td><strong>0-0-2</strong></td><td>dos elementos (<code>nav</code> y <code>a</code>)</td></tr>
+        <tr><td><code>p.texto</code></td><td><strong>0-1-1</strong></td><td>una clase + un elemento</td></tr>
+        <tr><td><code>#menu li</code></td><td><strong>1-0-1</strong></td><td>un id + un elemento</td></tr>
+        <tr><td><code>.card p.destacado</code></td><td><strong>0-2-1</strong></td><td>dos clases + un elemento</td></tr>
+        <tr><td><code>.super:hover</code></td><td><strong>0-2-0</strong></td><td>una clase + una pseudo-clase (que cuenta como clase) → le gana a <code>.super</code> (0-1-0)</td></tr>
+      </tbody>
+    </table>
+    <p style="color:var(--tinta-suave);font-size:.95rem">
+      Truco de lectura: recorre el selector de izquierda a derecha y ve cantando «id, clase, elemento» según el
+      símbolo que veas. Los espacios no suman nada — solo separan piezas.
+    </p>
+
+    <h2>Herencia: lo que cae del padre solo</h2>
+    <p>
+      Si <strong>ninguna</strong> regla apunta a un elemento, no siempre se queda «sin estilo»: algunas
+      propiedades las <strong>hereda</strong> de su elemento padre, automáticamente. Pero solo algunas — y el
+      criterio es más sensato de lo que parece:
+    </p>
+
+    <table class="tabla-peso">
+      <thead><tr><th>Se heredan (cosas de texto)</th><th>NO se heredan (cosas de caja)</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><code>color</code>, <code>font-family</code>, <code>font-size</code>,
+              <code>line-height</code>, <code>text-align</code></td>
+          <td><code>margin</code>, <code>padding</code>, <code>border</code>,
+              <code>width</code>, <code>background</code></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="nota">
+      <p class="nota-titulo">La lógica detrás</p>
+      <p style="margin:0">
+        Piénsalo así: si pones una tipografía en el <code>body</code>, quieres que <strong>todo</strong> el texto
+        de la página la use — sería absurdo repetirla en cada párrafo. Pero si pones <code>margin: 20px</code> en
+        el <code>body</code>, <em>no</em> quieres que cada párrafo, cada enlace y cada palabra dentro herede 20px
+        de margen: sería un caos. Por eso <strong>el texto se hereda; la caja, no</strong>. Es justo el
+        <a href="0003-box-model.html">modelo de caja</a> de la lección pasada quedándose donde lo pusiste.
+      </p>
+    </div>
+
+<pre><code><span class="t-sel">body</span> <span class="t-punt">{</span> <span class="t-prop">color</span><span class="t-punt">:</span> <span class="t-val">navy</span><span class="t-punt">;</span> <span class="t-prop">border</span><span class="t-punt">:</span> <span class="t-val">2px solid red</span><span class="t-punt">;</span> <span class="t-punt">}</span>
+
+<span class="t-com">/* Un &lt;p&gt; dentro del body, sin ninguna regla propia:            */</span>
+<span class="t-com">/*   · color  → navy   (heredado: es cosa de texto)             */</span>
+<span class="t-com">/*   · border → nada   (NO heredado: el borde rojo se queda      */</span>
+<span class="t-com">/*                      solo alrededor del body)                 */</span></code></pre>
+
+    <details class="revelar">
+      <summary>La letra pequeña: dónde falla esta heurística (opcional, pero te hará leer mejor)</summary>
+      <div class="revelar-cuerpo">
+        <p>Dos precisiones que separan «saber la regla» de «entenderla»:</p>
+        <p><strong>1. Se hereda a los elementos hijos, no «al texto».</strong> Una <code>&lt;img&gt;</code>
+        hereda <code>color</code> exactamente igual que un <code>&lt;p&gt;</code> — simplemente no tiene texto
+        que pintar, así que el valor queda ahí, inerte. El texto no hereda nada: no es un elemento, es
+        contenido <em>de</em> un elemento.</p>
+        <p><strong>2. «El texto se hereda, la caja no» es una correlación, no la ley.</strong> Contraejemplos
+        reales, comprobables en MDN:</p>
+        <ul style="margin:0 0 .8rem">
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/image-rendering"><code>image-rendering</code></a>
+            — heredable, y solo afecta a <strong>imágenes</strong>.</li>
+          <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/border-collapse"><code>border-collapse</code></a>
+            — heredable, y es un <strong>borde</strong>.</li>
+          <li><code>cursor</code>, <code>visibility</code>, <code>list-style</code> — heredables, y no son texto.</li>
+        </ul>
+        <p style="margin:0">Lo que de verdad decide si una propiedad se hereda es una pregunta de diseño:
+        <em>¿tiene sentido escribir esto una vez arriba y que valga para todo lo de abajo?</em> Para
+        <code>font-family</code>, sí. Para <code>image-rendering</code> («escala así todas las imágenes de esta
+        zona»), también. Para <code>padding</code>, sería un caos. Cada propiedad lo lleva declarado en su
+        ficha de MDN como <code>Inherited: yes/no</code>. La heurística te sirve para leer rápido el 80% —
+        ahora sabes por qué funciona y dónde deja de hacerlo.</p>
+      </div>
+    </details>
+
+    <h2>Periferia: <code>!important</code> y los estilos <em>inline</em></h2>
+    <p>
+      Dos cosas se saltan el marcador entero. No las verás a menudo en código sano, pero cuando aparezcan
+      tienes que <strong>reconocerlas</strong>, porque explican resultados que si no parecen imposibles:
+    </p>
+<pre><code><span class="t-sel">.texto</span> <span class="t-punt">{</span> <span class="t-prop">color</span><span class="t-punt">:</span> <span class="t-val">blue</span> <span class="t-val">!important</span><span class="t-punt">;</span> <span class="t-punt">}</span>  <span class="t-com">/* gana aunque el marcador diga que no */</span></code></pre>
+    <p style="color:var(--tinta-suave);font-size:.95rem">
+      <strong><code>!important</code></strong> pega ese valor al final de la declaración y lo pone por encima de
+      todo lo demás. Y un <strong>estilo <em>inline</em></strong> (escrito en el HTML,
+      <code>style="color: green"</code>) le gana a cualquier selector de la hoja. Ambos son
+      <em>rompe-reglas</em>: cuando leas un CSS y el marcador no explique lo que ves en pantalla, busca estos
+      dos. <em>(Reconócelos, no los busques como norma — están fuera del 80% del código que leerás.)</em>
+    </p>
+
+    <h2>Compruébalo — recuerda sin releer</h2>
+
+    <div class="quiz" data-correcta="1" data-num="1">
+      <p class="quiz-pregunta"><span class="quiz-num">Pregunta 1</span><br>
+        Dos reglas chocan: <code>#caja</code> pone <code>color: red</code>, y <code>.caja</code> pone
+        <code>color: blue</code> <strong>más abajo</strong>. ¿Qué color se ve?</p>
+      <div class="opciones">
+        <button class="opcion">Azul: está escrita después</button>
+        <button class="opcion">Rojo: el id es más específico</button>
+        <button class="opcion">Ninguno: las dos se anulan</button>
+      </div>
+      <div class="feedback ok" data-para="ok">Correcto. <code>#caja</code> marca 1-0-0 y <code>.caja</code> marca 0-1-0. La especificidad decide primero; el orden solo desempata cuando el marcador es idéntico.</div>
+      <div class="feedback no" data-para="no">El orden de escritura solo importa si hay <strong>empate</strong> de especificidad. Aquí no lo hay: <code>#caja</code> (1-0-0) le gana a <code>.caja</code> (0-1-0) esté donde esté escrita. Sale rojo.</div>
+    </div>
+
+    <div class="quiz" data-correcta="2" data-num="2">
+      <p class="quiz-pregunta"><span class="quiz-num">Pregunta 2</span><br>
+        ¿Cuál es el marcador de especificidad de <code>.card p.destacado</code>?</p>
+      <div class="opciones">
+        <button class="opcion">Marcador de 1-1-0</button>
+        <button class="opcion">Marcador de 0-1-2</button>
+        <button class="opcion">Marcador de 0-2-1</button>
+      </div>
+      <div class="feedback ok" data-para="ok">Correcto. Dos clases (<code>.card</code> y <code>.destacado</code>) y un elemento (<code>p</code>) → 0-2-1. Ningún id, así que la columna izquierda es 0.</div>
+      <div class="feedback no" data-para="no">Cuenta pieza por pieza: <code>.card</code> = clase, <code>p</code> = elemento, <code>.destacado</code> = clase. Total: 0 ids, 2 clases, 1 elemento → <strong>0-2-1</strong>.</div>
+    </div>
+
+    <div class="quiz" data-correcta="0" data-num="3">
+      <p class="quiz-pregunta"><span class="quiz-num">Pregunta 3</span><br>
+        En <code>body { font-family: Georgia; padding: 40px; }</code>, ¿qué recibe un
+        <code>&lt;p&gt;</code> de dentro que no tiene reglas propias?</p>
+      <div class="opciones">
+        <button class="opcion">Georgia, pero no el padding</button>
+        <button class="opcion">El padding, pero no Georgia</button>
+        <button class="opcion">Las dos cosas del body</button>
+      </div>
+      <div class="feedback ok" data-para="ok">Correcto. <code>font-family</code> es cosa de texto → se hereda. <code>padding</code> es cosa de caja → no se hereda; esos 40px se quedan solo en el <code>body</code>.</div>
+      <div class="feedback no" data-para="no">Regla de oro: <strong>el texto se hereda, la caja no</strong>. El <code>p</code> escribe en Georgia (heredado), pero el <code>padding: 40px</code> es del <code>body</code> y de nadie más.</div>
+    </div>
+
+    <div class="quiz" data-correcta="2" data-num="4">
+      <p class="quiz-pregunta"><span class="quiz-num">Pregunta 4 · repaso</span><br>
+        ¿Qué diferencia hay entre <code>#menu</code> y <code>.menu</code>?
+        <span style="font-weight:400;color:var(--tinta-suave)">(de la Lección 02)</span></p>
+      <div class="opciones">
+        <button class="opcion">Son la misma cosa escrita distinto</button>
+        <button class="opcion">Almohadilla es clase; punto es id</button>
+        <button class="opcion">Almohadilla es id; punto es clase</button>
+      </div>
+      <div class="feedback ok" data-para="ok">Correcto. <code>#</code> = <strong>id</strong>, único en la página, marcador 1-0-0. <code>.</code> = <strong>clase</strong>, reutilizable en muchos elementos, marcador 0-1-0. Apuntan distinto y pesan distinto.</div>
+      <div class="feedback no" data-para="no">Al revés: la almohadilla <code>#</code> señala un <strong>id</strong> (uno solo en la página); el punto <code>.</code> señala una <strong>clase</strong> (tantos elementos como quieras). Truco: <code>#</code> es el símbolo de «número», y un número identifica a uno solo.</div>
+    </div>
+
+    <div class="quiz" data-correcta="1" data-num="5">
+      <p class="quiz-pregunta"><span class="quiz-num">Pregunta 5</span><br>
+        Dos reglas idénticas en especificidad (<code>p</code> y <code>p</code>) piden colores distintos.
+        ¿Quién gana?</p>
+      <div class="opciones">
+        <button class="opcion">La primera que fue escrita</button>
+        <button class="opcion">La última que fue escrita</button>
+        <button class="opcion">La que tenga el valor corto</button>
+      </div>
+      <div class="feedback ok" data-para="ok">Correcto. Con el marcador empatado, manda el orden: la que está más abajo pisa a la de arriba. Es el último paso de la cascada — y solo actúa cuando hay empate.</div>
+      <div class="feedback no" data-para="no">Con especificidad empatada gana <strong>la última escrita</strong> — la de más abajo pisa a la de arriba. El valor no influye nunca en quién gana; solo importan especificidad y orden.</div>
+    </div>
+
+    <h2>Tu misión de lectura (60 segundos)</h2>
+    <p>
+      Aquí tienes tres reglas peleando por el mismo elemento:
+      <code>&lt;a id="inicio" class="boton" href="#"&gt;</code>. Calcula los tres marcadores y di
+      <strong>de qué color sale</strong> — en voz alta, antes de mirar la respuesta:
+    </p>
+<pre><code><span class="t-sel">a</span> <span class="t-punt">{</span> <span class="t-prop">color</span><span class="t-punt">:</span> <span class="t-val">gray</span><span class="t-punt">;</span> <span class="t-punt">}</span>
+<span class="t-sel">#inicio</span> <span class="t-punt">{</span> <span class="t-prop">color</span><span class="t-punt">:</span> <span class="t-val">green</span><span class="t-punt">;</span> <span class="t-punt">}</span>
+<span class="t-sel">a.boton</span> <span class="t-punt">{</span> <span class="t-prop">color</span><span class="t-punt">:</span> <span class="t-val">orange</span><span class="t-punt">;</span> <span class="t-punt">}</span></code></pre>
+    <details class="revelar pista">
+      <summary>Pista (si la necesitas)</summary>
+      <div class="revelar-cuerpo">
+        Cuenta las piezas de cada selector, apunta los tres marcadores y compáralos columna por columna,
+        de izquierda a derecha. No mires el orden en que están escritos todavía.
+      </div>
+    </details>
+
+    <label class="pregunta-abierta">
+      <span class="pa-titulo">✍️ Escribe los tres marcadores y el color ganador — <strong>antes</strong> de abrir la respuesta:</span>
+      <textarea class="abierta" data-label="Misión: 3 marcadores y color ganador" rows="3" placeholder="Ej.: a = …, #inicio = …, a.boton = … → gana …"></textarea>
+    </label>
+
+    <details class="revelar">
+      <summary>Ver la respuesta (solo después de escribir la tuya)</summary>
+      <div class="revelar-cuerpo">
+        <p style="margin:0 0 .5rem"><code>a</code> = <strong>0-0-1</strong> ·
+          <code>#inicio</code> = <strong>1-0-0</strong> · <code>a.boton</code> = <strong>0-1-1</strong>.</p>
+        <p style="margin:0">Gana <code>#inicio</code> por el 1 de la columna izquierda: sale
+          <strong>verde</strong>. Fíjate en que está <em>en medio</em>, no al final — el orden aquí da igual,
+          porque no hay empate que desempatar.</p>
+      </div>
+    </details>
+
+    <label class="pregunta-abierta">
+      <span class="pa-titulo">🧠 En una frase y con tus palabras: ¿por qué el texto se hereda pero el <code>padding</code> no? (explicarlo lo fija)</span>
+      <textarea class="abierta" data-label="¿Por qué el texto se hereda y la caja no?" rows="2"></textarea>
+    </label>
+
+    <div class="hoja-respuestas">
+      <p class="hr-intro">📋 <strong>Tu hoja de respuestas.</strong> Se rellena sola con tus quizzes (acierto/fallo y tu nivel de seguridad) y con lo que escribas arriba. Pulsa el botón y <strong>pégala en el chat</strong> — no reescribas nada.</p>
+      <textarea class="hr-salida" readonly rows="14"></textarea>
+      <br>
+      <button class="hr-copiar" type="button">Copiar para el chat</button>
+      <span class="hr-aviso"></span>
+    </div>
+
+    <!-- PIE -->
+    <div class="pie">
+      <div class="fuente-primaria">
+        <p class="nota-titulo">📖 Fuente primaria recomendada</p>
+        <p style="margin:0 0 .7rem">
+          Lee <a href="https://developer.mozilla.org/es/docs/Learn_web_development/Core/Styling_basics/Handling_conflicts">
+          «Cascada y herencia» en MDN Web Docs</a> (Mozilla, en español): el mismo tema con más ejemplos.
+          Ojo a una diferencia de formato: MDN usa un marcador de <strong>cuatro</strong> cifras porque incluye
+          los estilos <em>inline</em> como columna extra a la izquierda. Es el mismo sistema — nuestras tres
+          columnas son las tres de la derecha.
+        </p>
+      </div>
+
+      <div class="recursos-practica">
+        <p class="nota-titulo">🎮 Recursos para practicar por tu cuenta</p>
+        <ul class="rp-lista">
+          <li>
+            <a href="https://mjswensen.github.io/css-power-ups/the-cascade-and-specificity/specificity-quiz/">Specificity
+            Quiz — CSS Power-ups</a><span class="rp-etq">reto</span>
+            <span class="rp-nota">Seis preguntas de dificultad creciente: te dan el HTML y el CSS, y decides
+            qué regla gana. Con cronómetro y penalización de 30s por fallo — premia calcular, no adivinar.</span>
+          </li>
+          <li>
+            <a href="https://css-specificity.smnarnold.com/">CSS Specificity Quiz</a><span class="rp-etq">reto</span>
+            <span class="rp-nota">Por niveles y con puntuación: eliges qué regla es la más específica y de qué
+            color sale el elemento marcado. Sin reloj. En inglés, pero lo que se lee es código.</span>
+          </li>
+          <li>
+            <a href="https://specificity.keegan.st/">Specificity Calculator</a><span class="rp-etq suave">herramienta</span>
+            <span class="rp-nota">No es un reto: úsala <strong>al revés</strong>. Calcula tú el marcador
+            primero y pega el selector solo para comprobar. Si te da la respuesta antes de intentarlo, no
+            aprendes nada.</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="recordatorio-tutor">
+        💬 <strong>Soy tu tutor.</strong> ¿Encontraste un CSS donde un color «no hace caso» y no entiendes por
+        qué gana otro? Pégamelo y lo resolvemos con el marcador, paso a paso.
+      </div>
+
+      <p style="font-family:var(--sans);font-size:.9rem;color:var(--tinta-suave)">
+        Consulta rápida: el <a href="../reference/glosario.html">glosario</a> — sección «Cascada, especificidad y
+        herencia», con el marcador y la lista de lo que se hereda.
+      </p>
+
+      <div>
+        <p class="nota-titulo" style="color:var(--tinta-suave)">Siguiente</p>
+        <p style="margin:.2rem 0 0;font-family:var(--sans);font-size:.95rem">
+          <strong>Lección 05 — Unidades y valores:</strong> <code>px</code>, <code>%</code>, <code>rem</code>,
+          <code>em</code> y las formas de escribir un color. Lo que va a la <em>derecha</em> de los dos puntos,
+          que hasta ahora hemos leído por encima. Di «continuar» cuando quieras.
+        </p>
+      </div>
+
+      <div class="nav-lecciones">
+        <a href="0003-box-model.html">← Lección 03 · Modelo de caja</a>
+        <a href="0005-unidades-y-valores.html">Lección 05 · Unidades →</a>
+      </div>
+    </div>
+
+  </main>
+  <script src="../assets/quiz.js"></script>
+</body>
+</html>

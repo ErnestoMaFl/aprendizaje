@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Referencia · Tipos y conversión</title>
+  <link rel="stylesheet" href="../assets/course.css">
+  <style>
+    .ref-tabla { width: 100%; border-collapse: collapse; font-family: var(--sans); font-size: .88rem; margin: .8rem 0 1.6rem; }
+    .ref-tabla th, .ref-tabla td { text-align: left; padding: .42rem .6rem; border-bottom: 1px solid var(--regla); vertical-align: top; }
+    .ref-tabla th { font-size: .68rem; text-transform: uppercase; letter-spacing: .06em; color: var(--tinta-suave); }
+    .ref-tabla td:first-child { font-family: var(--mono); font-size: .8rem; white-space: nowrap; }
+    .ref-tabla .peligro td { background: var(--rojo-suave); }
+    .regla-oro {
+      background: var(--acento-suave); border-left: 3px solid var(--acento);
+      border-radius: 8px; padding: .8rem 1.1rem; margin: 1.2rem 0;
+      font-family: var(--sans); font-size: .95rem;
+    }
+    .regla-oro b { color: var(--acento); }
+    h2 { font-size: 1.2rem; margin: 2rem 0 .4rem; }
+    .subtitulo { font-family: var(--sans); font-size: .85rem; color: var(--tinta-suave); margin: 0 0 .6rem; }
+    .dos-col { display: grid; grid-template-columns: 1fr 1fr; gap: 0 1.6rem; }
+    @media (max-width: 620px) { .dos-col { grid-template-columns: 1fr; } }
+    @media print { .lienzo { padding-top: 1rem; } body { font-size: 11pt; } }
+  </style>
+</head>
+<body>
+<a class="online-link" href="https://ernestomafl.github.io/aprendizaje/" title="Ir al índice de mis cursos en línea">🌐 Mis cursos</a>
+  <main class="lienzo">
+
+    <p class="leccion-kicker">Referencia · consulta rápida</p>
+    <h1>Tipos y conversión</h1>
+    <p class="lede" style="margin-bottom:1.2rem">
+      Todo lo que JavaScript convierte por su cuenta, en una hoja. Pensada para imprimir y
+      tenerla al lado mientras lees código ajeno.
+    </p>
+
+    <div class="regla-oro">
+      <b>Las tres reglas que resuelven casi todo</b><br>
+      1. <b>+</b> con algún texto → <b>pega</b>. Sin texto → suma.<br>
+      2. <b>−  ×  /  %</b> → convierten <b>siempre</b> a número.<br>
+      3. Comparar → <b><code>===</code> siempre</b>. Nunca <code>==</code>, salvo <code>x == null</code>.
+    </div>
+
+    <h2>Los tipos</h2>
+    <p class="subtitulo"><code>typeof valor</code> devuelve el nombre del tipo, como texto.</p>
+    <table class="ref-tabla">
+      <thead><tr><th>Tipo</th><th>Ejemplo</th><th><code>typeof</code></th></tr></thead>
+      <tbody>
+        <tr><td>número</td><td><code>42</code>, <code>0.21</code></td><td><code>"number"</code></td></tr>
+        <tr><td>texto</td><td><code>"Ana"</code>, <code>""</code></td><td><code>"string"</code></td></tr>
+        <tr><td>booleano</td><td><code>true</code>, <code>false</code></td><td><code>"boolean"</code></td></tr>
+        <tr><td>undefined</td><td>vacío puesto por JS</td><td><code>"undefined"</code></td></tr>
+        <tr><td>null</td><td>vacío puesto a mano</td><td><code>"object"</code> ⚠ bug histórico</td></tr>
+        <tr><td>objeto</td><td><code>{ hora: 40 }</code></td><td><code>"object"</code></td></tr>
+        <tr><td>función</td><td><code>x =&gt; x + 1</code></td><td><code>"function"</code></td></tr>
+      </tbody>
+    </table>
+
+    <h2>Convertir a número</h2>
+    <p class="subtitulo">Lo que hacen <code>-</code>, <code>*</code>, <code>/</code>, <code>%</code>, <code>Number(x)</code> y <code>+x</code>.</p>
+    <table class="ref-tabla">
+      <thead><tr><th>Valor</th><th>→ número</th><th>Nota</th></tr></thead>
+      <tbody>
+        <tr><td>"42"</td><td><code>42</code></td><td>Texto numérico.</td></tr>
+        <tr><td>"  -9  "</td><td><code>-9</code></td><td>Espacios de los bordes ignorados.</td></tr>
+        <tr><td>""</td><td><code>0</code></td><td>Texto vacío = cero.</td></tr>
+        <tr><td>"   " · " \t \n"</td><td><code>0</code></td><td>Solo espacios / tabuladores / saltos = cero.</td></tr>
+        <tr class="peligro"><td>"4px"</td><td><code>NaN</code></td><td>Sobra un carácter → no es número.</td></tr>
+        <tr><td>true</td><td><code>1</code></td><td></td></tr>
+        <tr><td>false</td><td><code>0</code></td><td></td></tr>
+        <tr><td>null</td><td><code>0</code></td><td></td></tr>
+        <tr class="peligro"><td>undefined</td><td><code>NaN</code></td><td>El origen habitual de un <code>NaN</code> inesperado.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Convertir a texto</h2>
+    <p class="subtitulo">Lo que hace <code>+</code> cuando el otro lado es texto, y <code>String(x)</code>.</p>
+    <table class="ref-tabla">
+      <thead><tr><th>Valor</th><th>→ texto</th></tr></thead>
+      <tbody>
+        <tr><td>42</td><td><code>"42"</code></td></tr>
+        <tr><td>true</td><td><code>"true"</code></td></tr>
+        <tr><td>null</td><td><code>"null"</code></td></tr>
+        <tr><td>undefined</td><td><code>"undefined"</code></td></tr>
+      </tbody>
+    </table>
+
+    <h2>El <code>+</code>, paso a paso</h2>
+<pre><code><span class="t-str">"5"</span> <span class="t-punt">+</span> <span class="t-num">3</span>          <span class="t-com">// "53"   hay texto → pega</span>
+<span class="t-num">5</span> <span class="t-punt">+</span> <span class="t-num">3</span>            <span class="t-com">// 8      no hay texto → suma</span>
+<span class="t-str">"5"</span> <span class="t-punt">-</span> <span class="t-num">3</span>          <span class="t-com">// 2      el guion siempre convierte a número</span>
+
+<span class="t-str">"1"</span> <span class="t-punt">+</span> <span class="t-num">1</span> <span class="t-punt">+</span> <span class="t-num">0</span>      <span class="t-com">// "110"  por parejas, de izquierda a derecha</span>
+<span class="t-num">1</span> <span class="t-punt">+</span> <span class="t-num">1</span> <span class="t-punt">+</span> <span class="t-str">"0"</span>      <span class="t-com">// "20"   (1+1)=2, luego 2+"0"</span></code></pre>
+
+    <h2>Conversión explícita — lo que se escribe en código real</h2>
+<pre><code><span class="t-fn">Number</span><span class="t-punt">(</span><span class="t-str">"42"</span><span class="t-punt">)</span>   <span class="t-com">// 42</span>
+<span class="t-punt">+</span><span class="t-str">"42"</span>           <span class="t-com">// 42   (+ unario: el mismo Number, escrito corto)</span>
+<span class="t-fn">String</span><span class="t-punt">(</span><span class="t-num">42</span><span class="t-punt">)</span>     <span class="t-com">// "42"</span></code></pre>
+    <div class="regla-oro">
+      <b>Formularios</b> · Todo lo que teclea un usuario llega como <b>texto</b>, aunque el campo
+      sea de tipo número. Convierte con <code>Number(...)</code> <b>antes</b> de operar, o
+      <code>precio + 100</code> te dará <code>"1200100"</code>.
+    </div>
+
+    <h2><code>NaN</code></h2>
+    <ul style="font-family:var(--sans);font-size:.92rem">
+      <li>Es de tipo <code>"number"</code>. Significa «esta cuenta no dio un número».</li>
+      <li>Es <b>contagioso</b>: cualquier operación que lo toque devuelve <code>NaN</code>.</li>
+      <li><code>NaN === NaN</code> es <code>false</code>. Es el único valor que no es igual a sí mismo.</li>
+      <li>Para detectarlo: <code>Number.isNaN(valor)</code>.</li>
+    </ul>
+
+    <h2>Comparaciones</h2>
+    <table class="ref-tabla">
+      <thead><tr><th>Expresión</th><th>Resultado</th><th>Por qué</th></tr></thead>
+      <tbody>
+        <tr><td>"5" === 5</td><td><code>false</code></td><td>Distinto tipo, y <code>===</code> no convierte.</td></tr>
+        <tr><td>"5" == 5</td><td><code>true</code></td><td><code>==</code> convierte antes de comparar.</td></tr>
+        <tr><td>null == undefined</td><td><code>true</code></td><td>Regla especial: los dos vacíos son <code>==</code> entre sí.</td></tr>
+        <tr><td>null === undefined</td><td><code>false</code></td><td>Tipos distintos.</td></tr>
+        <tr><td>null == 0</td><td><code>false</code></td><td><code>null</code> solo es <code>==</code> a <code>undefined</code>.</td></tr>
+        <tr><td>NaN === NaN</td><td><code>false</code></td><td>Ver arriba.</td></tr>
+        <tr><td>"2" &gt; "12"</td><td><code>true</code></td><td>Dos textos → diccionario: decide el 1.er carácter, <code>"2"</code> contra <code>"1"</code>.</td></tr>
+        <tr><td>"2" &gt; 12</td><td><code>false</code></td><td>Texto y número → convierte: <code>2 &gt; 12</code>.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="regla-oro">
+      <b>Comparar dos textos = diccionario</b> · Carácter a carácter de izquierda a derecha; el
+      primero que difiere lo decide todo y el resto ni se mira. La longitud no cuenta:
+      «zapato» va después de «abecedario». Por eso <code>"9" &gt; "100"</code> es
+      <code>true</code> y una lista de precios guardados como texto sale desordenada.
+      <b>Convierte a número antes de comparar.</b>
+    </div>
+
+    <div class="regla-oro">
+      <b>x == null</b> · La única excepción útil de <code>==</code>: pregunta «¿está vacío, sea
+      <code>null</code> o <code>undefined</code>?» en un solo gesto. Para todo lo demás,
+      <code>===</code>.
+    </div>
+
+    <div class="pie">
+      <div class="recordatorio-tutor">
+        💬 Esta hoja resume la <a href="../lessons/0003-tipos-y-conversion.html">Lección 03</a>.
+        Si algo de aquí no te cuadra al leer código real, pásamelo por el chat.
+      </div>
+      <div class="nav-lecciones">
+        <a href="../lessons/0003-tipos-y-conversion.html">← Lección 03 · Tipos y conversión</a>
+        <a href="banco-de-retos.html">Banco de retos →</a>
+      </div>
+    </div>
+
+  </main>
+</body>
+</html>

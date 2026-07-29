@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lección 2 · Selectores: leer a qué apunta una regla</title>
+  <link rel="stylesheet" href="../assets/course.css">
+  <style>
+    .tabla-sel {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: var(--sans);
+      font-size: .95rem;
+      margin: 1.2rem 0;
+    }
+    .tabla-sel th, .tabla-sel td {
+      text-align: left;
+      padding: .6rem .7rem;
+      border-bottom: 1px solid var(--regla);
+      vertical-align: top;
+    }
+    .tabla-sel th { font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; color: var(--tinta-suave); }
+    .tabla-sel td code { font-size: .82rem; }
+    .tabla-sel .sim { font-family: var(--mono); color: var(--azul); font-weight: 700; font-size: 1.1rem; }
+    @media (max-width:600px){ .tabla-sel{ font-size:.85rem; } }
+  </style>
+</head>
+<body>
+<a class="online-link" href="https://ernestomafl.github.io/aprendizaje/" title="Ir al índice de mis cursos en línea">🌐 Mis cursos</a>
+  <main class="lienzo">
+
+    <p class="leccion-kicker">Lección 02 · Leer CSS</p>
+    <h1>Selectores: ¿a qué apunta?</h1>
+    <p class="lede">
+      En la <a href="0001-anatomia-de-una-regla.html">Lección 01</a> viste que toda regla es
+      <code>selector { propiedad: valor; }</code>. Ya sabes leer el bloque. Hoy conquistas el
+      <strong>selector</strong>: la parte que decide <em>qué elementos de la página</em> reciben
+      esos estilos. Es la habilidad #1 para leer CSS ajeno.
+    </p>
+
+    <h2>Los tres selectores que verás el 90% de las veces</h2>
+    <p>Todo se reduce a mirar el <strong>primer símbolo</strong> del selector:</p>
+
+    <table class="tabla-sel">
+      <thead><tr><th>Se ve así</th><th>Símbolo</th><th>Apunta a…</th><th>Se lee</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><code>h1 { }</code></td>
+          <td class="sim">(nada)</td>
+          <td><strong>Un tipo de etiqueta</strong> HTML: todos los <code>&lt;h1&gt;</code>.</td>
+          <td>«todos los h1»</td>
+        </tr>
+        <tr>
+          <td><code>.card { }</code></td>
+          <td class="sim">.</td>
+          <td>Una <strong>clase</strong>: todo elemento con <code>class="card"</code>.</td>
+          <td>«los que tienen clase card»</td>
+        </tr>
+        <tr>
+          <td><code>#menu { }</code></td>
+          <td class="sim">#</td>
+          <td>Un <strong>id</strong>: el único elemento con <code>id="menu"</code>.</td>
+          <td>«el que tiene id menu»</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="nota acento">
+      <p class="nota-titulo">La pista está en el primer carácter</p>
+      <p style="margin:0">
+        <code>.</code> punto → <strong>clase</strong> (se puede repetir en muchos elementos). &nbsp;
+        <code>#</code> almohadilla → <strong>id</strong> (debería ser único en la página). &nbsp;
+        Sin símbolo → el <strong>nombre de una etiqueta</strong> HTML.
+      </p>
+    </div>
+
+    <p>Recuerda el punto misterioso de la lección pasada: <code>.card</code>. Ya lo sabes leer —
+      es «los elementos con clase <code>card</code>». Enlaza con el HTML así:</p>
+
+<pre><code><span class="t-com">/* HTML */</span>  &lt;div class=<span class="t-val">"card"</span>&gt; … &lt;/div&gt;
+<span class="t-com">/* CSS  */</span>  <span class="t-sel">.card</span> <span class="t-punt">{</span> <span class="t-prop">background</span><span class="t-punt">:</span> <span class="t-val">white</span><span class="t-punt">;</span> <span class="t-punt">}</span></code></pre>
+
+    <h2>Combinar selectores: leer una "cadena"</h2>
+    <p>
+      Los selectores se pegan unos a otros. Dos símbolos hacen casi todo el trabajo pesado en código
+      real: <strong>el espacio</strong> y <strong>la coma</strong>.
+    </p>
+
+    <h3>Espacio = "dentro de"</h3>
+    <p>Un espacio entre dos selectores significa "el segundo, pero solo cuando está <em>dentro</em> del primero":</p>
+<pre><code><span class="t-sel">nav a</span> <span class="t-punt">{</span> … <span class="t-punt">}</span>   <span class="t-com">/* los enlaces (a) que están dentro de un nav */</span></code></pre>
+    <p style="color:var(--tinta-suave);font-size:.95rem">Léelo de derecha a izquierda: «los <code>a</code>… que estén dentro de un <code>nav</code>». Los <code>a</code> del resto de la página no se tocan.</p>
+
+    <h3>Coma = "y también"</h3>
+    <p>Una coma aplica la misma regla a varios selectores independientes:</p>
+<pre><code><span class="t-sel">h1, h2, .titulo</span> <span class="t-punt">{</span> <span class="t-prop">color</span><span class="t-punt">:</span> <span class="t-val">navy</span><span class="t-punt">;</span> <span class="t-punt">}</span>
+<span class="t-com">/* los h1, Y los h2, Y los de clase titulo: todos navy */</span></code></pre>
+
+    <div class="nota">
+      <p class="nota-titulo">También te encontrarás (recon&oacute;celos, no los memorices)</p>
+      <p style="margin:0">
+        <code>.card&gt;p</code> — <code>&gt;</code> es "hijo <em>directo</em>" (un nivel, no anidado hondo). &nbsp;
+        <code>a:hover</code> — <code>:</code> es una <strong>pseudo-clase</strong>: un <em>estado</em>
+        ("cuando el ratón está encima"). &nbsp;
+        <code>input[type="text"]</code> — <code>[ ]</code> filtra por un <strong>atributo</strong>.
+      </p>
+    </div>
+
+    <h2>Compruébalo — recuerda sin releer</h2>
+
+    <div class="quiz" data-correcta="2">
+      <p class="quiz-pregunta"><span class="quiz-num">Pregunta 1</span><br>
+        El selector <code>.boton { }</code> apunta a…</p>
+      <div class="opciones">
+        <button class="opcion">La etiqueta llamada boton</button>
+        <button class="opcion">El único id igual a boton</button>
+        <button class="opcion">Los de clase igual a boton</button>
+      </div>
+      <div class="feedback ok" data-para="ok">Correcto. El punto <code>.</code> significa clase: cualquier elemento con <code>class="boton"</code>.</div>
+      <div class="feedback no" data-para="no">El primer símbolo manda: <code>.</code> = clase. Apunta a los elementos con <code>class="boton"</code>. El <code>#</code> sería id; sin símbolo sería una etiqueta.</div>
+    </div>
+
+    <div class="quiz" data-correcta="0">
+      <p class="quiz-pregunta"><span class="quiz-num">Pregunta 2</span><br>
+        ¿Qué selecciona <code>footer a</code> (con un espacio en medio)?</p>
+      <div class="opciones">
+        <button class="opcion">Los enlaces dentro del footer</button>
+        <button class="opcion">Los footer dentro de enlaces</button>
+        <button class="opcion">Los footer y los enlaces</button>
+      </div>
+      <div class="feedback ok" data-para="ok">Correcto. Espacio = "dentro de". Léelo al revés: los <code>a</code> que estén dentro de un <code>footer</code>.</div>
+      <div class="feedback no" data-para="no">El espacio significa "dentro de", leído de derecha a izquierda: los <code>a</code> dentro de un <code>footer</code>. La coma sería "y también"; sin coma no es eso.</div>
+    </div>
+
+    <div class="quiz" data-correcta="1">
+      <p class="quiz-pregunta"><span class="quiz-num">Pregunta 3</span><br>
+        En <code>h1, p { margin: 0; }</code>, la coma significa que el <code>margin: 0</code> se aplica a…</p>
+      <div class="opciones">
+        <button class="opcion">Los p dentro de h1</button>
+        <button class="opcion">Los h1 y también los p</button>
+        <button class="opcion">Solo al primer h1</button>
+      </div>
+      <div class="feedback ok" data-para="ok">Correcto. La coma une selectores independientes: mismo estilo para h1 <em>y</em> para p.</div>
+      <div class="feedback no" data-para="no">La coma es "y también": aplica la misma regla a los <code>h1</code> y a los <code>p</code> por separado. El "dentro de" sería un espacio sin coma.</div>
+    </div>
+
+    <div class="quiz" data-correcta="2">
+      <p class="quiz-pregunta"><span class="quiz-num">Pregunta 4 · repaso</span><br>
+        En <code>.card { padding: 16px; }</code>, ¿cuál es la <strong>propiedad</strong>? <span style="font-weight:400;color:var(--tinta-suave)">(de la Lección 01)</span></p>
+      <div class="opciones">
+        <button class="opcion">El selector punto card</button>
+        <button class="opcion">El valor de 16 píxeles</button>
+        <button class="opcion">La palabra padding sola</button>
+      </div>
+      <div class="feedback ok" data-para="ok">Correcto. <code>padding</code> es la propiedad (el "qué"); <code>16px</code> su valor; <code>.card</code> el selector.</div>
+      <div class="feedback no" data-para="no">Repasa la Lección 01: la propiedad va antes de los <code>:</code> → aquí es <code>padding</code>. <code>16px</code> es el valor, <code>.card</code> el selector.</div>
+    </div>
+
+    <h2>Tu misión de lectura (45 segundos)</h2>
+    <p>Traduce este selector real en voz alta, de derecha a izquierda, antes de seguir:</p>
+<pre><code><span class="t-sel">.menu li a</span> <span class="t-punt">{</span> <span class="t-prop">color</span><span class="t-punt">:</span> <span class="t-val">white</span><span class="t-punt">;</span> <span class="t-punt">}</span></code></pre>
+    <p style="color:var(--tinta-suave);font-size:.95rem">
+      Pista: son tres piezas encadenadas con espacios. ¿A qué apunta exactamente? &nbsp;
+      <span style="font-family:var(--sans)">(Respuesta: los enlaces <code>a</code>, que estén dentro de un <code>li</code>, que a su vez esté dentro de algo con clase <code>menu</code>.)</span>
+    </p>
+
+    <!-- PIE -->
+    <div class="pie">
+      <div class="fuente-primaria">
+        <p class="nota-titulo">📖 Fuente primaria recomendada</p>
+        <p style="margin:0">
+          Lee <a href="https://developer.mozilla.org/es/docs/Learn_web_development/Core/Styling_basics/Basic_selectors">
+          «Selectores CSS» en MDN Web Docs</a> (Mozilla, en español). Cubre exactamente esto y añade,
+          con ejemplos editables, los combinadores y las pseudo-clases que hoy solo mencionamos.
+          Para practicar jugando: <a href="https://flukeout.github.io/">CSS Diner</a> (en inglés,
+          pero muy visual — 32 niveles cortos de selectores).
+        </p>
+      </div>
+
+      <div class="recordatorio-tutor">
+        💬 <strong>Soy tu tutor.</strong> ¿Algún selector raro que hayas visto por ahí y no logras
+        descifrar? Pégamelo en el chat y lo traducimos juntos, pieza por pieza.
+      </div>
+
+      <p style="font-family:var(--sans);font-size:.9rem;color:var(--tinta-suave)">
+        Consulta rápida: el <a href="../reference/glosario.html">glosario</a> ya incluye los tipos de selector.
+      </p>
+
+      <div>
+        <p class="nota-titulo" style="color:var(--tinta-suave)">Siguiente</p>
+        <p style="margin:.2rem 0 0;font-family:var(--sans);font-size:.95rem">
+          <strong>Lección 03 — El modelo de caja (box model):</strong> por qué cada elemento ocupa el
+          espacio que ocupa. <code>margin</code>, <code>padding</code>, <code>border</code>… la fuente
+          #1 de confusión al leer layouts. Di «continuar» cuando quieras.
+        </p>
+      </div>
+
+      <div class="nav-lecciones">
+        <a href="0001-anatomia-de-una-regla.html">← Lección 01 · Anatomía</a>
+        <a href="#">Lección 03 · Box model →</a>
+      </div>
+    </div>
+
+  </main>
+  <script src="../assets/quiz.js"></script>
+</body>
+</html>

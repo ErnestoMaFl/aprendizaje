@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Referencia · El mapa del Módulo Legal</title>
+  <link rel="stylesheet" href="../assets/course.css">
+  <style>
+    .lienzo { max-width: 800px; }
+    .bloque-ref {
+      border: 1px solid var(--regla);
+      border-radius: 10px;
+      padding: 1.1rem 1.3rem;
+      margin: 1.4rem 0;
+      background: #fff;
+      box-shadow: var(--sombra);
+    }
+    .bloque-ref h3 { margin-top: 0; }
+    .chuleta { font-family: var(--sans); font-size: .93rem; }
+    .chuleta li { margin-bottom: .4rem; }
+    .frase-clave {
+      font-family: var(--serif);
+      font-size: 1.3rem;
+      font-style: italic;
+      text-align: center;
+      background: var(--acento-suave);
+      border-radius: 10px;
+      padding: 1.2rem 1.4rem;
+      margin: 1.6rem 0;
+      color: var(--acento);
+    }
+    table.hus { width: 100%; border-collapse: collapse; font-family: var(--sans); font-size: .87rem; }
+    table.hus th, table.hus td {
+      text-align: left;
+      padding: .4rem .6rem;
+      border-bottom: 1px solid var(--regla);
+      vertical-align: top;
+    }
+    table.hus th {
+      font-size: .68rem; text-transform: uppercase; letter-spacing: .06em; color: var(--tinta-suave);
+    }
+    table.hus td:first-child { font-family: var(--mono); font-size: .78rem; white-space: nowrap; color: var(--acento); }
+    table.hus tr.cabecera-familia td {
+      background: var(--papel-hueso);
+      font-weight: 700;
+      font-size: .78rem;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--tinta);
+      border-bottom: 2px solid var(--regla);
+    }
+    table.hus tr.destacada { background: var(--acento-suave); }
+    @media (max-width:600px){ table.hus { font-size: .78rem; } }
+  </style>
+</head>
+<body>
+<a class="online-link" href="https://ernestomafl.github.io/aprendizaje/" title="Ir al índice de mis cursos en línea">🌐 Mis cursos</a>
+  <main class="lienzo">
+
+    <p class="leccion-kicker">Referencia · Módulo Legal KIVA</p>
+    <h1>El mapa del módulo</h1>
+    <p class="lede">Las 24 historias, el recorrido de punta a punta y las decisiones que valen para
+      todo el módulo. Pensada para imprimir y para repasar antes de una reunión.</p>
+
+    <div class="frase-clave">
+      Catálogo → Ticket → Expediente
+    </div>
+
+    <div class="bloque-ref">
+      <h3>La cadena de tres eslabones <span class="rn fuente">§1.2</span></h3>
+      <ul class="chuleta">
+        <li><strong>Catálogo de servicios</strong> — la entidad maestra. Define cada servicio que el
+          área puede prestar, con prioridad, áreas autorizadas, requisitos, SLA, responsable
+          sugerido, costos, entregables, ruta de aprobación y flujos financieros
+          (<code>HU06-005</code>).</li>
+        <li><strong>Ticket</strong> — la solicitud. Al elegir el servicio hereda toda su
+          configuración. Lo levanta un área (<code>HU06-006</code>) o lo genera otro módulo
+          (<code>HU06-016</code>).</li>
+        <li><strong>Expediente</strong> — el trabajo. Nace al <strong>confirmar</strong> el ticket.
+          Concentra bitácora, costos y entregables (<code>HU06-008</code>).</li>
+      </ul>
+      <p style="font-family:var(--sans);font-size:.9rem;margin:.6rem 0 0"><strong>La frontera:</strong>
+        lo que separa el ticket del expediente es la <strong>confirmación</strong> por parte de la
+        Gerencia Jurídica.</p>
+    </div>
+
+    <div class="bloque-ref">
+      <h3>El recorrido de punta a punta <span class="rn fuente">§1.3</span></h3>
+      <p style="font-family:var(--sans);font-weight:700;text-align:center;background:var(--acento-suave);color:var(--acento);border-radius:8px;padding:.7rem;margin:0 0 .9rem">
+        Configurar → Pedir → Decidir → Ejecutar → Revisar → Firmar → Cerrar</p>
+      <p style="font-family:var(--sans);font-size:.85rem;color:var(--tinta-suave);margin:-.5rem 0 .9rem">
+        Esto es el <strong>recorrido en el tiempo</strong> de una solicitud. No confundir con las
+        cuatro familias de abajo, que agrupan las historias por naturaleza, no por orden.</p>
+      <ol class="chuleta" style="padding-left:1.2rem">
+        <li>Se configura el catálogo — Administrador Legal · <code>HU06-005</code></li>
+        <li>Se levanta el ticket — área solicitante o módulo externo · <code>HU06-006 · 016</code></li>
+        <li>Llega a la bandeja y se decide: confirmar, rechazar o devolver — Gerencia · <code>HU06-007</code></li>
+        <li>Se ejecuta el expediente: bitácora, costos y entregables — abogado · <code>HU06-008</code></li>
+        <li>Se revisa según la ruta de aprobación · <code>HU06-009 · 010</code></li>
+        <li>Se firma lo que lo requiera, con Odoo Sign · <code>HU06-011</code></li>
+        <li>Se cierra y se entregan los resultados al solicitante · <code>HU06-012</code></li>
+      </ol>
+      <p style="font-family:var(--sans);font-size:.9rem;margin:.6rem 0 0"><strong>Encima del flujo
+        base:</strong> escrituración (<code>HU06-014</code>), tickets encadenados
+        (<code>HU06-019</code>), tickets recurrentes (<code>HU06-020</code>), gestor documental
+        (<code>HU06-018</code>) y tablero de indicadores (<code>HU06-017</code>).</p>
+    </div>
+
+    <div class="bloque-ref">
+      <h3>Las 24 historias por familia</h3>
+      <table class="hus">
+        <tbody>
+          <tr class="cabecera-familia"><td colspan="2">A · Fundación y seguridad</td></tr>
+          <tr><td>HU06-001</td><td>Módulo Legal Centralizado</td></tr>
+          <tr><td>HU06-002</td><td>Configuración de roles y autorizaciones de usuarios</td></tr>
+          <tr><td>HU06-003</td><td>Baja funcional de usuarios</td></tr>
+          <tr><td>HU06-004</td><td>Reporte de segregación de funciones y auditoría de accesos</td></tr>
+
+          <tr class="cabecera-familia"><td colspan="2">B · Catálogos: la configuración maestra</td></tr>
+          <tr><td>HU06-004a</td><td>Catálogo de categorías de servicios legales</td></tr>
+          <tr><td>HU06-004b</td><td>Catálogo de unidades organizacionales de KIVA</td></tr>
+          <tr><td>HU06-004c</td><td>Catálogo de tipos de documento</td></tr>
+          <tr><td>HU06-005</td><td>Configuración y mantenimiento del Catálogo de Servicios Legales</td></tr>
+          <tr><td>HU06-005a</td><td>Configuración de flujos financieros derivados de servicios legales</td></tr>
+          <tr class="destacada"><td>HU06-010</td><td>Configuración de rutas dinámicas de revisión, aprobación y archivado</td></tr>
+
+          <tr class="cabecera-familia"><td colspan="2">C · El ciclo operativo — el corazón</td></tr>
+          <tr><td>HU06-006</td><td>Registro manual de solicitud de servicio del Área Legal</td></tr>
+          <tr><td>HU06-007</td><td>Centro de control y bandeja de entrada del Gerente</td></tr>
+          <tr><td>HU06-008</td><td>Ejecución del Expediente Legal</td></tr>
+          <tr><td>HU06-009</td><td>Revisión interna de Expediente</td></tr>
+          <tr><td>HU06-011</td><td>Firma digital de documentos legales</td></tr>
+          <tr><td>HU06-012</td><td>Cierre del expediente y entrega de resultados al solicitante</td></tr>
+          <tr><td>HU06-013</td><td>Cancelación del Expediente</td></tr>
+
+          <tr class="cabecera-familia"><td colspan="2">D · Casos especiales y capacidades transversales</td></tr>
+          <tr><td>HU06-014</td><td>Configuración y procesamiento de servicios legales de Escrituración</td></tr>
+          <tr><td>HU06-015</td><td>Acceso a documentación centralizada de un mismo partner con diversos roles o tickets</td></tr>
+          <tr><td>HU06-016</td><td>Generación automática de tickets legales desde otros módulos</td></tr>
+          <tr><td>HU06-017</td><td>Dashboard operativo, KPIs y reportes del módulo Legal</td></tr>
+          <tr><td>HU06-018</td><td>Gestor Documental</td></tr>
+          <tr><td>HU06-019</td><td>Encadenamiento dinámico de tickets entre áreas de servicio interno</td></tr>
+          <tr><td>HU06-020</td><td>Tickets periódicos y recurrentes</td></tr>
+        </tbody>
+      </table>
+      <p style="font-family:var(--sans);font-size:.85rem;color:var(--tinta-suave);margin:.7rem 0 0">
+        Resaltada, la historia que ya trabajaste en la
+        <a href="../lessons/0007-ruta-plantilla-e-instancia.html">Lección 07</a>.</p>
+    </div>
+
+    <div class="bloque-ref">
+      <h3>Los seis grupos de seguridad <span class="rn fuente">§2.2</span></h3>
+      <table class="hus">
+        <thead><tr><th>Grupo</th><th>Qué puede hacer</th></tr></thead>
+        <tbody>
+          <tr><td>Administrador<br>del Módulo Legal</td><td>Configura todo: catálogos, rutas, roles, plantillas y costos. <strong>No participa en la operación.</strong> Único rol que modifica catálogos.</td></tr>
+          <tr><td>Director<br>de Área Legal</td><td>Lectura total, aprobaciones finales y reportes globales. <strong>No edita la configuración.</strong></td></tr>
+          <tr><td>Gerencia<br>Jurídica</td><td>Gestión operativa de su Gerencia: confirma, rechaza o devuelve solicitudes, asigna abogado, ajusta fechas y prioridades, cierra expedientes. Ve costos.</td></tr>
+          <tr><td>Abogado<br>Responsable</td><td>Ejecuta los expedientes asignados: bitácora, costos y entregables; los somete a revisión. Vista parcial de costos.</td></tr>
+          <tr><td>Usuario<br>Solicitante</td><td>Crea solicitudes y consulta el avance de <strong>las suyas</strong>. Sin acceso al área operativa legal.</td></tr>
+          <tr><td>Solo Lectura /<br>Auditoría</td><td>Consulta expedientes y reportes, incluido el de segregación de funciones. Sin crear, editar ni aprobar.</td></tr>
+        </tbody>
+      </table>
+      <p style="font-family:var(--sans);font-size:.9rem;margin:.7rem 0 0"><strong>Segregación por
+        Gerencia:</strong> el área se estructura en Gerencias Jurídicas por especialidad. Gerencia y
+        Abogado ven sólo lo de su Gerencia o sus asignaciones; Director y Auditoría tienen lectura
+        global; el Solicitante ve únicamente sus propias solicitudes
+        <span class="rn fuente">§2.3</span>.</p>
+    </div>
+
+    <div class="bloque-ref">
+      <h3>Decisiones que valen para todo el módulo <span class="rn fuente">§1.4</span></h3>
+      <ul class="chuleta">
+        <li><strong>Nunca se elimina nada.</strong> La baja es inactivación
+          (<code>active = False</code>); la anulación es cambio de estado
+          (<code>state = cancelled</code>).</li>
+        <li><strong>Los catálogos son entidades maestras.</strong> Ningún ticket ni expediente
+          existe sin un servicio activo del catálogo detrás.</li>
+        <li><strong>Herencia por snapshot inmutable.</strong> Al confirmar el ticket, la
+          configuración del servicio se copia al expediente como una fotografía; los cambios
+          posteriores al catálogo no alteran expedientes ya generados.</li>
+        <li><strong>Base sobre Helpdesk + modelos propios.</strong> El ticket extiende
+          <code>helpdesk.ticket</code>; la lógica del área vive en modelos dedicados.</li>
+        <li><strong>Un solo cron unificado</strong> atiende alertas de SLA, recordatorios de
+          aprobación, tickets recurrentes y vencimientos documentales.</li>
+      </ul>
+    </div>
+
+    <p style="font-family:var(--sans);font-size:.88rem;color:var(--tinta-suave);border-left:3px solid var(--regla);padding-left:.9rem">
+      <strong>Esta ficha crece cada sesión.</strong> Hoy cubre la cadena, el recorrido, el índice de
+      historias, los grupos de seguridad y las decisiones transversales. Se irá completando con el
+      detalle de cada familia.</p>
+
+    <div class="pie">
+      <div class="recordatorio-tutor">
+        ¿Algo de esta ficha no te cuadra con el CSV o con el PDF? Dímelo en el chat: la
+        especificación manda, y corrijo la referencia.
+      </div>
+      <div class="nav-lecciones">
+        <a href="../lessons/0001-mapa-del-modulo-legal.html">← Lección 01</a>
+        <a href="glosario.html">Glosario del módulo →</a>
+      </div>
+    </div>
+
+  </main>
+</body>
+</html>

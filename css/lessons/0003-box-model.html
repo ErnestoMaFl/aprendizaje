@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lección 3 · El modelo de caja (box model)</title>
+  <link rel="stylesheet" href="../assets/course.css">
+  <style>
+    /* Diagrama de caja anidada: margin → border → padding → content */
+    .caja-demo {
+      max-width: 420px;
+      margin: 1.6rem auto;
+      font-family: var(--sans);
+      text-align: center;
+    }
+    .capa {
+      border-radius: 6px;
+      padding: 0;
+    }
+    .capa-margin  { background: #fdeede; padding: 34px; border: 1px dashed #d9a066; }
+    .capa-border  { background: #2b2723; padding: 14px; }
+    .capa-padding { background: #d7ecc4; padding: 28px; }
+    .capa-content { background: #cfe0f7; padding: 22px 10px; border: 1px solid #6f9fe0; }
+    .rotulo {
+      display: block;
+      font-size: .64rem;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: .35rem;
+    }
+    .rotulo.claro { color: #fff; }
+    .r-margin  { color: #9a3412; }
+    .r-padding { color: #3f6212; }
+    .r-content { color: #1e40af; }
+    .cont-txt { font-family: var(--mono); font-size: .8rem; color: #1e40af; font-weight: 700; }
+
+    /* Tabla de lectura de shorthand */
+    .tabla-short {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: var(--sans);
+      font-size: .92rem;
+      margin: 1.2rem 0;
+    }
+    .tabla-short th, .tabla-short td {
+      text-align: left;
+      padding: .55rem .7rem;
+      border-bottom: 1px solid var(--regla);
+      vertical-align: top;
+    }
+    .tabla-short th { font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; color: var(--tinta-suave); }
+    .tabla-short td code { font-size: .82rem; }
+    .tabla-short .nucleo td:first-child::after { content: " ●"; color: var(--verde); }
+    @media (max-width:600px){ .caja-demo{ font-size:.85rem; } .tabla-short{ font-size:.82rem; } }
+  </style>
+</head>
+<body>
+<a class="online-link" href="https://ernestomafl.github.io/aprendizaje/" title="Ir al índice de mis cursos en línea">🌐 Mis cursos</a>
+  <main class="lienzo">
+
+    <p class="leccion-kicker">Lección 03 · Leer CSS</p>
+    <h1>El modelo de caja</h1>
+    <p class="lede">
+      Ya sabes leer <em>a qué</em> apunta una regla (<a href="0002-selectores.html">Lección 02</a>) y
+      <em>qué</em> le cambia (<a href="0001-anatomia-de-una-regla.html">Lección 01</a>). Hoy respondes la
+      pregunta que confunde a todo el mundo al leer un layout: <strong>¿por qué este elemento ocupa el
+      espacio que ocupa?</strong> La respuesta está en cuatro capas.
+    </p>
+
+    <!-- PRETEST: intentar antes de que te lo cuente (fallar aquí es parte del método) -->
+    <div class="nota acento">
+      <p class="nota-titulo">Antes de leer: arriésgate (aunque no lo sepas)</p>
+      <p style="margin:0">
+        Un elemento tiene <code>padding: 20px;</code> y también <code>margin: 20px;</code>.
+        Uno de los dos empuja <strong>hacia dentro</strong> (separa el contenido de su propio borde) y el
+        otro <strong>hacia fuera</strong> (lo separa de los elementos vecinos). ¿Cuál crees que es cuál?
+        Apuesta mentalmente — luego lo compruebas.
+      </p>
+    </div>
+
+    <h2>Todo elemento es una caja de 4 capas</h2>
+    <p>
+      El navegador dibuja <strong>cada</strong> elemento como una caja con cuatro capas, de dentro hacia
+      fuera. Leerlas en ese orden es la clave:
+    </p>
+
+    <div class="caja-demo">
+      <div class="capa capa-margin">
+        <span class="rotulo r-margin">margin · espacio EXTERIOR</span>
+        <div class="capa capa-border">
+          <span class="rotulo claro">border · el borde</span>
+          <div class="capa capa-padding">
+            <span class="rotulo r-padding">padding · espacio INTERIOR</span>
+            <div class="capa capa-content">
+              <span class="rotulo r-content">content</span>
+              <span class="cont-txt">tu texto / imagen</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <table class="tabla-short">
+      <thead><tr><th>Capa</th><th>Qué es</th><th>Regla para leerla</th></tr></thead>
+      <tbody>
+        <tr><td><code>content</code></td><td>El contenido real: texto, imagen.</td><td>Lo que ves «lleno».</td></tr>
+        <tr><td><code>padding</code></td><td>Relleno <strong>dentro</strong> del borde.</td><td>Aleja el contenido de su propio borde.</td></tr>
+        <tr><td><code>border</code></td><td>La línea del borde.</td><td>La frontera visible (o invisible) de la caja.</td></tr>
+        <tr><td><code>margin</code></td><td>Espacio <strong>fuera</strong> del borde.</td><td>Separa esta caja de las de al lado.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="nota acento">
+      <p class="nota-titulo">La confusión #1 al leer CSS — resuélvela ya</p>
+      <p style="margin:0">
+        <code>padding</code> = <strong>dentro</strong> (empuja el contenido lejos del borde). &nbsp;
+        <code>margin</code> = <strong>fuera</strong> (empuja a los vecinos). &nbsp;
+        Truco: <em>pad</em> = acolchado interior; <em>margen</em> = el margen de una hoja, el aire de
+        alrededor. ¿Acertaste tu apuesta de arriba?
+      </p>
+    </div>
+
+    <h2>Leer los atajos: <code>margin: 10px 20px;</code></h2>
+    <p>
+      Casi nunca verás los cuatro lados escritos uno por uno. Verás un <strong>atajo</strong> (shorthand)
+      con 1, 2 o 4 números. Contar los números te dice qué lado es cuál:
+    </p>
+
+    <table class="tabla-short">
+      <thead><tr><th>Se ve así</th><th>Se lee…</th></tr></thead>
+      <tbody>
+        <tr class="nucleo"><td><code>padding: 10px;</code></td><td>Un valor → <strong>los 4 lados</strong> iguales.</td></tr>
+        <tr class="nucleo"><td><code>padding: 10px 20px;</code></td><td>Dos valores → <strong>arriba/abajo</strong> 10, <strong>izq/der</strong> 20. (vertical, luego horizontal)</td></tr>
+        <tr><td><code>padding: 10px 20px 30px 40px;</code></td><td>Cuatro → como un reloj desde arriba, en sentido horario: <strong>arriba, derecha, abajo, izquierda</strong>.</td></tr>
+        <tr><td><code>padding: 10px 20px 30px;</code></td><td>Tres → raro. arriba 10, izq/der 20, abajo 30. <em>(reconócelo, no lo memorices)</em></td></tr>
+      </tbody>
+    </table>
+    <p style="color:var(--tinta-suave);font-size:.95rem">
+      Las filas con <span style="color:var(--verde)">●</span> son las que verás el 80% de las veces. La misma
+      lógica sirve idéntica para <code>margin</code>. Y si quieres un solo lado, lo verás con nombre:
+      <code>margin-top</code>, <code>padding-left</code>… sin misterio.
+    </p>
+
+    <h2>El detalle que descoloca: <code>box-sizing</code></h2>
+    <p>
+      Cuando leas <code>width: 300px</code>, hay una pregunta trampa: <em>¿300px es la caja entera, o solo
+      el contenido</em> (y padding + border se suman <strong>encima</strong>)? Lo decide una propiedad:
+    </p>
+<pre><code><span class="t-prop">box-sizing</span><span class="t-punt">:</span> <span class="t-val">border-box</span><span class="t-punt">;</span>   <span class="t-com">/* width = la caja ENTERA. padding y border caben dentro */</span>
+<span class="t-prop">box-sizing</span><span class="t-punt">:</span> <span class="t-val">content-box</span><span class="t-punt">;</span>  <span class="t-com">/* (por defecto) width = solo el contenido; padding+border se SUMAN */</span></code></pre>
+    <div class="nota">
+      <p class="nota-titulo">Núcleo del 80%: casi siempre es border-box</p>
+      <p style="margin:0">
+        El código moderno suele poner <code>* { box-sizing: border-box; }</code> al principio (¡mira el
+        <code>course.css</code> de este propio curso!). Significa: cuando veas <code>width: 300px</code>, la
+        caja mide 300px <strong>en total</strong>, ya con su padding y borde incluidos. Es el
+        comportamiento intuitivo — por eso todo el mundo lo activa.
+      </p>
+    </div>
+
+    <h2>Leer un <code>border</code>: tres piezas en fila</h2>
+    <p>
+      El borde casi siempre viene como un atajo de <strong>tres valores</strong> seguidos (y el orden entre
+      ellos da igual): <strong>grosor · estilo · color</strong>.
+    </p>
+<pre><code><span class="t-prop">border</span><span class="t-punt">:</span> <span class="t-val">1px solid navy</span><span class="t-punt">;</span>
+<span class="t-com">/*        │    │     └─ color:  azul marino          */</span>
+<span class="t-com">/*        │    └─ estilo: solid = línea continua     */</span>
+<span class="t-com">/*        └─ grosor: 1px de grosor                   */</span></code></pre>
+    <p style="color:var(--tinta-suave);font-size:.95rem">
+      Los estilos que más verás: <code>solid</code> (línea maciza), <code>dashed</code> (guiones),
+      <code>none</code> (sin borde). Con esas tres piezas lees el borde de casi cualquier web. La misma
+      idea vale para <code>border-top</code>, <code>border-bottom</code>… si solo quieren un lado.
+    </p>
+
+    <h2>Compruébalo — recuerda sin releer</h2>
+
+    <div class="quiz" data-correcta="1">
+      <p class="quiz-pregunta"><span class="quiz-num">Pregunta 1</span><br>
+        ¿Qué propiedad separa un elemento de <strong>sus vecinos</strong> (espacio por fuera del borde)?</p>
+      <div class="opciones">
+        <button class="opcion">La propiedad padding</button>
+        <button class="opcion">La propiedad margin</button>
+        <button class="opcion">La propiedad border</button>
+      </div>
+      <div class="feedback ok" data-para="ok">Correcto. <code>margin</code> es el espacio EXTERIOR: aleja la caja de las de al lado.</div>
+      <div class="feedback no" data-para="no">Por fuera del borde va el <code>margin</code>. El <code>padding</code> es por dentro (aleja el contenido de su propio borde); el <code>border</code> es la línea en medio.</div>
+    </div>
+
+    <div class="quiz" data-correcta="2">
+      <p class="quiz-pregunta"><span class="quiz-num">Pregunta 2</span><br>
+        ¿Cómo se lee <code>margin: 5px 30px;</code> (dos valores)?</p>
+      <div class="opciones">
+        <button class="opcion">Arriba 5, derecha 30, resto 0</button>
+        <button class="opcion">Izq/der 5 y arriba/abajo 30</button>
+        <button class="opcion">Arriba/abajo 5 e izq/der 30</button>
+      </div>
+      <div class="feedback ok" data-para="ok">Correcto. Dos valores = vertical primero, horizontal después: arriba/abajo 5px, izquierda/derecha 30px.</div>
+      <div class="feedback no" data-para="no">Con dos valores el orden es vertical → horizontal: el primero (5px) es arriba/abajo, el segundo (30px) es izquierda/derecha.</div>
+    </div>
+
+    <div class="quiz" data-correcta="0">
+      <p class="quiz-pregunta"><span class="quiz-num">Pregunta 3</span><br>
+        Con <code>box-sizing: border-box;</code>, un elemento con <code>width: 200px;</code> y
+        <code>padding: 20px;</code> ocupa en pantalla un ancho total de…</p>
+      <div class="opciones">
+        <button class="opcion">200px (padding va dentro)</button>
+        <button class="opcion">240px (200 más 20 y 20)</button>
+        <button class="opcion">220px (200 más 20 uno)</button>
+      </div>
+      <div class="feedback ok" data-para="ok">Correcto. Con <code>border-box</code>, <code>width</code> es la caja entera: el padding cabe DENTRO de esos 200px.</div>
+      <div class="feedback no" data-para="no"><code>border-box</code> hace que <code>width</code> sea el total: 200px ya incluyen el padding. (Con <code>content-box</code> sí serían 240px — por eso confunde tanto.)</div>
+    </div>
+
+    <div class="quiz" data-correcta="2">
+      <p class="quiz-pregunta"><span class="quiz-num">Pregunta 4 · repaso</span><br>
+        En <code>.tarjeta p { padding: 8px; }</code>, ¿a qué elementos se aplica ese padding?
+        <span style="font-weight:400;color:var(--tinta-suave)">(de la Lección 02)</span></p>
+      <div class="opciones">
+        <button class="opcion">A los p con clase tarjeta</button>
+        <button class="opcion">A la tarjeta y a los p</button>
+        <button class="opcion">A los p dentro de tarjeta</button>
+      </div>
+      <div class="feedback ok" data-para="ok">Correcto. El espacio = "dentro de": los <code>p</code> que estén dentro de un elemento con clase <code>tarjeta</code>. ¡La trampa del espacio, dominada!</div>
+      <div class="feedback no" data-para="no">Cuidado con el espacio: <code>.tarjeta p</code> = los <code>p</code> DENTRO de algo con clase <code>tarjeta</code> (no los <code>p</code> que tengan esa clase — eso sería <code>p.tarjeta</code>, pegado).</div>
+    </div>
+
+    <h2>Tu misión de lectura (45 segundos)</h2>
+    <p>Traduce esta regla real en voz alta, capa por capa, antes de seguir:</p>
+<pre><code><span class="t-sel">.boton</span> <span class="t-punt">{</span>
+  <span class="t-prop">padding</span><span class="t-punt">:</span> <span class="t-val">12px 24px</span><span class="t-punt">;</span>
+  <span class="t-prop">border</span><span class="t-punt">:</span> <span class="t-val">1px solid navy</span><span class="t-punt">;</span>
+  <span class="t-prop">margin</span><span class="t-punt">:</span> <span class="t-val">16px</span><span class="t-punt">;</span>
+<span class="t-punt">}</span></code></pre>
+    <p style="color:var(--tinta-suave);font-size:.95rem">
+      Pista: ¿cuánto aire hay <em>dentro</em> del botón, arriba/abajo vs. izquierda/derecha? ¿Y cuánto lo
+      separa de sus vecinos? &nbsp;
+      <span style="font-family:var(--sans)">(Respuesta: relleno interior de 12px arriba/abajo y 24px a los
+      lados; un borde azul fino de 1px; y 16px de aire por fuera en los cuatro lados.)</span>
+    </p>
+
+    <label class="pregunta-abierta">
+      <span class="pa-titulo">✍️ Escribe tu traducción de <code>.boton</code> (con tus palabras, capa por capa):</span>
+      <textarea class="abierta" data-label="Traducción de .boton" rows="3" placeholder="Ej.: relleno interior de… ; borde de… ; margen exterior de…"></textarea>
+    </label>
+
+    <label class="pregunta-abierta">
+      <span class="pa-titulo">🧠 En una frase, ¿por qué <code>padding</code> queda dentro y <code>margin</code> fuera? (explicarlo con tus palabras lo fija):</span>
+      <textarea class="abierta" data-label="¿Por qué padding dentro / margin fuera?" rows="2"></textarea>
+    </label>
+
+    <div class="hoja-respuestas">
+      <p class="hr-intro">📋 <strong>Tu hoja de respuestas.</strong> Se rellena sola con tus quizzes (acierto/fallo y tu nivel de seguridad) y con lo que escribas arriba. Pulsa el botón y <strong>pégala en el chat</strong> — no reescribas nada.</p>
+      <textarea class="hr-salida" readonly rows="12"></textarea>
+      <br>
+      <button class="hr-copiar" type="button">Copiar para el chat</button>
+      <span class="hr-aviso"></span>
+    </div>
+
+    <!-- PIE -->
+    <div class="pie">
+      <div class="fuente-primaria">
+        <p class="nota-titulo">📖 Fuente primaria recomendada</p>
+        <p style="margin:0">
+          Lee <a href="https://developer.mozilla.org/es/docs/Learn_web_development/Core/Styling_basics/Box_model">
+          «El modelo de caja» en MDN Web Docs</a> (Mozilla, en español): el mismo tema con diagramas
+          interactivos. Y lo más útil de todo para <em>leer</em> cajas: abre las
+          <strong>DevTools</strong> del navegador (clic derecho → «Inspeccionar»), selecciona cualquier
+          elemento y mira el diagrama de caja de colores en la pestaña de estilos — es exactamente estas
+          cuatro capas, en vivo, sobre webs reales.
+        </p>
+      </div>
+
+      <div class="recordatorio-tutor">
+        💬 <strong>Soy tu tutor.</strong> ¿Viste un <code>margin</code> o <code>padding</code> raro en
+        alguna web y no cuadra el espaciado? Pégamelo y lo desmontamos capa por capa.
+      </div>
+
+      <p style="font-family:var(--sans);font-size:.9rem;color:var(--tinta-suave)">
+        Consulta rápida: el <a href="../reference/glosario.html">glosario</a> ya incluye las cuatro capas y los atajos.
+      </p>
+
+      <div>
+        <p class="nota-titulo" style="color:var(--tinta-suave)">Siguiente</p>
+        <p style="margin:.2rem 0 0;font-family:var(--sans);font-size:.95rem">
+          <strong>Lección 04 — Cascada, especificidad y herencia:</strong> por qué, cuando dos reglas se
+          pelean por el mismo elemento, una gana. La pieza que explica «pero si yo puse color rojo… ¿por
+          qué salió azul?». Di «continuar» cuando quieras.
+        </p>
+      </div>
+
+      <div class="nav-lecciones">
+        <a href="0002-selectores.html">← Lección 02 · Selectores</a>
+        <a href="0004-cascada-especificidad-herencia.html">Lección 04 · Cascada →</a>
+      </div>
+    </div>
+
+  </main>
+  <script src="../assets/quiz.js"></script>
+</body>
+</html>

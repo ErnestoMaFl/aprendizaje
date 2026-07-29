@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lección 3 · Débito y Haber (la partida doble)</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+  <style>
+    .taccount { font-family:var(--sans); max-width:360px; margin:1.6rem auto; }
+    .taccount .title { text-align:center; font-weight:700; border-bottom:2px solid var(--ink); padding-bottom:.3rem; }
+    .taccount .cols { display:grid; grid-template-columns:1fr 1fr; }
+    .taccount .cols div { padding:.5rem .7rem; min-height:2.4rem; }
+    .taccount .cols .l { border-right:2px solid var(--ink); }
+    .taccount .head { font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-soft); font-weight:700; text-align:center; padding-bottom:.1rem !important; min-height:auto !important; }
+    .taccount .debe  { color:var(--blue); }
+    .taccount .haber { color:var(--accent); }
+    .mnem { font-family:var(--sans); background:var(--highlight); border-radius:8px; padding:1rem 1.2rem; margin:1.6rem 0; font-size:1rem; }
+    .mnem b { color:var(--accent); }
+  </style>
+</head>
+<body>
+<a class="online-link" href="https://ernestomafl.github.io/aprendizaje/" title="Ir al índice de mis cursos en línea">🌐 Mis cursos</a>
+<div class="wrap">
+
+  <p class="eyebrow">Lección 3 · Fundamentos</p>
+  <h1>Débito y Haber</h1>
+  <p class="dek">La partida doble: por fin, registrar de verdad.</p>
+
+  <div class="mission">
+    <b>Ya lo hiciste sin saberlo.</b> Cuando dijiste que un préstamo de $5,000 sube el
+    <b>banco</b> (activo) <em>y</em> sube el <b>préstamo</b> (pasivo), aplicaste la partida doble.
+    Esta lección solo le pone nombre técnico y una regla. Al terminar podrás escribir tu primer
+    <b>asiento contable</b> — el registro que hace un auxiliar contable todos los días.
+  </div>
+
+  <h2>Toda cuenta tiene dos columnas</h2>
+  <p>
+    Imagina cualquier cuenta (Caja, Clientes, Préstamos…) como una “T”: una barra en medio con
+    <strong>dos columnas</strong>. La de la <strong>izquierda</strong> se llama <strong>Debe</strong>.
+    La de la <strong>derecha</strong> se llama <strong>Haber</strong>. Eso es <em>todo</em> lo que
+    significan: <strong>izquierda y derecha</strong>.
+  </p>
+
+  <div class="taccount">
+    <div class="title">Cuenta: Bancos</div>
+    <div class="cols">
+      <div class="head l">Debe (izquierda)</div>
+      <div class="head">Haber (derecha)</div>
+      <div class="l debe">5,000</div>
+      <div class="haber"></div>
+    </div>
+  </div>
+
+  <div class="note">
+    <b>Olvida “bueno/malo”.</b> En la vida diaria, que el banco te “acredite” suena bueno y te
+    “debite” suena malo. <b>En contabilidad no significan eso.</b> Debe y Haber son solo la
+    columna izquierda y la derecha. Anotar en el Debe se llama <b>cargar</b>; anotar en el Haber,
+    <b>abonar</b>. (Sinónimos que verás: Debe = débito = cargo; Haber = crédito = abono.)
+  </div>
+
+  <h2>La regla de oro: siempre cuadra</h2>
+  <p>
+    La <strong>partida doble</strong> dice: cada operación se anota en <strong>al menos dos
+    cuentas</strong>, y <strong>el total del Debe es igual al total del Haber</strong>. Siempre.
+    Ese equilibrio es la misma idea de la ecuación contable, vista al registrar.
+  </p>
+  <div class="equation" style="font-size:1.35rem">
+    <span class="activo">Total Debe</span>
+    <span class="op">=</span>
+    <span class="pasivo">Total Haber</span>
+  </div>
+
+  <h2>¿En qué columna aumenta cada familia?</h2>
+  <p>
+    Aquí está la única parte que hay que aprender de memoria. Pero se apoya en algo que ya sabes:
+    <em>cada familia aumenta en el mismo lado de la ecuación donde vive</em>.
+  </p>
+  <ul>
+    <li>El <strong>Activo</strong> vive a la <em>izquierda</em> de la ecuación → aumenta por el <strong>Debe</strong> (izquierda).</li>
+    <li>El <strong>Pasivo</strong> y el <strong>Patrimonio</strong> viven a la <em>derecha</em> → aumentan por el <strong>Haber</strong> (derecha).</li>
+    <li>El <strong>Ingreso</strong> hace crecer el patrimonio → se comporta como la derecha → aumenta por el <strong>Haber</strong>.</li>
+    <li>El <strong>Gasto</strong> encoge el patrimonio → hace lo contrario → aumenta por el <strong>Debe</strong>.</li>
+  </ul>
+
+  <div class="mnem">
+    🧠 <b>Mnemónico:</b> “<b>A</b>ctivo y <b>G</b>asto aumentan en el <b>Debe</b>;
+    <b>P</b>asivo, <b>P</b>atrimonio e <b>I</b>ngreso aumentan en el <b>Haber</b>.”
+    <br>(Y para disminuir, siempre es la columna contraria.)
+  </div>
+
+  <div class="scroll-x">
+  <table class="ledger">
+    <caption>Mapa de cargos y abonos — llévalo a la <a href="../reference/reglas-debe-haber.html">hoja de referencia</a>.</caption>
+    <tr><th>Familia</th><th>Aumenta en…</th><th>Disminuye en…</th></tr>
+    <tr><td>Activo</td><td class="debe">Debe (izq.)</td><td class="haber">Haber (der.)</td></tr>
+    <tr><td>Gasto</td><td class="debe">Debe (izq.)</td><td class="haber">Haber (der.)</td></tr>
+    <tr><td>Pasivo</td><td class="haber">Haber (der.)</td><td class="debe">Debe (izq.)</td></tr>
+    <tr><td>Patrimonio</td><td class="haber">Haber (der.)</td><td class="debe">Debe (izq.)</td></tr>
+    <tr><td>Ingreso</td><td class="haber">Haber (der.)</td><td class="debe">Debe (izq.)</td></tr>
+  </table>
+  </div>
+
+  <h2>Tu primer asiento contable</h2>
+  <p>
+    Un <strong>asiento contable</strong> es el registro de una operación con sus cargos y abonos.
+    Volvamos a tu préstamo de $5,000. Banco (activo) <em>aumenta</em> → va al Debe. Préstamo
+    (pasivo) <em>aumenta</em> → va al Haber:
+  </p>
+  <div class="scroll-x">
+  <table class="ledger">
+    <caption>Asiento: la empresa recibe un préstamo bancario de $5,000.</caption>
+    <tr><th>Cuenta</th><th class="num">Debe</th><th class="num">Haber</th></tr>
+    <tr><td>Bancos <span style="color:var(--ink-soft)">(activo ↑)</span></td><td class="num debe">5,000.00</td><td class="num"></td></tr>
+    <tr><td style="padding-left:1.6rem">Préstamos bancarios <span style="color:var(--ink-soft)">(pasivo ↑)</span></td><td class="num"></td><td class="num haber">5,000.00</td></tr>
+    <tr style="font-weight:700; border-top:2px solid var(--ink)"><td>Sumas iguales</td><td class="num debe">5,000.00</td><td class="num haber">5,000.00</td></tr>
+  </table>
+  </div>
+  <p class="note">
+    <b>Cómo se lee y escribe.</b> La cuenta que se <em>carga</em> (Debe) va primero y pegada al
+    margen; la que se <em>abona</em> (Haber) va debajo y con sangría. Las sumas de abajo son
+    iguales: el asiento <b>cuadra</b>. Si no cuadra, hay un error.
+  </p>
+
+  <h2>Practiquemos</h2>
+
+  <div class="quiz" data-answer="0">
+    <div class="q-num">Pregunta 1</div>
+    <div class="q-text">En contabilidad, “Debe” y “Haber” significan, en el fondo…</div>
+    <button class="opt">Columna izquierda y derecha</button>
+    <button class="opt">Dinero bueno y dinero malo</button>
+    <button class="opt">Ganancia final y pérdida</button>
+    <div class="feedback ok" data-for="ok">Correcto. Son solo la columna <b>izquierda (Debe)</b> y la <b>derecha (Haber)</b> de una cuenta. Nada de bueno/malo.</div>
+    <div class="feedback no" data-for="no">Son la columna <b>izquierda (Debe)</b> y la <b>derecha (Haber)</b>. No significan bueno ni malo: esa es la trampa mental más común.</div>
+  </div>
+
+  <div class="quiz" data-answer="1">
+    <div class="q-num">Pregunta 2</div>
+    <div class="q-text">La empresa compra mercadería y la paga en efectivo. La mercadería (activo) aumenta. ¿Dónde se anota ese aumento?</div>
+    <button class="opt">En el Haber (derecha)</button>
+    <button class="opt">En el Debe (izquierda)</button>
+    <button class="opt">En ninguna columna</button>
+    <div class="feedback ok" data-for="ok">Correcto. El activo aumenta por el <b>Debe</b>. (Y el efectivo, otro activo, disminuye por el Haber: el asiento cuadra.)</div>
+    <div class="feedback no" data-for="no">Va en el <b>Debe</b>: un activo aumenta por la izquierda. (El efectivo, que baja, se abona en el Haber.)</div>
+  </div>
+
+  <div class="quiz" data-answer="1">
+    <div class="q-num">Pregunta 3</div>
+    <div class="q-text">La empresa paga los sueldos del mes en efectivo. El gasto de sueldos aumenta. ¿Dónde se anota?</div>
+    <button class="opt">En el Haber (derecha)</button>
+    <button class="opt">En el Debe (izquierda)</button>
+    <button class="opt">En el patrimonio</button>
+    <div class="feedback ok" data-for="ok">Correcto. Recuerda el mnemónico: <b>Gasto aumenta en el Debe</b>. (El efectivo baja: se abona en el Haber.)</div>
+    <div class="feedback no" data-for="no">Va en el <b>Debe</b>. El gasto aumenta por la izquierda (mnemónico: Activo y Gasto → Debe).</div>
+  </div>
+
+  <div class="quiz" data-answer="2">
+    <div class="q-num">Pregunta 4</div>
+    <div class="q-text">En todo asiento contable, el total del Debe comparado con el total del Haber siempre queda…</div>
+    <button class="opt">Un poco mayor</button>
+    <button class="opt">Un poco menor</button>
+    <button class="opt">Exactamente igual</button>
+    <div class="feedback ok" data-for="ok">Correcto. Debe = Haber, siempre. Si no cuadra, hay un error en el registro.</div>
+    <div class="feedback no" data-for="no">Queda <b>exactamente igual</b>: esa es la regla de oro de la partida doble. Si no cuadra, hay error.</div>
+  </div>
+
+  <div class="primary-source">
+    <span class="label">Fuente primaria recomendada</span>
+    Repasa con la <a href="../reference/reglas-debe-haber.html">Hoja de referencia — Reglas del Debe y el Haber</a>
+    (tu chuleta imprimible). Para la lógica formal, la partida doble se refleja en la presentación
+    del estado de situación financiera de la <a href="https://www.ifrs.org/issued-standards/ifrs-for-smes/" target="_blank" rel="noopener">NIIF para las PYMES, Secc. 4</a>.
+  </div>
+
+  <div class="ask-tutor">
+    <b>Soy tu tutor.</b> El mnemónico cuesta al inicio: es normal. Pídeme más asientos para
+    practicar (ventas, compras al crédito, pago a proveedores) y te los corrijo al instante.
+  </div>
+
+  <footer class="lesson-nav">
+    <span><a href="0002-las-cinco-familias-de-cuentas.html">← Lección 2</a></span>
+    <span>Siguiente: <b>Lección 4 — Registrar transacciones en el libro diario</b></span>
+  </footer>
+
+</div>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>
